@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ACCENT=../accent/accent
+ENTIRE=../entire/entire.c
+LEX=lex
+CC=cc
+
+$ACCENT spec.acc
+
+$LEX spec.lex
+
+$CC -o somatorio lex.yy.c auxil.c yygrammar.c $ENTIRE -w
+
+somatorio < input

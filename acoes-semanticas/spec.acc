@@ -1,0 +1,11 @@
+%token NUMBER;
+root : 
+	{ printf("1\n");} A { printf("2\n");} B { printf("3\n");} (root)*
+	|  { printf("x\n"); } C { printf("y\n"); } (root)*
+;
+
+A: 'a' { printf("Inside A\n");};
+B: 'b' { printf("Inside B\n");};
+C: 'c' { printf("Inside C\n");};
+
+

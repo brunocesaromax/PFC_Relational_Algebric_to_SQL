@@ -1,0 +1,69 @@
+%prelude{ 
+#include "yystype.h"
+int cont = 0;
+}
+%token NUMBER, INCLUDE,	STDIO, STDLIB, NAME, INT, VOID, FLOAT, CHAR, FOR, INC, DEC, RETORNO;
+
+root: 
+	 {printf("AQUI\n");} term {printf("%s\n",yylval.string);} 
+;
+
+
+term:	
+	(pre | function_decl)*
+;
+
+pre:	
+	'#' INCLUDE '<' lib '>' {cont+=4;}
+;
+
+lib:
+	(STDIO | STDLIB) {cont+=1;}
+;
+
+function_decl:
+	 type NAME '(' (type NAME {cont+=1;})? (',' type NAME {cont+=2;})* ')' '{' expressions '}' {cont+=5;}
+;
+
+type:
+	INT  {cont+=1;}
+;
+
+expressions:
+	(declarations_variables ';' 
+	| assignments ';'
+	| function_call ';'
+	| loops 
+	| return_main)*  {cont+=1;}
+;
+
+declarations_variables:
+	type NAME (',' NAME {cont+=2;})*   {cont+=1;}
+	| type NAME '=' (NUMBER | NAME ) {cont+=3;}
+;
+
+assignments:
+	NAME (('-' | '+')? {cont+=1;}) '=' (NUMBER | NAME) {cont+=3;}
+	| NAME (INC | DEC) {cont+=2;}
+	| NAME '=' ((('+' | '-') {cont+=1;})? (NUMBER | NAME) {cont+=1;} )* {cont+=2;} 
+;
+
+function_call:
+	NAME '(' ('"' '%' NAME '"' ',' ('&' {cont+=1;})? NAME {cont+=6;})?  (NAME (',')? )* ')'  {cont+=3;}
+;
+
+loops:
+	FOR '(' assignments ';' conditions ';'assignments ')' {cont+=5;}
+;
+
+conditions:
+	  NAME ('>' | '<' | '!') {cont+=1;} ('=' {cont+=1;})? (NUMBER | NAME) {cont+=2;}
+	
+;
+
+return_main:
+	RETORNO NUMBER ';' {printf("ENTROU\n");}
+;
+
+
+

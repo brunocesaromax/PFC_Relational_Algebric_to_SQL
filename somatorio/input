@@ -1,0 +1,13 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int i, int j) {
+   int N;
+   scanf("%d", &N);
+   int cont, i;
+   cont = 0;
+   for ( i = N ; i > 0 ; i--)
+          cont += i;
+   printf("%d", cont);
+   return 10;
+}

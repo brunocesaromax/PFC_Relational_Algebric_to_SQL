@@ -1,0 +1,3 @@
+- Só consigo imprimir o texto todo a partir da # se contiver mais de duas bibliotecas
+- simplificação e melhora da gramática
+
