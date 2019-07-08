@@ -547,9 +547,8 @@ char *yytext;
 #line 2 "spec.lex"
 #include "yystype.h"
 #include "yygrammar.h"
-#include "treefunctions.h"
+#line 551 "lex.yy.c"
 #line 552 "lex.yy.c"
-#line 553 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -766,12 +765,12 @@ YY_DECL
 		}
 
 	{
-#line 6 "spec.lex"
+#line 5 "spec.lex"
 
 
-#line 9 "spec.lex"
+#line 8 "spec.lex"
 	/*Símbolos unitários*/
-#line 775 "lex.yy.c"
+#line 774 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -830,192 +829,192 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "spec.lex"
+#line 9 "spec.lex"
 {yylval.stringval = "<"; return '<';}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 11 "spec.lex"
+#line 10 "spec.lex"
 {return '>';}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "spec.lex"
+#line 11 "spec.lex"
 {return '(';}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "spec.lex"
+#line 12 "spec.lex"
 {return ')';}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 14 "spec.lex"
+#line 13 "spec.lex"
 {return ';';}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 15 "spec.lex"
+#line 14 "spec.lex"
 {return ',';}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 16 "spec.lex"
+#line 15 "spec.lex"
 {return '=';}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 17 "spec.lex"
+#line 16 "spec.lex"
 {return '"';}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 18 "spec.lex"
+#line 17 "spec.lex"
 {return '!';}
 	YY_BREAK
 /*Operadores aritméticos*/
 case 10:
 YY_RULE_SETUP
-#line 20 "spec.lex"
+#line 19 "spec.lex"
 {return '+';}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "spec.lex"
+#line 20 "spec.lex"
 {return '-';}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 22 "spec.lex"
+#line 21 "spec.lex"
 {return '*';}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 23 "spec.lex"
+#line 22 "spec.lex"
 {return '/';}
 	YY_BREAK
 /*Operadores lógicos*/
 case 14:
 YY_RULE_SETUP
-#line 25 "spec.lex"
+#line 24 "spec.lex"
 {return AND;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "spec.lex"
+#line 25 "spec.lex"
 {return OR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "spec.lex"
+#line 26 "spec.lex"
 {return NOT;}
 	YY_BREAK
 /*Operadores de algébra relacional*/
 case 17:
 YY_RULE_SETUP
-#line 29 "spec.lex"
+#line 28 "spec.lex"
 {return SIGMA;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 30 "spec.lex"
-{ PROJECTION; return PI;}
+#line 29 "spec.lex"
+{ return PI;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 31 "spec.lex"
+#line 30 "spec.lex"
 { return ATRIBUICAO;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 32 "spec.lex"
+#line 31 "spec.lex"
 {return RHO;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 33 "spec.lex"
+#line 32 "spec.lex"
 {return UNIAO;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 34 "spec.lex"
+#line 33 "spec.lex"
 {return INTERSECCAO;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 35 "spec.lex"
+#line 34 "spec.lex"
 {return SUBTRACAO;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 36 "spec.lex"
+#line 35 "spec.lex"
 {return PRODUTO_CARTESIANO;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 37 "spec.lex"
+#line 36 "spec.lex"
 {return JUNCAO;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 38 "spec.lex"
+#line 37 "spec.lex"
 {return JUNCAO_NATURAL;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 39 "spec.lex"
+#line 38 "spec.lex"
 {return DIVISAO;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 40 "spec.lex"
+#line 39 "spec.lex"
 {return FSCRIPT;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 41 "spec.lex"
+#line 40 "spec.lex"
 {return JUNCAO_EXTERNA_ESQUERDA;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 42 "spec.lex"
+#line 41 "spec.lex"
 {return JUNCAO_EXTERNA_DIREITA;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 43 "spec.lex"
+#line 42 "spec.lex"
 {return JUNCAO_EXTERNA_COMPLETA;}
 	YY_BREAK
 /* Funções de agregação*/
 case 32:
 YY_RULE_SETUP
-#line 45 "spec.lex"
+#line 44 "spec.lex"
 {return COUNT;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 46 "spec.lex"
+#line 45 "spec.lex"
 {return AVERAGE;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 47 "spec.lex"
+#line 46 "spec.lex"
 {return MAX;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 48 "spec.lex"
+#line 47 "spec.lex"
 {return MIN;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 49 "spec.lex"
+#line 48 "spec.lex"
 {return SUM;}
 	YY_BREAK
 /*Expressão regular para números inteiros e reais*/
 case 37:
 YY_RULE_SETUP
-#line 51 "spec.lex"
+#line 50 "spec.lex"
 {
                             char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
                             strcpy(res, yytext);
@@ -1026,7 +1025,7 @@ YY_RULE_SETUP
 /*Expressão regular para strings com ou sem acento*/
 case 38:
 YY_RULE_SETUP
-#line 58 "spec.lex"
+#line 57 "spec.lex"
 {
 		char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
 		strcpy(res, yytext);
@@ -1038,31 +1037,31 @@ YY_RULE_SETUP
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 65 "spec.lex"
+#line 64 "spec.lex"
 {return COMENTARIO;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 66 "spec.lex"
+#line 65 "spec.lex"
 { /* skip blank*/ }
 	YY_BREAK
 case 41:
 /* rule 41 can match eol */
 YY_RULE_SETUP
-#line 67 "spec.lex"
+#line 66 "spec.lex"
 { yypos++; /* adjust linenumber and skip newline */ }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 68 "spec.lex"
+#line 67 "spec.lex"
 { yyerror("illegal token"); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 75 "spec.lex"
+#line 74 "spec.lex"
 ECHO;
 	YY_BREAK
-#line 1066 "lex.yy.c"
+#line 1065 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2067,4 +2066,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 75 "spec.lex"
+#line 74 "spec.lex"

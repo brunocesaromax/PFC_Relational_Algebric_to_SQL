@@ -1,23 +1,27 @@
+%prelude{
+#include "yystype.h"
+}
+
 %token NUMBER;
   
 expression :
-	term
+	term<t_regra> {printf("Resultado = %d\n",t_regra);}
 ;
   
-term :
-	term '+' factor
-	| term '-' factor
-	| factor
+term<t_regra> :
+	term<t> '+' factor<f>   {f_regra = t + f;}
+	| term<t> '-' factor<f> {f_regra = t - f;}
+	| factor<f_regra>
 ;
   
-factor :
-	factor '*' primary
-	| factor '/' primary
-	| primary
+factor<f_regra> :
+	factor<f> '*' primary<p>   {f_regra = f * p;}
+	| factor<f> '/' primary<p> {f_regra = f / p;}
+	| primary<p> {f_regra = p;}
 ;
   
-primary :
-	NUMBER
-	| '(' term ')'
-	| '-' primary
+primary<p_regra> :
+	NUMBER<n> {p_regra = n.intval;}
+	| '(' term<t> ')' {p_regra = t;}
+	| '-' primary<x> {p_regra -= x;}
 ;

@@ -442,9 +442,10 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "spec.lex"
 #line 2 "spec.lex"
+#include "yystype.h"
 #include "yygrammar.h"
-#line 447 "lex.yy.c"
 #line 448 "lex.yy.c"
+#line 449 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -661,9 +662,9 @@ YY_DECL
 		}
 
 	{
-#line 4 "spec.lex"
+#line 5 "spec.lex"
 
-#line 667 "lex.yy.c"
+#line 668 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -722,51 +723,51 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 5 "spec.lex"
+#line 6 "spec.lex"
 { return '+'; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 6 "spec.lex"
+#line 7 "spec.lex"
 { return '-'; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 7 "spec.lex"
+#line 8 "spec.lex"
 { return '*'; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 8 "spec.lex"
+#line 9 "spec.lex"
 { return '/'; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 9 "spec.lex"
-{ yylval = atoi(yytext); return NUMBER; }
+#line 10 "spec.lex"
+{ yylval.intval = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 10 "spec.lex"
+#line 11 "spec.lex"
 { /* skip blank */ }
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 11 "spec.lex"
+#line 12 "spec.lex"
 { yypos++; /* adjust linenumber and skip newline */ }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 12 "spec.lex"
+#line 13 "spec.lex"
 { yyerror("illegal token"); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 13 "spec.lex"
+#line 14 "spec.lex"
 ECHO;
 	YY_BREAK
-#line 770 "lex.yy.c"
+#line 771 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1771,4 +1772,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 13 "spec.lex"
+#line 14 "spec.lex"

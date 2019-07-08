@@ -163,7 +163,7 @@ void _add_node_stack(char *s) {
     } else if (node->type == UNION || node->type == JOIN || node->type == CARTESIAN_PRODUCT ||
                node->type == SUBTRACTION || node->type == NATURAL_JOIN || node->type == DIVISION ||
                node->type == LEFT_OUTER_JOIN || node->type == RIGHT_OUTER_JOIN ||
-               node->type == COMPLETE_OUTER_JOIN || node->type == ASSIGNMENT) {
+               node->type == COMPLETE_OUTER_JOIN || node->type == ASSIGNMENT || node->type == INTERSECTION) {
 
         NodeTree *temp, *aux;
         temp = aux = NULL;

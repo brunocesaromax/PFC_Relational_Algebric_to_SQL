@@ -27,9 +27,9 @@ operacao_unaria:
 ;
 
 operacao_binaria:
-        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) tipo_operacao_binaria ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} )
+        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} ) tipo_operacao_binaria ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} )
     |
-        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) JUNCAO_NATURAL {_add_node_stack("JUNCAO_NATURAL");} renomeacao2
+        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} ) JUNCAO_NATURAL {_add_node_stack("JUNCAO_NATURAL");} renomeacao2
 ;
 
 tipo_operacao_binaria:

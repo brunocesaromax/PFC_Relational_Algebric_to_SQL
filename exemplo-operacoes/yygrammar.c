@@ -1,3 +1,8 @@
+#line 1 "spec.acc"
+
+#include "yystype.h"
+
+# line 6 "yygrammar.c"
 #include "yygrammar.h"
 
 YYSTART ()
@@ -12,65 +17,105 @@ YYSTART ()
 
 expression ()
 {
+   YYSTYPE t_regra;
    switch(yyselect()) {
    case 1: {
-      term();
+      term(&t_regra);
+#line 8 "spec.acc"
+printf("Resultado = %d\n",t_regra);
+# line 27 "yygrammar.c"
       } break;
    }
 }
 
-term ()
+term (t_regra)
+   YYSTYPE *t_regra;
 {
+   YYSTYPE t;
+   YYSTYPE f;
+   YYSTYPE f_regra;
    switch(yyselect()) {
    case 2: {
-      term();
+      term(&t);
       get_lexval();
-      factor();
+      factor(&f);
+#line 12 "spec.acc"
+f_regra = t + f;
+# line 45 "yygrammar.c"
       } break;
    case 3: {
-      term();
+      term(&t);
       get_lexval();
-      factor();
+      factor(&f);
+#line 13 "spec.acc"
+f_regra = t - f;
+# line 53 "yygrammar.c"
       } break;
    case 4: {
-      factor();
+      factor(&f_regra);
       } break;
    }
 }
 
-factor ()
+factor (f_regra)
+   YYSTYPE *f_regra;
 {
+   YYSTYPE f;
+   YYSTYPE p;
    switch(yyselect()) {
    case 5: {
-      factor();
+      factor(&f);
       get_lexval();
-      primary();
+      primary(&p);
+#line 18 "spec.acc"
+f_regra = f * p;
+# line 73 "yygrammar.c"
       } break;
    case 6: {
-      factor();
+      factor(&f);
       get_lexval();
-      primary();
+      primary(&p);
+#line 19 "spec.acc"
+f_regra = f / p;
+# line 81 "yygrammar.c"
       } break;
    case 7: {
-      primary();
+      primary(&p);
+#line 20 "spec.acc"
+f_regra = p;
+# line 87 "yygrammar.c"
       } break;
    }
 }
 
-primary ()
+primary (p_regra)
+   YYSTYPE *p_regra;
 {
+   YYSTYPE n;
+   YYSTYPE t;
+   YYSTYPE x;
    switch(yyselect()) {
    case 8: {
       get_lexval();
+      n = yylval;
+#line 24 "spec.acc"
+p_regra = n.intval;
+# line 104 "yygrammar.c"
       } break;
    case 9: {
       get_lexval();
-      term();
+      term(&t);
       get_lexval();
+#line 25 "spec.acc"
+p_regra = t;
+# line 112 "yygrammar.c"
       } break;
    case 10: {
       get_lexval();
-      primary();
+      primary(&x);
+#line 26 "spec.acc"
+p_regra -= x;
+# line 119 "yygrammar.c"
       } break;
    }
 }
@@ -256,61 +301,61 @@ extern int yycoordinate[];
 int yycoordinate[] = {
 0,
 /* 1 */ 9999,
-/* 2 */ 3012,
+/* 2 */ 7012,
 /* 3 */ 9999,
 /* 4 */ 9999,
-/* 5 */ 3012,
+/* 5 */ 7012,
 /* 6 */ 9999,
-/* 7 */ 4002,
+/* 7 */ 8002,
 /* 8 */ 9999,
-/* 9 */ 4005,
+/* 9 */ 8005,
 /* 10 */ 9999,
-/* 11 */ 8002,
+/* 11 */ 12002,
 /* 12 */ 9999,
-/* 13 */ 8011,
+/* 13 */ 12014,
 /* 14 */ 9999,
-/* 15 */ 8005,
+/* 15 */ 12005,
 /* 16 */ 9999,
-/* 17 */ 9004,
+/* 17 */ 13004,
 /* 18 */ 9999,
-/* 19 */ 9013,
+/* 19 */ 13016,
 /* 20 */ 9999,
-/* 21 */ 9007,
+/* 21 */ 13007,
 /* 22 */ 9999,
-/* 23 */ 10004,
+/* 23 */ 14004,
 /* 24 */ 9999,
-/* 25 */ 10009,
+/* 25 */ 14009,
 /* 26 */ 9999,
-/* 27 */ 14002,
+/* 27 */ 18002,
 /* 28 */ 9999,
-/* 29 */ 14013,
+/* 29 */ 18016,
 /* 30 */ 9999,
-/* 31 */ 14007,
+/* 31 */ 18007,
 /* 32 */ 9999,
-/* 33 */ 15004,
+/* 33 */ 19004,
 /* 34 */ 9999,
-/* 35 */ 15015,
+/* 35 */ 19018,
 /* 36 */ 9999,
-/* 37 */ 15009,
+/* 37 */ 19009,
 /* 38 */ 9999,
-/* 39 */ 16004,
+/* 39 */ 20004,
 /* 40 */ 9999,
-/* 41 */ 16010,
+/* 41 */ 20010,
 /* 42 */ 9999,
 /* 43 */ 9999,
 /* 44 */ 9999,
-/* 45 */ 20007,
+/* 45 */ 24007,
 /* 46 */ 9999,
 /* 47 */ 9999,
-/* 48 */ 21008,
+/* 48 */ 25008,
 /* 49 */ 9999,
 /* 50 */ 9999,
-/* 51 */ 21004,
+/* 51 */ 25004,
 /* 52 */ 9999,
 /* 53 */ 9999,
-/* 54 */ 22008,
+/* 54 */ 26008,
 /* 55 */ 9999,
-/* 56 */ 22004,
+/* 56 */ 26004,
 0
 };
 /* only for BIGHASH (see art.c)

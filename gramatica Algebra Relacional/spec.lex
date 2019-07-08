@@ -1,7 +1,6 @@
 %{
 #include "yystype.h"
 #include "yygrammar.h"
-#include "treefunctions.h"
 %}
 %%
 
@@ -26,7 +25,7 @@
 "NOT" {return NOT;}
 	/*Operadores de algébra relacional*/
 "SIGMA" {return SIGMA;}
-"PI" { PROJECTION; return PI;}
+"PI" { return PI;}
 "ATRIBUICAO" { return ATRIBUICAO;}
 "RHO" {return RHO;}
 "UNIAO" {return UNIAO;}
