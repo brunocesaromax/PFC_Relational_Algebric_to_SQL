@@ -9,7 +9,13 @@ consulta:
 ;
 
 operacao_consulta:
-        ( '(' {_add_node_stack("(");} )? ( operacao_unaria | operacao_binaria ) ( ')' {_add_node_stack(")");} )?
+        ( '(' {_add_node_stack("(");} )?
+        (
+            operacao_unaria
+          |
+            operacao_binaria
+        )
+        ( ')' {_add_node_stack(")");} )?
     |
         COMENTARIO
 ;
@@ -27,78 +33,202 @@ operacao_unaria:
 ;
 
 operacao_binaria:
-        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} ) tipo_operacao_binaria ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} )
+        (
+                 NOME<y>    {_add_node_stack(y.stringval);}
+            |
+                 operacao_consulta
+            |
+                '('         {_add_node_stack("(");}
+                NOME<y>     {_add_node_stack(y.stringval);}
+                ')'         {_add_node_stack(")");}
+        )
+        tipo_operacao_binaria
+        (
+                 NOME<y>    {_add_node_stack(y.stringval);}
+            |
+                 operacao_consulta
+            |
+                 '('        {_add_node_stack("(");}
+                 NOME<y>    {_add_node_stack(y.stringval);}
+                 ')'        {_add_node_stack(")");}
+        )
     |
-        ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta | '(' {_add_node_stack("(");} NOME<y> {_add_node_stack(y.stringval);} ')' {_add_node_stack(")");} ) JUNCAO_NATURAL {_add_node_stack("JUNCAO_NATURAL");} renomeacao2
+        (
+                NOME<y>     {_add_node_stack(y.stringval);}
+            |
+                operacao_consulta
+            |
+                '('         {_add_node_stack("(");}
+                NOME<y>     {_add_node_stack(y.stringval);}
+                ')'         {_add_node_stack(")");}
+        )
+        JUNCAO_NATURAL      {_add_node_stack("JUNCAO_NATURAL");}
+        renomeacao2
 ;
 
 tipo_operacao_binaria:
-        UNIAO {_add_node_stack("UNIAO");}
+        UNIAO               {_add_node_stack("UNIAO");}
     |
-        INTERSECCAO {_add_node_stack("INTERSECCAO");}
+        INTERSECCAO         {_add_node_stack("INTERSECCAO");}
     |
-        SUBTRACAO {_add_node_stack("SUBTRACAO");}
+        SUBTRACAO           {_add_node_stack("SUBTRACAO");}
     |
-        PRODUTO_CARTESIANO {_add_node_stack("PRODUTO_CARTESIANO");}
+        PRODUTO_CARTESIANO  {_add_node_stack("PRODUTO_CARTESIANO");}
     |
-        JUNCAO predicado {_add_node_stack("JUNCAO");}
+        JUNCAO
+        predicado           {_add_node_stack("JUNCAO");}
     |
-        JUNCAO_NATURAL  {_add_node_stack("JUNCAO_NATURAL");}
+        JUNCAO_NATURAL      {_add_node_stack("JUNCAO_NATURAL");}
     |
-        JUNCAO_EXTERNA_ESQUERDA predicado {_add_node_stack("JUNCAO_EXTERNA_ESQUERDA");}
+        JUNCAO_EXTERNA_ESQUERDA
+        predicado           {_add_node_stack("JUNCAO_EXTERNA_ESQUERDA");}
     |
-        JUNCAO_EXTERNA_DIREITA predicado {_add_node_stack("JUNCAO_EXTERNA_DIREITA");}
+        JUNCAO_EXTERNA_DIREITA
+        predicado           {_add_node_stack("JUNCAO_EXTERNA_DIREITA");}
     |
-        JUNCAO_EXTERNA_COMPLETA predicado {_add_node_stack("JUNCAO_EXTERNA_COMPLETA");}
+        JUNCAO_EXTERNA_COMPLETA
+        predicado           {_add_node_stack("JUNCAO_EXTERNA_COMPLETA");}
     |
-        DIVISAO {_add_node_stack("DIVISAO");}
+        DIVISAO             {_add_node_stack("DIVISAO");}
 ;
 
 selecao:
-    SIGMA predicado {_add_node_stack("SIGMA");} '(' {_add_node_stack("(");} ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')' {_add_node_stack(")");}
+    SIGMA
+    predicado   {_add_node_stack("SIGMA");}
+    '('         {_add_node_stack("(");}
+    (
+                NOME<y>   {_add_node_stack(y.stringval);}
+            |
+                operacao_consulta
+    )
+    ')'         {_add_node_stack(")");}
 ;
 
 projecao:
-    PI lista_atributos {_add_node_stack("PI");} '(' {_add_node_stack("(");} ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')' {_add_node_stack(")");}
+    PI
+    lista_atributos {_add_node_stack("PI");}
+    '('             {_add_node_stack("(");}
+    (
+                NOME<y> {_add_node_stack(y.stringval);}
+            |
+                operacao_consulta
+    )
+    ')'             {_add_node_stack(")");}
 ;
 
 renomeacao1:
-        NOME<y> {_add_node_stack(y.stringval);} ATRIBUICAO {_add_node_stack("ATRIBUICAO");} operacao_consulta
+        NOME<y>     {_add_node_stack(y.stringval);}
+        ATRIBUICAO  {_add_node_stack("ATRIBUICAO");}
+        operacao_consulta
     |
-        NOME<y> '(' lista_atributos {_add_node_stack(y.stringval);} ')' ATRIBUICAO {_add_node_stack("ATRIBUICAO");} operacao_consulta
+        NOME<y>
+        '(' lista_atributos {_add_node_stack(y.stringval);} ')'
+        ATRIBUICAO          {_add_node_stack("ATRIBUICAO");}
+        operacao_consulta
 ;
 
 renomeacao2:
-        RHO NOME<y> {_add_symbols_attribute(y.stringval,1);} { _add_node_stack("RHO");} '(' {_add_node_stack("(");} ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')' {_add_node_stack(")");}
+        RHO
+        NOME<y>          {_add_symbols_attribute(y.stringval,1);}
+                         { _add_node_stack("RHO");}
+        '('              {_add_node_stack("(");}
+        (
+                     NOME<y>  {_add_node_stack(y.stringval);}
+                |
+                     operacao_consulta
+        )
+        ')'              {_add_node_stack(")");}
     |
-        RHO NOME<y> {_add_symbols_attribute(y.stringval,1);} '(' {_add_symbols_attribute("(",1);}  lista_atributos ')' {_add_symbols_attribute(")",1);} {_add_node_stack("RHO");} '(' {_add_node_stack("(");} ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')' {_add_node_stack(")");}
+        RHO
+        NOME<y>          {_add_symbols_attribute(y.stringval,1);}
+        '('              {_add_symbols_attribute("(",1);}
+        lista_atributos
+        ')'              {_add_symbols_attribute(")",1);}
+                         {_add_node_stack("RHO");}
+        '('              {_add_node_stack("(");}
+        (
+                     NOME<y>  {_add_node_stack(y.stringval);}
+                |
+                     operacao_consulta
+        )
+        ')'              {_add_node_stack(")");}
     |
-        RHO '(' {_add_symbols_attribute("(",1);} lista_atributos ')' {_add_symbols_attribute(")",1);}   {_add_node_stack("RHO");} '(' {_add_node_stack("(");} ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')' {_add_node_stack(")");}
+        RHO
+        '('              {_add_symbols_attribute("(",1);}
+        lista_atributos
+        ')'              {_add_symbols_attribute(")",1);}
+                         {_add_node_stack("RHO");}
+        '('              {_add_node_stack("(");}
+        (
+                     NOME<y>  {_add_node_stack(y.stringval);}
+                |
+                     operacao_consulta
+        )
+        ')'              {_add_node_stack(")");}
 ;
 
 agrupamento:
-    (lista_atributos)? FSCRIPT lista_funcoes_agregadas { _add_node_stack("FSCRIPT");} '(' ( NOME<y> {_add_node_stack(y.stringval);} | operacao_consulta ) ')'
+    (lista_atributos)?
+    FSCRIPT
+    lista_funcoes_agregadas { _add_node_stack("FSCRIPT");}
+    '('
+    (
+                NOME<y>     {_add_node_stack(y.stringval);}
+            |
+                operacao_consulta
+    )
+    ')'
 ;
 
 predicado:
         condicao
     |
-        condicao operador_booleano predicado
+        condicao
+        operador_booleano
+        predicado
     |
-        '(' {_add_symbols_predicate("(");} condicao operador_booleano predicado ')' {_add_symbols_predicate(")");} (operador_booleano predicado)?
+        '('         {_add_symbols_predicate("(");}
+        condicao
+        operador_booleano
+        predicado
+        ')'         {_add_symbols_predicate(")");}
+        (operador_booleano predicado)?
 ;
 
 condicao:
-    '('  {_add_symbols_predicate("(");} ( NOME<a> {_add_symbols_predicate(a.stringval);} | NUMERO<a> {_add_symbols_predicate(a.stringval);}) operador_comparacao ( NOME<a> {_add_symbols_predicate(a.stringval);} | NUMERO<a> {_add_symbols_predicate(a.stringval);} ) ')' {_add_symbols_predicate(")");}
-    | ( NOME<a> {_add_symbols_predicate(a.stringval);} | NUMERO<a> {_add_symbols_predicate(a.stringval);} ) operador_comparacao ( NOME<a> {_add_symbols_predicate(a.stringval);} | NUMERO<a> {_add_symbols_predicate(a.stringval);} )
+        '('       {_add_symbols_predicate("(");}
+        (
+                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                |
+                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+        )
+        operador_comparacao
+        (
+                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                |
+                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+        )
+        ')'       {_add_symbols_predicate(")");}
+    |
+        (
+                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                |
+                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+        )
+        operador_comparacao
+        (
+                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                |
+                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+        )
 ;
 
 operador_comparacao:
-        '=' {_add_symbols_predicate("=");}
+        '='     {_add_symbols_predicate("=");}
     |
-        '<' {_add_symbols_predicate("<");}
+        '<'     {_add_symbols_predicate("<");}
     |
-        '>' {_add_symbols_predicate(">");}
+        '>'     {_add_symbols_predicate(">");}
     |
         '<' '=' {_add_symbols_predicate("<=");}
     |
@@ -120,13 +250,38 @@ operador_aritmetico:
 operador_booleano:
         AND {_add_symbols_predicate(" AND ");}
     |
-        OR {_add_symbols_predicate(" OR ");}
+        OR  {_add_symbols_predicate(" OR ");}
 ;
 
 lista_atributos:
-    ( NOME<a> {_add_symbols_attribute(a.stringval,1);} | NUMERO<a> {_add_symbols_attribute(a.stringval,1);}  ) ( operador_aritmetico ( NOME<a> {_add_symbols_attribute(a.stringval,1);} | NUMERO<a> {_add_symbols_attribute(a.stringval,1);}  ) )*  ( ',' {_add_symbols_attribute(",",1);} lista_atributos )?
+    (
+                NOME<a>   {_add_symbols_attribute(a.stringval,1);}
+            |
+                NUMERO<a> {_add_symbols_attribute(a.stringval,1);}
+    )
+    (
+            operador_aritmetico
+            (
+                        NOME<a>   {_add_symbols_attribute(a.stringval,1);}
+                    |
+                        NUMERO<a> {_add_symbols_attribute(a.stringval,1);}
+            )
+    )*
+    ( ','     {_add_symbols_attribute(",",1);} lista_atributos )?
 ;
 
 lista_funcoes_agregadas:
-    ( COUNT {_add_symbols_attribute("COUNT ",2);} | AVERAGE {_add_symbols_attribute("AVERAGE ",2);} | MAX {_add_symbols_attribute("MAX ",2);} | MIN {_add_symbols_attribute("MIN ",2);} | SUM {_add_symbols_attribute("SUM ",2);} ) NOME<y> {_add_symbols_attribute(y.stringval,2);} ( ',' {_add_symbols_attribute(",",2);} lista_funcoes_agregadas )?
+    (
+                COUNT   {_add_symbols_attribute("COUNT ",2);}
+            |
+                AVERAGE {_add_symbols_attribute("AVERAGE ",2);}
+            |
+                MAX     {_add_symbols_attribute("MAX ",2);}
+            |
+                MIN     {_add_symbols_attribute("MIN ",2);}
+            |
+                SUM     {_add_symbols_attribute("SUM ",2);}
+    )
+    NOME<y> {_add_symbols_attribute(y.stringval,2);}
+    ( ','   {_add_symbols_attribute(",",2);} lista_funcoes_agregadas )?
 ;
