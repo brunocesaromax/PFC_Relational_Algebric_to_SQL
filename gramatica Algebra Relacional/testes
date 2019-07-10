@@ -1,1 +1,1 @@
-SILVA_PNRS ATRIBUICAO PI Pnr ((TRABALHA_EM) JUNCAO Fcpf=Cpf (SILVA))
+R ( First_name, Last_name, Salary ) ATRIBUICAO PI Fname, Lname, Salary ( TEMP )

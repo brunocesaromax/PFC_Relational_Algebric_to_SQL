@@ -128,7 +128,6 @@ void _add_node_stack(char *s) {
     node->nodeRight = node->nodeLeft = NULL;
 
 //Restaurando variáveis globais para NULL, para usalás posteriormente.
-
     attribute = attribute2 = predicate = NULL;
 
 /*Se tipo do no a ser inserido na pilha for um ')'

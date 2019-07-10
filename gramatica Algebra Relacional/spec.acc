@@ -5,19 +5,20 @@
 %token NUMERO, NOME, SIGMA, PI, ATRIBUICAO, RHO, AND, OR, NOT, UNIAO, INTERSECCAO, SUBTRACAO, PRODUTO_CARTESIANO, JUNCAO, JUNCAO_NATURAL, DIVISAO, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, JUNCAO_EXTERNA_ESQUERDA, JUNCAO_EXTERNA_DIREITA, JUNCAO_EXTERNA_COMPLETA, COMENTARIO;
 
 consulta:
-    {_tool_initialize();} ( operacao_consulta )* {_build_tree();}
+    {_tool_initialize();} ( operacao_consulta | COMENTARIO)* {_build_tree();}
 ;
 
 operacao_consulta:
-        ( '(' {_add_node_stack("(");} )?
+        '(' {_add_node_stack("(");}
+        operacao_consulta
+        ')' {_add_node_stack(")");}
+   |
         (
             operacao_unaria
           |
             operacao_binaria
         )
-        ( ')' {_add_node_stack(")");} )?
-    |
-        COMENTARIO
+
 ;
 
 operacao_unaria:
@@ -65,6 +66,7 @@ operacao_binaria:
         JUNCAO_NATURAL      {_add_node_stack("JUNCAO_NATURAL");}
         renomeacao2
 ;
+
 
 tipo_operacao_binaria:
         UNIAO               {_add_node_stack("UNIAO");}
@@ -117,13 +119,9 @@ projecao:
 ;
 
 renomeacao1:
-        NOME<y>     {_add_node_stack(y.stringval);}
-        ATRIBUICAO  {_add_node_stack("ATRIBUICAO");}
-        operacao_consulta
-    |
         NOME<y>
-        '(' lista_atributos {_add_node_stack(y.stringval);} ')'
-        ATRIBUICAO          {_add_node_stack("ATRIBUICAO");}
+        ( '(' lista_atributos {_add_node_stack(y.stringval);} ')' )?
+        ATRIBUICAO            {_add_node_stack("ATRIBUICAO");}
         operacao_consulta
 ;
 
@@ -188,8 +186,6 @@ predicado:
         predicado
     |
         '('         {_add_symbols_predicate("(");}
-        condicao
-        operador_booleano
         predicado
         ')'         {_add_symbols_predicate(")");}
         (operador_booleano predicado)?
@@ -197,17 +193,7 @@ predicado:
 
 condicao:
         '('       {_add_symbols_predicate("(");}
-        (
-                    NOME<a>   {_add_symbols_predicate(a.stringval);}
-                |
-                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
-        )
-        operador_comparacao
-        (
-                    NOME<a>   {_add_symbols_predicate(a.stringval);}
-                |
-                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
-        )
+        condicao
         ')'       {_add_symbols_predicate(")");}
     |
         (
