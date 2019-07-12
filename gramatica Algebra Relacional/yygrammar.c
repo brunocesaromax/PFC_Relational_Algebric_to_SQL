@@ -1,9 +1,11 @@
 #line 1 "spec.acc"
 
 #include "yystype.h"
-#include "treefunctions.c"
+#include "Node.c"
+#include "Tree.c"
 
-# line 7 "yygrammar.c"
+
+# line 9 "yygrammar.c"
 #include "yygrammar.h"
 
 YYSTART ()
@@ -20,9 +22,9 @@ consulta ()
 {
    switch(yyselect()) {
    case 1: {
-#line 8 "spec.acc"
+#line 10 "spec.acc"
 _tool_initialize();
-# line 26 "yygrammar.c"
+# line 28 "yygrammar.c"
       while (1) {
          switch (yyselect()) {
          case 48: {
@@ -35,9 +37,9 @@ _tool_initialize();
          }
       }
       yy1: ;
-#line 8 "spec.acc"
+#line 10 "spec.acc"
 _build_tree();
-# line 41 "yygrammar.c"
+# line 43 "yygrammar.c"
       } break;
    }
 }
@@ -47,14 +49,14 @@ operacao_consulta ()
    switch(yyselect()) {
    case 2: {
       get_lexval();
-#line 12 "spec.acc"
+#line 14 "spec.acc"
 _add_node_stack("(");
-# line 53 "yygrammar.c"
+# line 55 "yygrammar.c"
       operacao_consulta();
       get_lexval();
-#line 14 "spec.acc"
+#line 16 "spec.acc"
 _add_node_stack(")");
-# line 58 "yygrammar.c"
+# line 60 "yygrammar.c"
       } break;
    case 3: {
       switch (yyselect()) {
@@ -100,27 +102,27 @@ operacao_binaria ()
       case 52: {
          get_lexval();
          y = yylval;
-#line 38 "spec.acc"
+#line 40 "spec.acc"
 _add_node_stack(y.stringval);
-# line 106 "yygrammar.c"
+# line 108 "yygrammar.c"
          } break;
       case 53: {
          operacao_consulta();
          } break;
       case 54: {
          get_lexval();
-#line 42 "spec.acc"
+#line 44 "spec.acc"
 _add_node_stack("(");
-# line 115 "yygrammar.c"
+# line 117 "yygrammar.c"
          get_lexval();
          y = yylval;
-#line 43 "spec.acc"
+#line 45 "spec.acc"
 _add_node_stack(y.stringval);
-# line 120 "yygrammar.c"
+# line 122 "yygrammar.c"
          get_lexval();
-#line 44 "spec.acc"
+#line 46 "spec.acc"
 _add_node_stack(")");
-# line 124 "yygrammar.c"
+# line 126 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -129,27 +131,27 @@ _add_node_stack(")");
       case 55: {
          get_lexval();
          y = yylval;
-#line 48 "spec.acc"
+#line 50 "spec.acc"
 _add_node_stack(y.stringval);
-# line 135 "yygrammar.c"
+# line 137 "yygrammar.c"
          } break;
       case 56: {
          operacao_consulta();
          } break;
       case 57: {
          get_lexval();
-#line 52 "spec.acc"
+#line 54 "spec.acc"
 _add_node_stack("(");
-# line 144 "yygrammar.c"
+# line 146 "yygrammar.c"
          get_lexval();
          y = yylval;
-#line 53 "spec.acc"
+#line 55 "spec.acc"
 _add_node_stack(y.stringval);
-# line 149 "yygrammar.c"
+# line 151 "yygrammar.c"
          get_lexval();
-#line 54 "spec.acc"
+#line 56 "spec.acc"
 _add_node_stack(")");
-# line 153 "yygrammar.c"
+# line 155 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -159,34 +161,34 @@ _add_node_stack(")");
       case 58: {
          get_lexval();
          y = yylval;
-#line 58 "spec.acc"
+#line 60 "spec.acc"
 _add_node_stack(y.stringval);
-# line 165 "yygrammar.c"
+# line 167 "yygrammar.c"
          } break;
       case 59: {
          operacao_consulta();
          } break;
       case 60: {
          get_lexval();
-#line 62 "spec.acc"
+#line 64 "spec.acc"
 _add_node_stack("(");
-# line 174 "yygrammar.c"
+# line 176 "yygrammar.c"
          get_lexval();
          y = yylval;
-#line 63 "spec.acc"
+#line 65 "spec.acc"
 _add_node_stack(y.stringval);
-# line 179 "yygrammar.c"
+# line 181 "yygrammar.c"
          get_lexval();
-#line 64 "spec.acc"
+#line 66 "spec.acc"
 _add_node_stack(")");
-# line 183 "yygrammar.c"
+# line 185 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 66 "spec.acc"
+#line 68 "spec.acc"
 _add_node_stack("JUNCAO_NATURAL");
-# line 190 "yygrammar.c"
+# line 192 "yygrammar.c"
       renomeacao2();
       } break;
    }
@@ -197,67 +199,67 @@ tipo_operacao_binaria ()
    switch(yyselect()) {
    case 11: {
       get_lexval();
-#line 72 "spec.acc"
+#line 74 "spec.acc"
 _add_node_stack("UNIAO");
-# line 203 "yygrammar.c"
+# line 205 "yygrammar.c"
       } break;
    case 12: {
       get_lexval();
-#line 74 "spec.acc"
+#line 76 "spec.acc"
 _add_node_stack("INTERSECCAO");
-# line 209 "yygrammar.c"
+# line 211 "yygrammar.c"
       } break;
    case 13: {
       get_lexval();
-#line 76 "spec.acc"
+#line 78 "spec.acc"
 _add_node_stack("SUBTRACAO");
-# line 215 "yygrammar.c"
+# line 217 "yygrammar.c"
       } break;
    case 14: {
       get_lexval();
-#line 78 "spec.acc"
+#line 80 "spec.acc"
 _add_node_stack("PRODUTO_CARTESIANO");
-# line 221 "yygrammar.c"
+# line 223 "yygrammar.c"
       } break;
    case 15: {
       get_lexval();
       predicado();
-#line 81 "spec.acc"
+#line 83 "spec.acc"
 _add_node_stack("JUNCAO");
-# line 228 "yygrammar.c"
+# line 230 "yygrammar.c"
       } break;
    case 16: {
       get_lexval();
-#line 83 "spec.acc"
+#line 85 "spec.acc"
 _add_node_stack("JUNCAO_NATURAL");
-# line 234 "yygrammar.c"
+# line 236 "yygrammar.c"
       } break;
    case 17: {
       get_lexval();
       predicado();
-#line 86 "spec.acc"
+#line 88 "spec.acc"
 _add_node_stack("JUNCAO_EXTERNA_ESQUERDA");
-# line 241 "yygrammar.c"
+# line 243 "yygrammar.c"
       } break;
    case 18: {
       get_lexval();
       predicado();
-#line 89 "spec.acc"
+#line 91 "spec.acc"
 _add_node_stack("JUNCAO_EXTERNA_DIREITA");
-# line 248 "yygrammar.c"
+# line 250 "yygrammar.c"
       } break;
    case 19: {
       get_lexval();
       predicado();
-#line 92 "spec.acc"
+#line 94 "spec.acc"
 _add_node_stack("JUNCAO_EXTERNA_COMPLETA");
-# line 255 "yygrammar.c"
+# line 257 "yygrammar.c"
       } break;
    case 20: {
       get_lexval();
-#line 94 "spec.acc"
+#line 96 "spec.acc"
 _add_node_stack("DIVISAO");
-# line 261 "yygrammar.c"
+# line 263 "yygrammar.c"
       } break;
    }
 }
@@ -269,20 +271,20 @@ selecao ()
    case 21: {
       get_lexval();
       predicado();
-#line 99 "spec.acc"
+#line 101 "spec.acc"
 _add_node_stack("SIGMA");
-# line 275 "yygrammar.c"
+# line 277 "yygrammar.c"
       get_lexval();
-#line 100 "spec.acc"
+#line 102 "spec.acc"
 _add_node_stack("(");
-# line 279 "yygrammar.c"
+# line 281 "yygrammar.c"
       switch (yyselect()) {
       case 61: {
          get_lexval();
          y = yylval;
-#line 102 "spec.acc"
+#line 104 "spec.acc"
 _add_node_stack(y.stringval);
-# line 286 "yygrammar.c"
+# line 288 "yygrammar.c"
          } break;
       case 62: {
          operacao_consulta();
@@ -290,9 +292,9 @@ _add_node_stack(y.stringval);
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 106 "spec.acc"
+#line 108 "spec.acc"
 _add_node_stack(")");
-# line 296 "yygrammar.c"
+# line 298 "yygrammar.c"
       } break;
    }
 }
@@ -304,20 +306,20 @@ projecao ()
    case 22: {
       get_lexval();
       lista_atributos();
-#line 111 "spec.acc"
+#line 113 "spec.acc"
 _add_node_stack("PI");
-# line 310 "yygrammar.c"
+# line 312 "yygrammar.c"
       get_lexval();
-#line 112 "spec.acc"
+#line 114 "spec.acc"
 _add_node_stack("(");
-# line 314 "yygrammar.c"
+# line 316 "yygrammar.c"
       switch (yyselect()) {
       case 63: {
          get_lexval();
          y = yylval;
-#line 114 "spec.acc"
+#line 116 "spec.acc"
 _add_node_stack(y.stringval);
-# line 321 "yygrammar.c"
+# line 323 "yygrammar.c"
          } break;
       case 64: {
          operacao_consulta();
@@ -325,9 +327,9 @@ _add_node_stack(y.stringval);
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 118 "spec.acc"
+#line 120 "spec.acc"
 _add_node_stack(")");
-# line 331 "yygrammar.c"
+# line 333 "yygrammar.c"
       } break;
    }
 }
@@ -343,17 +345,17 @@ renomeacao1 ()
       case 65: {
          get_lexval();
          lista_atributos();
-#line 123 "spec.acc"
+#line 125 "spec.acc"
 _add_node_stack(y.stringval);
-# line 349 "yygrammar.c"
+# line 351 "yygrammar.c"
          get_lexval();
          } break;
       default: ;
       }
       get_lexval();
-#line 124 "spec.acc"
+#line 126 "spec.acc"
 _add_node_stack("ATRIBUICAO");
-# line 357 "yygrammar.c"
+# line 359 "yygrammar.c"
       operacao_consulta();
       } break;
    }
@@ -367,23 +369,23 @@ renomeacao2 ()
       get_lexval();
       get_lexval();
       y = yylval;
-#line 130 "spec.acc"
-_add_symbols_attribute(y.stringval,1);
-# line 373 "yygrammar.c"
-#line 131 "spec.acc"
- _add_node_stack("RHO");
-# line 376 "yygrammar.c"
-      get_lexval();
 #line 132 "spec.acc"
+_add_symbols_attribute(y.stringval,1);
+# line 375 "yygrammar.c"
+#line 133 "spec.acc"
+ _add_node_stack("RHO");
+# line 378 "yygrammar.c"
+      get_lexval();
+#line 134 "spec.acc"
 _add_node_stack("(");
-# line 380 "yygrammar.c"
+# line 382 "yygrammar.c"
       switch (yyselect()) {
       case 66: {
          get_lexval();
          y = yylval;
-#line 134 "spec.acc"
+#line 136 "spec.acc"
 _add_node_stack(y.stringval);
-# line 387 "yygrammar.c"
+# line 389 "yygrammar.c"
          } break;
       case 67: {
          operacao_consulta();
@@ -391,40 +393,40 @@ _add_node_stack(y.stringval);
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 138 "spec.acc"
+#line 140 "spec.acc"
 _add_node_stack(")");
-# line 397 "yygrammar.c"
+# line 399 "yygrammar.c"
       } break;
    case 25: {
       get_lexval();
       get_lexval();
       y = yylval;
-#line 141 "spec.acc"
+#line 143 "spec.acc"
 _add_symbols_attribute(y.stringval,1);
-# line 405 "yygrammar.c"
-      get_lexval();
-#line 142 "spec.acc"
-_add_symbols_attribute("(",1);
-# line 409 "yygrammar.c"
-      lista_atributos();
+# line 407 "yygrammar.c"
       get_lexval();
 #line 144 "spec.acc"
-_add_symbols_attribute(")",1);
-# line 414 "yygrammar.c"
-#line 145 "spec.acc"
-_add_node_stack("RHO");
-# line 417 "yygrammar.c"
+_add_symbols_attribute("(",1);
+# line 411 "yygrammar.c"
+      lista_atributos();
       get_lexval();
 #line 146 "spec.acc"
+_add_symbols_attribute(")",1);
+# line 416 "yygrammar.c"
+#line 147 "spec.acc"
+_add_node_stack("RHO");
+# line 419 "yygrammar.c"
+      get_lexval();
+#line 148 "spec.acc"
 _add_node_stack("(");
-# line 421 "yygrammar.c"
+# line 423 "yygrammar.c"
       switch (yyselect()) {
       case 68: {
          get_lexval();
          y = yylval;
-#line 148 "spec.acc"
+#line 150 "spec.acc"
 _add_node_stack(y.stringval);
-# line 428 "yygrammar.c"
+# line 430 "yygrammar.c"
          } break;
       case 69: {
          operacao_consulta();
@@ -432,35 +434,35 @@ _add_node_stack(y.stringval);
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 152 "spec.acc"
+#line 154 "spec.acc"
 _add_node_stack(")");
-# line 438 "yygrammar.c"
+# line 440 "yygrammar.c"
       } break;
    case 26: {
       get_lexval();
       get_lexval();
-#line 155 "spec.acc"
+#line 157 "spec.acc"
 _add_symbols_attribute("(",1);
-# line 445 "yygrammar.c"
+# line 447 "yygrammar.c"
       lista_atributos();
       get_lexval();
-#line 157 "spec.acc"
-_add_symbols_attribute(")",1);
-# line 450 "yygrammar.c"
-#line 158 "spec.acc"
-_add_node_stack("RHO");
-# line 453 "yygrammar.c"
-      get_lexval();
 #line 159 "spec.acc"
+_add_symbols_attribute(")",1);
+# line 452 "yygrammar.c"
+#line 160 "spec.acc"
+_add_node_stack("RHO");
+# line 455 "yygrammar.c"
+      get_lexval();
+#line 161 "spec.acc"
 _add_node_stack("(");
-# line 457 "yygrammar.c"
+# line 459 "yygrammar.c"
       switch (yyselect()) {
       case 70: {
          get_lexval();
          y = yylval;
-#line 161 "spec.acc"
+#line 163 "spec.acc"
 _add_node_stack(y.stringval);
-# line 464 "yygrammar.c"
+# line 466 "yygrammar.c"
          } break;
       case 71: {
          operacao_consulta();
@@ -468,9 +470,9 @@ _add_node_stack(y.stringval);
       default: printf("???\n"); exit(1);
       }
       get_lexval();
-#line 165 "spec.acc"
+#line 167 "spec.acc"
 _add_node_stack(")");
-# line 474 "yygrammar.c"
+# line 476 "yygrammar.c"
       } break;
    }
 }
@@ -488,17 +490,17 @@ agrupamento ()
       }
       get_lexval();
       lista_funcoes_agregadas();
-#line 171 "spec.acc"
+#line 173 "spec.acc"
  _add_node_stack("FSCRIPT");
-# line 494 "yygrammar.c"
+# line 496 "yygrammar.c"
       get_lexval();
       switch (yyselect()) {
       case 73: {
          get_lexval();
          y = yylval;
-#line 174 "spec.acc"
+#line 176 "spec.acc"
 _add_node_stack(y.stringval);
-# line 502 "yygrammar.c"
+# line 504 "yygrammar.c"
          } break;
       case 74: {
          operacao_consulta();
@@ -523,14 +525,14 @@ predicado ()
       } break;
    case 30: {
       get_lexval();
-#line 188 "spec.acc"
+#line 190 "spec.acc"
 _add_symbols_predicate("(");
-# line 529 "yygrammar.c"
+# line 531 "yygrammar.c"
       predicado();
       get_lexval();
-#line 190 "spec.acc"
+#line 192 "spec.acc"
 _add_symbols_predicate(")");
-# line 534 "yygrammar.c"
+# line 536 "yygrammar.c"
       switch (yyselect()) {
       case 75: {
          operador_booleano();
@@ -548,30 +550,30 @@ condicao ()
    switch(yyselect()) {
    case 31: {
       get_lexval();
-#line 195 "spec.acc"
+#line 197 "spec.acc"
 _add_symbols_predicate("(");
-# line 554 "yygrammar.c"
+# line 556 "yygrammar.c"
       condicao();
       get_lexval();
-#line 197 "spec.acc"
+#line 199 "spec.acc"
 _add_symbols_predicate(")");
-# line 559 "yygrammar.c"
+# line 561 "yygrammar.c"
       } break;
    case 32: {
       switch (yyselect()) {
       case 76: {
          get_lexval();
          a = yylval;
-#line 200 "spec.acc"
+#line 202 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 568 "yygrammar.c"
+# line 570 "yygrammar.c"
          } break;
       case 77: {
          get_lexval();
          a = yylval;
-#line 202 "spec.acc"
+#line 204 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 575 "yygrammar.c"
+# line 577 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -580,16 +582,16 @@ _add_symbols_predicate(a.stringval);
       case 78: {
          get_lexval();
          a = yylval;
-#line 206 "spec.acc"
+#line 208 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 586 "yygrammar.c"
+# line 588 "yygrammar.c"
          } break;
       case 79: {
          get_lexval();
          a = yylval;
-#line 208 "spec.acc"
+#line 210 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 593 "yygrammar.c"
+# line 595 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -602,42 +604,42 @@ operador_comparacao ()
    switch(yyselect()) {
    case 33: {
       get_lexval();
-#line 213 "spec.acc"
+#line 215 "spec.acc"
 _add_symbols_predicate("=");
-# line 608 "yygrammar.c"
+# line 610 "yygrammar.c"
       } break;
    case 34: {
       get_lexval();
-#line 215 "spec.acc"
+#line 217 "spec.acc"
 _add_symbols_predicate("<");
-# line 614 "yygrammar.c"
+# line 616 "yygrammar.c"
       } break;
    case 35: {
       get_lexval();
-#line 217 "spec.acc"
+#line 219 "spec.acc"
 _add_symbols_predicate(">");
-# line 620 "yygrammar.c"
+# line 622 "yygrammar.c"
       } break;
    case 36: {
       get_lexval();
       get_lexval();
-#line 219 "spec.acc"
+#line 221 "spec.acc"
 _add_symbols_predicate("<=");
-# line 627 "yygrammar.c"
+# line 629 "yygrammar.c"
       } break;
    case 37: {
       get_lexval();
       get_lexval();
-#line 221 "spec.acc"
+#line 223 "spec.acc"
 _add_symbols_predicate(">=");
-# line 634 "yygrammar.c"
+# line 636 "yygrammar.c"
       } break;
    case 38: {
       get_lexval();
       get_lexval();
-#line 223 "spec.acc"
+#line 225 "spec.acc"
 _add_symbols_predicate("!=");
-# line 641 "yygrammar.c"
+# line 643 "yygrammar.c"
       } break;
    }
 }
@@ -647,27 +649,27 @@ operador_aritmetico ()
    switch(yyselect()) {
    case 39: {
       get_lexval();
-#line 227 "spec.acc"
+#line 229 "spec.acc"
 _add_symbols_attribute("+",1);
-# line 653 "yygrammar.c"
+# line 655 "yygrammar.c"
       } break;
    case 40: {
       get_lexval();
-#line 229 "spec.acc"
+#line 231 "spec.acc"
 _add_symbols_attribute("-",1);
-# line 659 "yygrammar.c"
+# line 661 "yygrammar.c"
       } break;
    case 41: {
       get_lexval();
-#line 231 "spec.acc"
+#line 233 "spec.acc"
 _add_symbols_attribute("*",1);
-# line 665 "yygrammar.c"
+# line 667 "yygrammar.c"
       } break;
    case 42: {
       get_lexval();
-#line 233 "spec.acc"
+#line 235 "spec.acc"
 _add_symbols_attribute("/",1);
-# line 671 "yygrammar.c"
+# line 673 "yygrammar.c"
       } break;
    }
 }
@@ -677,15 +679,15 @@ operador_booleano ()
    switch(yyselect()) {
    case 43: {
       get_lexval();
-#line 237 "spec.acc"
+#line 239 "spec.acc"
 _add_symbols_predicate(" AND ");
-# line 683 "yygrammar.c"
+# line 685 "yygrammar.c"
       } break;
    case 44: {
       get_lexval();
-#line 239 "spec.acc"
+#line 241 "spec.acc"
 _add_symbols_predicate(" OR ");
-# line 689 "yygrammar.c"
+# line 691 "yygrammar.c"
       } break;
    }
 }
@@ -699,16 +701,16 @@ lista_atributos ()
       case 80: {
          get_lexval();
          a = yylval;
-#line 244 "spec.acc"
+#line 246 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 705 "yygrammar.c"
+# line 707 "yygrammar.c"
          } break;
       case 81: {
          get_lexval();
          a = yylval;
-#line 246 "spec.acc"
+#line 248 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 712 "yygrammar.c"
+# line 714 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -720,16 +722,16 @@ _add_symbols_attribute(a.stringval,1);
             case 82: {
                get_lexval();
                a = yylval;
-#line 251 "spec.acc"
+#line 253 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 726 "yygrammar.c"
+# line 728 "yygrammar.c"
                } break;
             case 83: {
                get_lexval();
                a = yylval;
-#line 253 "spec.acc"
+#line 255 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 733 "yygrammar.c"
+# line 735 "yygrammar.c"
                } break;
             default: printf("???\n"); exit(1);
             }
@@ -741,9 +743,9 @@ _add_symbols_attribute(a.stringval,1);
       switch (yyselect()) {
       case 85: {
          get_lexval();
-#line 256 "spec.acc"
+#line 258 "spec.acc"
 _add_symbols_attribute(",",1);
-# line 747 "yygrammar.c"
+# line 749 "yygrammar.c"
          lista_atributos();
          } break;
       default: ;
@@ -760,47 +762,47 @@ lista_funcoes_agregadas ()
       switch (yyselect()) {
       case 86: {
          get_lexval();
-#line 261 "spec.acc"
+#line 263 "spec.acc"
 _add_symbols_attribute("COUNT ",2);
-# line 766 "yygrammar.c"
+# line 768 "yygrammar.c"
          } break;
       case 87: {
          get_lexval();
-#line 263 "spec.acc"
+#line 265 "spec.acc"
 _add_symbols_attribute("AVERAGE ",2);
-# line 772 "yygrammar.c"
+# line 774 "yygrammar.c"
          } break;
       case 88: {
          get_lexval();
-#line 265 "spec.acc"
+#line 267 "spec.acc"
 _add_symbols_attribute("MAX ",2);
-# line 778 "yygrammar.c"
+# line 780 "yygrammar.c"
          } break;
       case 89: {
          get_lexval();
-#line 267 "spec.acc"
+#line 269 "spec.acc"
 _add_symbols_attribute("MIN ",2);
-# line 784 "yygrammar.c"
+# line 786 "yygrammar.c"
          } break;
       case 90: {
          get_lexval();
-#line 269 "spec.acc"
+#line 271 "spec.acc"
 _add_symbols_attribute("SUM ",2);
-# line 790 "yygrammar.c"
+# line 792 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
       get_lexval();
       y = yylval;
-#line 271 "spec.acc"
+#line 273 "spec.acc"
 _add_symbols_attribute(y.stringval,2);
-# line 798 "yygrammar.c"
+# line 800 "yygrammar.c"
       switch (yyselect()) {
       case 91: {
          get_lexval();
-#line 272 "spec.acc"
+#line 274 "spec.acc"
 _add_symbols_attribute(",",2);
-# line 804 "yygrammar.c"
+# line 806 "yygrammar.c"
          lista_funcoes_agregadas();
          } break;
       default: ;
@@ -1798,465 +1800,465 @@ extern int yycoordinate[];
 int yycoordinate[] = {
 0,
 /* 1 */ 9999,
-/* 2 */ 7009,
+/* 2 */ 9009,
 /* 3 */ 9999,
 /* 4 */ 9999,
-/* 5 */ 7009,
+/* 5 */ 9009,
 /* 6 */ 9999,
-/* 7 */ 8027,
+/* 7 */ 10027,
 /* 8 */ 9999,
-/* 9 */ 8005,
+/* 9 */ 10005,
 /* 10 */ 9999,
-/* 11 */ 8029,
-/* 12 */ 8045,
+/* 11 */ 10029,
+/* 12 */ 10045,
 /* 13 */ 9999,
-/* 14 */ 8045,
+/* 14 */ 10045,
 /* 15 */ 9999,
 /* 16 */ 9999,
-/* 17 */ 8058,
+/* 17 */ 10058,
 /* 18 */ 9999,
-/* 19 */ 8058,
+/* 19 */ 10058,
 /* 20 */ 9999,
 /* 21 */ 9999,
-/* 22 */ 8058,
+/* 22 */ 10058,
 /* 23 */ 9999,
 /* 24 */ 9999,
-/* 25 */ 13009,
+/* 25 */ 15009,
 /* 26 */ 9999,
 /* 27 */ 9999,
-/* 28 */ 12009,
+/* 28 */ 14009,
 /* 29 */ 9999,
-/* 30 */ 16009,
+/* 30 */ 18009,
 /* 31 */ 9999,
-/* 32 */ 16009,
+/* 32 */ 18009,
 /* 33 */ 9999,
-/* 34 */ 17013,
+/* 34 */ 19013,
 /* 35 */ 9999,
-/* 36 */ 17027,
+/* 36 */ 19027,
 /* 37 */ 9999,
-/* 38 */ 19013,
+/* 38 */ 21013,
 /* 39 */ 9999,
-/* 40 */ 19028,
+/* 40 */ 21028,
 /* 41 */ 9999,
-/* 42 */ 25009,
+/* 42 */ 27009,
 /* 43 */ 9999,
-/* 44 */ 25015,
+/* 44 */ 27015,
 /* 45 */ 9999,
-/* 46 */ 27009,
+/* 46 */ 29009,
 /* 47 */ 9999,
-/* 48 */ 27016,
+/* 48 */ 29016,
 /* 49 */ 9999,
-/* 50 */ 29009,
+/* 50 */ 31009,
 /* 51 */ 9999,
-/* 52 */ 29019,
+/* 52 */ 31019,
 /* 53 */ 9999,
-/* 54 */ 31009,
+/* 54 */ 33009,
 /* 55 */ 9999,
-/* 56 */ 31019,
+/* 56 */ 33019,
 /* 57 */ 9999,
-/* 58 */ 33009,
+/* 58 */ 35009,
 /* 59 */ 9999,
-/* 60 */ 33019,
+/* 60 */ 35019,
 /* 61 */ 9999,
-/* 62 */ 37009,
-/* 63 */ 46009,
-/* 64 */ 47009,
+/* 62 */ 39009,
+/* 63 */ 48009,
+/* 64 */ 49009,
 /* 65 */ 9999,
-/* 66 */ 37009,
+/* 66 */ 39009,
 /* 67 */ 9999,
-/* 68 */ 57009,
+/* 68 */ 59009,
 /* 69 */ 9999,
-/* 70 */ 67009,
+/* 70 */ 69009,
 /* 71 */ 9999,
-/* 72 */ 57009,
+/* 72 */ 59009,
 /* 73 */ 9999,
 /* 74 */ 9999,
 /* 75 */ 9999,
-/* 76 */ 38021,
+/* 76 */ 40021,
 /* 77 */ 9999,
-/* 78 */ 40018,
+/* 78 */ 42018,
 /* 79 */ 9999,
-/* 80 */ 40034,
+/* 80 */ 42034,
 /* 81 */ 9999,
 /* 82 */ 9999,
 /* 83 */ 9999,
 /* 84 */ 9999,
 /* 85 */ 9999,
-/* 86 */ 42017,
+/* 86 */ 44017,
 /* 87 */ 9999,
 /* 88 */ 9999,
 /* 89 */ 9999,
-/* 90 */ 48021,
+/* 90 */ 50021,
 /* 91 */ 9999,
-/* 92 */ 50018,
+/* 92 */ 52018,
 /* 93 */ 9999,
-/* 94 */ 50034,
+/* 94 */ 52034,
 /* 95 */ 9999,
 /* 96 */ 9999,
 /* 97 */ 9999,
 /* 98 */ 9999,
 /* 99 */ 9999,
-/* 100 */ 52018,
+/* 100 */ 54018,
 /* 101 */ 9999,
 /* 102 */ 9999,
 /* 103 */ 9999,
-/* 104 */ 58020,
+/* 104 */ 60020,
 /* 105 */ 9999,
-/* 106 */ 60017,
+/* 106 */ 62017,
 /* 107 */ 9999,
-/* 108 */ 60033,
+/* 108 */ 62033,
 /* 109 */ 9999,
 /* 110 */ 9999,
 /* 111 */ 9999,
 /* 112 */ 9999,
 /* 113 */ 9999,
-/* 114 */ 62017,
+/* 114 */ 64017,
 /* 115 */ 9999,
 /* 116 */ 9999,
 /* 117 */ 9999,
-/* 118 */ 72013,
+/* 118 */ 74013,
 /* 119 */ 9999,
 /* 120 */ 9999,
 /* 121 */ 9999,
-/* 122 */ 74019,
+/* 122 */ 76019,
 /* 123 */ 9999,
 /* 124 */ 9999,
 /* 125 */ 9999,
-/* 126 */ 76017,
+/* 126 */ 78017,
 /* 127 */ 9999,
 /* 128 */ 9999,
 /* 129 */ 9999,
-/* 130 */ 78026,
+/* 130 */ 80026,
 /* 131 */ 9999,
 /* 132 */ 9999,
-/* 133 */ 81009,
+/* 133 */ 83009,
 /* 134 */ 9999,
-/* 135 */ 80014,
+/* 135 */ 82014,
 /* 136 */ 9999,
 /* 137 */ 9999,
 /* 138 */ 9999,
-/* 139 */ 83022,
+/* 139 */ 85022,
 /* 140 */ 9999,
 /* 141 */ 9999,
-/* 142 */ 86009,
+/* 142 */ 88009,
 /* 143 */ 9999,
-/* 144 */ 85031,
+/* 144 */ 87031,
 /* 145 */ 9999,
 /* 146 */ 9999,
-/* 147 */ 89009,
+/* 147 */ 91009,
 /* 148 */ 9999,
-/* 149 */ 88030,
+/* 149 */ 90030,
 /* 150 */ 9999,
 /* 151 */ 9999,
-/* 152 */ 92009,
+/* 152 */ 94009,
 /* 153 */ 9999,
-/* 154 */ 91031,
+/* 154 */ 93031,
 /* 155 */ 9999,
 /* 156 */ 9999,
 /* 157 */ 9999,
-/* 158 */ 94015,
+/* 158 */ 96015,
 /* 159 */ 9999,
 /* 160 */ 9999,
-/* 161 */ 99005,
+/* 161 */ 101005,
 /* 162 */ 9999,
-/* 163 */ 101005,
+/* 163 */ 103005,
 /* 164 */ 9999,
 /* 165 */ 9999,
-/* 166 */ 98009,
+/* 166 */ 100009,
 /* 167 */ 9999,
 /* 168 */ 9999,
 /* 169 */ 9999,
-/* 170 */ 102020,
+/* 170 */ 104020,
 /* 171 */ 9999,
-/* 172 */ 104017,
+/* 172 */ 106017,
 /* 173 */ 9999,
-/* 174 */ 104033,
+/* 174 */ 106033,
 /* 175 */ 9999,
 /* 176 */ 9999,
-/* 177 */ 111005,
+/* 177 */ 113005,
 /* 178 */ 9999,
-/* 179 */ 113005,
+/* 179 */ 115005,
 /* 180 */ 9999,
 /* 181 */ 9999,
-/* 182 */ 110006,
+/* 182 */ 112006,
 /* 183 */ 9999,
 /* 184 */ 9999,
 /* 185 */ 9999,
-/* 186 */ 114020,
+/* 186 */ 116020,
 /* 187 */ 9999,
-/* 188 */ 116017,
+/* 188 */ 118017,
 /* 189 */ 9999,
-/* 190 */ 116033,
+/* 190 */ 118033,
 /* 191 */ 9999,
 /* 192 */ 9999,
-/* 193 */ 123009,
+/* 193 */ 125009,
 /* 194 */ 9999,
-/* 195 */ 125009,
+/* 195 */ 127009,
 /* 196 */ 9999,
-/* 197 */ 122012,
+/* 197 */ 124012,
 /* 198 */ 9999,
 /* 199 */ 9999,
-/* 200 */ 123015,
+/* 200 */ 125015,
 /* 201 */ 9999,
 /* 202 */ 9999,
-/* 203 */ 123011,
+/* 203 */ 125011,
 /* 204 */ 9999,
 /* 205 */ 9999,
-/* 206 */ 123011,
+/* 206 */ 125011,
 /* 207 */ 9999,
 /* 208 */ 9999,
 /* 209 */ 9999,
 /* 210 */ 9999,
-/* 211 */ 133009,
+/* 211 */ 135009,
 /* 212 */ 9999,
 /* 213 */ 9999,
-/* 214 */ 129011,
+/* 214 */ 131011,
 /* 215 */ 9999,
 /* 216 */ 9999,
 /* 217 */ 9999,
 /* 218 */ 9999,
-/* 219 */ 143009,
+/* 219 */ 145009,
 /* 220 */ 9999,
 /* 221 */ 9999,
-/* 222 */ 147009,
+/* 222 */ 149009,
 /* 223 */ 9999,
 /* 224 */ 9999,
-/* 225 */ 140011,
+/* 225 */ 142011,
 /* 226 */ 9999,
 /* 227 */ 9999,
 /* 228 */ 9999,
-/* 229 */ 156009,
+/* 229 */ 158009,
 /* 230 */ 9999,
 /* 231 */ 9999,
-/* 232 */ 160009,
+/* 232 */ 162009,
 /* 233 */ 9999,
 /* 234 */ 9999,
-/* 235 */ 154011,
+/* 235 */ 156011,
 /* 236 */ 9999,
 /* 237 */ 9999,
 /* 238 */ 9999,
-/* 239 */ 134025,
+/* 239 */ 136025,
 /* 240 */ 9999,
-/* 241 */ 136022,
+/* 241 */ 138022,
 /* 242 */ 9999,
-/* 243 */ 136038,
+/* 243 */ 138038,
 /* 244 */ 9999,
 /* 245 */ 9999,
 /* 246 */ 9999,
-/* 247 */ 148025,
+/* 247 */ 150025,
 /* 248 */ 9999,
-/* 249 */ 150022,
+/* 249 */ 152022,
 /* 250 */ 9999,
-/* 251 */ 150038,
+/* 251 */ 152038,
 /* 252 */ 9999,
 /* 253 */ 9999,
 /* 254 */ 9999,
-/* 255 */ 161025,
+/* 255 */ 163025,
 /* 256 */ 9999,
-/* 257 */ 163022,
+/* 257 */ 165022,
 /* 258 */ 9999,
-/* 259 */ 163038,
+/* 259 */ 165038,
 /* 260 */ 9999,
-/* 261 */ 169005,
+/* 261 */ 171005,
 /* 262 */ 9999,
-/* 263 */ 171005,
+/* 263 */ 173005,
 /* 264 */ 9999,
-/* 265 */ 173005,
+/* 265 */ 175005,
 /* 266 */ 9999,
 /* 267 */ 9999,
-/* 268 */ 169005,
+/* 268 */ 171005,
 /* 269 */ 9999,
-/* 270 */ 169006,
+/* 270 */ 171006,
 /* 271 */ 9999,
-/* 272 */ 169020,
+/* 272 */ 171020,
 /* 273 */ 9999,
 /* 274 */ 9999,
-/* 275 */ 169020,
+/* 275 */ 171020,
 /* 276 */ 9999,
 /* 277 */ 9999,
 /* 278 */ 9999,
-/* 279 */ 174020,
+/* 279 */ 176020,
 /* 280 */ 9999,
-/* 281 */ 176017,
+/* 281 */ 178017,
 /* 282 */ 9999,
-/* 283 */ 176033,
+/* 283 */ 178033,
 /* 284 */ 9999,
-/* 285 */ 182009,
+/* 285 */ 184009,
 /* 286 */ 9999,
-/* 287 */ 182016,
+/* 287 */ 184016,
 /* 288 */ 9999,
-/* 289 */ 184009,
-/* 290 */ 185009,
-/* 291 */ 186009,
+/* 289 */ 186009,
+/* 290 */ 187009,
+/* 291 */ 188009,
 /* 292 */ 9999,
-/* 293 */ 184016,
+/* 293 */ 186016,
 /* 294 */ 9999,
 /* 295 */ 9999,
-/* 296 */ 189009,
+/* 296 */ 191009,
 /* 297 */ 9999,
-/* 298 */ 191009,
+/* 298 */ 193009,
 /* 299 */ 9999,
-/* 300 */ 188009,
+/* 300 */ 190009,
 /* 301 */ 9999,
-/* 302 */ 191010,
-/* 303 */ 191028,
+/* 302 */ 193010,
+/* 303 */ 193028,
 /* 304 */ 9999,
-/* 305 */ 191026,
+/* 305 */ 193026,
 /* 306 */ 9999,
 /* 307 */ 9999,
-/* 308 */ 191026,
+/* 308 */ 193026,
 /* 309 */ 9999,
 /* 310 */ 9999,
-/* 311 */ 196009,
+/* 311 */ 198009,
 /* 312 */ 9999,
 /* 313 */ 9999,
-/* 314 */ 195009,
+/* 314 */ 197009,
 /* 315 */ 9999,
-/* 316 */ 199009,
-/* 317 */ 204009,
-/* 318 */ 205009,
+/* 316 */ 201009,
+/* 317 */ 206009,
+/* 318 */ 207009,
 /* 319 */ 9999,
-/* 320 */ 199009,
+/* 320 */ 201009,
 /* 321 */ 9999,
 /* 322 */ 9999,
 /* 323 */ 9999,
-/* 324 */ 200024,
+/* 324 */ 202024,
 /* 325 */ 9999,
 /* 326 */ 9999,
 /* 327 */ 9999,
-/* 328 */ 202026,
+/* 328 */ 204026,
 /* 329 */ 9999,
 /* 330 */ 9999,
 /* 331 */ 9999,
-/* 332 */ 206024,
+/* 332 */ 208024,
 /* 333 */ 9999,
 /* 334 */ 9999,
 /* 335 */ 9999,
-/* 336 */ 208026,
+/* 336 */ 210026,
 /* 337 */ 9999,
 /* 338 */ 9999,
 /* 339 */ 9999,
-/* 340 */ 213009,
+/* 340 */ 215009,
 /* 341 */ 9999,
 /* 342 */ 9999,
 /* 343 */ 9999,
-/* 344 */ 215009,
+/* 344 */ 217009,
 /* 345 */ 9999,
 /* 346 */ 9999,
 /* 347 */ 9999,
-/* 348 */ 217009,
+/* 348 */ 219009,
 /* 349 */ 9999,
 /* 350 */ 9999,
 /* 351 */ 9999,
 /* 352 */ 9999,
-/* 353 */ 219009,
+/* 353 */ 221009,
 /* 354 */ 9999,
 /* 355 */ 9999,
 /* 356 */ 9999,
 /* 357 */ 9999,
-/* 358 */ 221009,
+/* 358 */ 223009,
 /* 359 */ 9999,
 /* 360 */ 9999,
 /* 361 */ 9999,
 /* 362 */ 9999,
-/* 363 */ 223009,
+/* 363 */ 225009,
 /* 364 */ 9999,
 /* 365 */ 9999,
 /* 366 */ 9999,
-/* 367 */ 227009,
+/* 367 */ 229009,
 /* 368 */ 9999,
 /* 369 */ 9999,
 /* 370 */ 9999,
-/* 371 */ 229009,
+/* 371 */ 231009,
 /* 372 */ 9999,
 /* 373 */ 9999,
 /* 374 */ 9999,
-/* 375 */ 231009,
+/* 375 */ 233009,
 /* 376 */ 9999,
 /* 377 */ 9999,
 /* 378 */ 9999,
-/* 379 */ 233009,
+/* 379 */ 235009,
 /* 380 */ 9999,
 /* 381 */ 9999,
 /* 382 */ 9999,
-/* 383 */ 237011,
+/* 383 */ 239011,
 /* 384 */ 9999,
 /* 385 */ 9999,
 /* 386 */ 9999,
-/* 387 */ 239010,
+/* 387 */ 241010,
 /* 388 */ 9999,
-/* 389 */ 243005,
-/* 390 */ 248005,
-/* 391 */ 256005,
+/* 389 */ 245005,
+/* 390 */ 250005,
+/* 391 */ 258005,
 /* 392 */ 9999,
-/* 393 */ 243005,
+/* 393 */ 245005,
 /* 394 */ 9999,
 /* 395 */ 9999,
 /* 396 */ 9999,
-/* 397 */ 244020,
+/* 397 */ 246020,
 /* 398 */ 9999,
 /* 399 */ 9999,
 /* 400 */ 9999,
-/* 401 */ 246022,
+/* 401 */ 248022,
 /* 402 */ 9999,
-/* 403 */ 249013,
-/* 404 */ 250013,
-/* 405 */ 249031,
+/* 403 */ 251013,
+/* 404 */ 252013,
+/* 405 */ 251031,
 /* 406 */ 9999,
-/* 407 */ 249031,
+/* 407 */ 251031,
 /* 408 */ 9999,
 /* 409 */ 9999,
-/* 410 */ 249031,
+/* 410 */ 251031,
 /* 411 */ 9999,
 /* 412 */ 9999,
 /* 413 */ 9999,
-/* 414 */ 251028,
+/* 414 */ 253028,
 /* 415 */ 9999,
 /* 416 */ 9999,
 /* 417 */ 9999,
-/* 418 */ 253030,
+/* 418 */ 255030,
 /* 419 */ 9999,
 /* 420 */ 9999,
-/* 421 */ 256048,
+/* 421 */ 258048,
 /* 422 */ 9999,
-/* 423 */ 256007,
+/* 423 */ 258007,
 /* 424 */ 9999,
 /* 425 */ 9999,
-/* 426 */ 256007,
+/* 426 */ 258007,
 /* 427 */ 9999,
-/* 428 */ 260005,
+/* 428 */ 262005,
 /* 429 */ 9999,
-/* 430 */ 272005,
+/* 430 */ 274005,
 /* 431 */ 9999,
-/* 432 */ 260005,
+/* 432 */ 262005,
 /* 433 */ 9999,
 /* 434 */ 9999,
 /* 435 */ 9999,
-/* 436 */ 261021,
+/* 436 */ 263021,
 /* 437 */ 9999,
 /* 438 */ 9999,
 /* 439 */ 9999,
-/* 440 */ 263023,
+/* 440 */ 265023,
 /* 441 */ 9999,
 /* 442 */ 9999,
 /* 443 */ 9999,
-/* 444 */ 265019,
+/* 444 */ 267019,
 /* 445 */ 9999,
 /* 446 */ 9999,
 /* 447 */ 9999,
-/* 448 */ 267019,
+/* 448 */ 269019,
 /* 449 */ 9999,
 /* 450 */ 9999,
 /* 451 */ 9999,
-/* 452 */ 269019,
+/* 452 */ 271019,
 /* 453 */ 9999,
 /* 454 */ 9999,
-/* 455 */ 272046,
+/* 455 */ 274046,
 /* 456 */ 9999,
-/* 457 */ 272007,
+/* 457 */ 274007,
 /* 458 */ 9999,
 /* 459 */ 9999,
-/* 460 */ 272007,
+/* 460 */ 274007,
 0
 };
 /* only for BIGHASH (see art.c)

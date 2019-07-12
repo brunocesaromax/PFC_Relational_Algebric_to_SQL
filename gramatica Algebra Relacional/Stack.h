@@ -1,5 +1,5 @@
 struct stack{
-    NodeTree *nodeTree;
+    Node *node;
     struct stack *next;
 };
 
@@ -9,12 +9,12 @@ struct stack *top;
 
 void create_stack();
 
-void push(NodeTree *node);
+void push(Node *node);
 
-NodeTree *pop();
+Node *pop();
 
 void display_stack();
 
-NodeTree *top_element();
+Node *top_element();
 
-void _show_node_stack(NodeTree *nodeTree, int b);
+void _show_node_stack(Node *node, int b);

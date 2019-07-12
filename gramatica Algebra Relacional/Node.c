@@ -1,45 +1,31 @@
 #include <stdio.h>
-#include "treefunctions.h"
-#include "stackNodes.c"
+#include "Node.h"
+#include "Stack.c"
 
-NodeList *attribute = NULL;
-NodeList *attribute2 = NULL;
-NodeList *predicate = NULL;
+NodeChar *attribute = NULL;
+NodeChar *attribute2 = NULL;
+NodeChar *predicate = NULL;
 
-/*Inicializando a ferramenta*/
-void _tool_initialize() {
-
-    printf("Initializing...\n\n\n");
-    create_stack();
-    create_tree();
-
-    return;
-}
-
-void create_tree() {
-    root = NULL;
-}
-
-NodeTree *allocate_node() {
-    return (NodeTree *) malloc(sizeof(NodeTree));
+Node *allocate_node() {
+    return (Node *) malloc(sizeof(Node));
 }
 
 /*Adicionando novos símbolos a lista de predicado*/
 void _add_symbols_predicate(char *symbol) {
 
-    NodeList *node = (NodeList *) malloc(sizeof(NodeList));
+    NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
 
     if (!predicate) {
         predicate = node;
     } else {
 
-        NodeList *aux = predicate;
-        while (aux->nodeNext != NULL) {
-            aux = aux->nodeNext;
+        NodeChar *aux = predicate;
+        while (aux->next != NULL) {
+            aux = aux->next;
         }
 
-        aux->nodeNext = node;
+        aux->next = node;
     }
 
 }
@@ -47,7 +33,7 @@ void _add_symbols_predicate(char *symbol) {
 /*Adicionando novos símbolos a lista de atributos*/
 void _add_symbols_attribute(char *symbol, int option) {
 
-    NodeList *aux;
+    NodeChar *aux;
 
     if (option == 1) {
         aux = attribute;
@@ -55,19 +41,19 @@ void _add_symbols_attribute(char *symbol, int option) {
         aux = attribute2;
     }
 
-    NodeList *node = (NodeList *) malloc(sizeof(NodeList));
+    NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
 
     if (!aux) {
         aux = node;
     } else {
 
-        NodeList *temp = aux;
-        while (temp->nodeNext != NULL) {
-            temp = temp->nodeNext;
+        NodeChar *temp = aux;
+        while (temp->next != NULL) {
+            temp = temp->next;
         }
 
-        temp->nodeNext = node;
+        temp->next = node;
     }
 
     if (option == 1) {
@@ -80,7 +66,7 @@ void _add_symbols_attribute(char *symbol, int option) {
 /*Adicionando nós na pilha para ao fim apenas reajustar a árvore através da pilha*/
 void _add_node_stack(char *s) {
 
-    NodeTree *node;
+    Node *node;
     node = allocate_node();
 
     if (!strcmp("SIGMA", s)) {
@@ -125,7 +111,7 @@ void _add_node_stack(char *s) {
     node->attribute = attribute;
     node->attribute2 = attribute2;
     node->predicate = predicate;
-    node->nodeRight = node->nodeLeft = NULL;
+    node->right = node->left = NULL;
 
 //Restaurando variáveis globais para NULL, para usalás posteriormente.
     attribute = attribute2 = predicate = NULL;
@@ -136,10 +122,10 @@ void _add_node_stack(char *s) {
 
     if (node->type == CL_P) {
 
-        NodeTree *temp, *aux;
+        Node *temp, *aux;
         temp = aux = NULL;
 
-        while (top->nodeTree->type != OP_P) {
+        while (top->node->type != OP_P) {
 
             if (temp == NULL) {
                 temp = pop();
@@ -147,7 +133,7 @@ void _add_node_stack(char *s) {
 
                 aux = temp;
                 temp = pop();
-                temp->nodeRight = aux;
+                temp->right = aux;
             }
         }
 
@@ -164,10 +150,10 @@ void _add_node_stack(char *s) {
                node->type == LEFT_OUTER_JOIN || node->type == RIGHT_OUTER_JOIN ||
                node->type == COMPLETE_OUTER_JOIN || node->type == ASSIGNMENT || node->type == INTERSECTION) {
 
-        NodeTree *temp, *aux;
+        Node *temp, *aux;
         temp = aux = NULL;
 
-        while (top != NULL && top->nodeTree->type != OP_P && top->nodeTree->type != ASSIGNMENT) {
+        while (top != NULL && top->node->type != OP_P && top->node->type != ASSIGNMENT) {
 
             if (temp == NULL) {
                 temp = pop();
@@ -175,11 +161,11 @@ void _add_node_stack(char *s) {
 
                 aux = temp;
                 temp = pop();
-                temp->nodeRight = aux;
+                temp->right = aux;
             }
         }
 
-        node->nodeLeft = temp;
+        node->left = temp;
         push(node);
 
     } else {
@@ -188,169 +174,54 @@ void _add_node_stack(char *s) {
 
 }
 
-/*
-void _add_node_stack(NodeTreeType type, char *s, char *attribute,char *attribute2, char *predicate){
 
-    NodeTree *node;
-    node = allocate_node();
+void _show_node_list(NodeChar *nodeList) {
 
-    node->type = type;
-    node->name = s;
-    node->attribute = attribute;
-    node->attribute2 = attribute2;
-    node->predicate = predicate;
-    node->nodeRight = node->nodeLeft = NULL;
-
-    */
-/*Restaurando variáveis globais para NULL, para usalás posteriormente.*//*
-
-    attribute = attribute2 = predicate = NULL;
-
-    */
-/*Se tipo do no a ser inserido na pilha for um ')'
-     * entao deve-ser desempilhar e ajustar árvore no sentido a direita
-     * até encontrar '(' e por fim desempilhar '('*//*
-
-    if (node->type == CL_P) {
-
-        NodeTree *temp, *aux;
-        temp = aux = NULL;
-
-        while (top->nodeTree->type != OP_P) {
-
-            if (temp == NULL) {
-                temp = pop();
-            } else {
-
-                aux = temp;
-                temp = pop();
-                temp->nodeRight = aux;
-            }
-        }
-
-        pop();
-        push(temp);
-
-        */
-/*Se tipo do no a ser inserido na pilha for uma operação binária
-      * entao deve-ser desempilhar até encontrar '('
-         * e ajustar a árvore para que o lado esquerdo
-         * da operação binária já fique pronto *//*
-
-    } else if (node->type == UNION || node->type == JOIN || node->type == CARTESIAN_PRODUCT ||
-               node->type == SUBTRACTION || node->type == NATURAL_JOIN || node->type == DIVISION ||
-               node->type == LEFT_OUTER_JOIN || node->type == RIGHT_OUTER_JOIN ||
-               node->type == COMPLETE_OUTER_JOIN || node->type == ASSIGNMENT) {
-
-        NodeTree *temp, *aux;
-        temp = aux = NULL;
-
-        while (top != NULL && top->nodeTree->type != OP_P && top->nodeTree->type != ASSIGNMENT) {
-
-            if (temp == NULL) {
-                temp = pop();
-            } else {
-
-                aux = temp;
-                temp = pop();
-                temp->nodeRight = aux;
-            }
-        }
-
-        node->nodeLeft = temp;
-        push(node);
-
-    } else {
-        push(node);
-    }
-
-}
-*/
-
-/*Função de construção da árvore logo após regras de parênteses tiverem sido executadas*/
-void _build_tree() {
-
-    NodeTree *actual = NULL;
-
-    /*Enquanto houver elementos na pilha, desempilhar e empilhar a direita*/
-    while (top != NULL) {
-
-        actual = pop();
-
-        if (actual != NULL) {
-
-            if (!root) {
-                root = actual;
-            } else {
-                actual->nodeRight = root;
-                root = actual;
-            }
-        }
-    }
-
-    _show_tree(root, 0);
-
-}
-
-void _show_node_list(NodeList *nodeList) {
-
-    NodeList *aux = nodeList;
+    NodeChar *aux = nodeList;
     while (aux != NULL) {
         printf("%s", aux->name);
-        aux = aux->nodeNext;
+        aux = aux->next;
     }
 }
 
-void _show_tree(NodeTree *root, int b) {
+void _show_node(Node *node, int b) {
 
-    if (root == NULL) {
-        _show_node(root, b);
-        return;
-    } else {
-        _show_tree(root->nodeRight, b + 1);
-        _show_node(root, b);
-        _show_tree(root->nodeLeft, b + 1);
-    }
-}
-
-void _show_node(NodeTree *nodeTree, int b) {
-
-    if (!nodeTree) {
+    if (!node) {
         printf("*");
     } else {
 
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
-        switch (nodeTree->type) {
+        switch (node->type) {
 
             case SELECTION:
                 printf("SIGMA ");
-                _show_node_list(nodeTree->predicate);
+                _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case RELATION:
-                printf("%s ", nodeTree->name);
-                _show_node_list(nodeTree->attribute);
+                printf("%s ", node->name);
+                _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
             case PROJECTION:
                 printf("PI ");
-                _show_node_list(nodeTree->attribute);
+                _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
             case ASSIGNMENT:
                 printf("ATRIBUICAO ");
-                _show_node_list(nodeTree->attribute);
+                _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
             case ASSIGNMENT2:
                 printf("RHO ");
-                _show_node_list(nodeTree->attribute);
+                _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
@@ -381,7 +252,7 @@ void _show_node(NodeTree *nodeTree, int b) {
 
             case JOIN:
                 printf("JUNCAO ");
-                _show_node_list(nodeTree->predicate);
+                _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
@@ -391,27 +262,27 @@ void _show_node(NodeTree *nodeTree, int b) {
                 break;
 
             case F_SCRIPT:
-                _show_node_list(nodeTree->attribute);
+                _show_node_list(node->attribute);
                 printf(" FSCRIPT ");
-                _show_node_list(nodeTree->attribute2);
+                _show_node_list(node->attribute2);
                 printf("\n");
                 break;
 
             case LEFT_OUTER_JOIN:
                 printf("JUNCAO_EXTERNA_ESQUERDA ");
-                _show_node_list(nodeTree->predicate);
+                _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case RIGHT_OUTER_JOIN:
                 printf("JUNCAO_EXTERNA_DIREITA ");
-                _show_node_list(nodeTree->predicate);
+                _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case COMPLETE_OUTER_JOIN:
                 printf("JUNCAO_EXTERNA_COMPLETA ");
-                _show_node_list(nodeTree->predicate);
+                _show_node_list(node->predicate);
                 printf("\n");
                 break;
 

@@ -1,1 +1,1 @@
-R ( First_name, Last_name, Salary ) ATRIBUICAO PI Fname, Lname, Salary ( TEMP )
+RESULTADO ATRIBUICAO PI Unome, Pnome (GERS_COM_DEPEND JUNCAO_NATURAL FUNCIONARIO)
