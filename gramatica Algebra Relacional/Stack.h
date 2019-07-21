@@ -6,6 +6,7 @@ struct stack{
 struct stack *top;
 
 /************FUNCTION SIGNATURES***************/
+/*stack no inicio das operações*/
 
 void create_stack();
 

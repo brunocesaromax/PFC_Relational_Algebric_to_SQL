@@ -11,6 +11,7 @@ enum nodeType {
     CARTESIAN_PRODUCT, DIVISION, F_SCRIPT, LEFT_OUTER_JOIN,
     RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, OP_P, CL_P
 };
+// Abrir e fechar parenteses mais longo nome
 
 struct nodeChar {
     char *name;
