@@ -42,4 +42,10 @@ void _show_node_list(NodeChar *nodeChar);
 
 void _show_node(Node *node, int b);
 
+void _get_node_type(Node *node, char *s);
+
+void _build_node(Node *node);
+
+Node* _allocate_node();
+
 #endif

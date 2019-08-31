@@ -6,7 +6,7 @@ NodeChar *attribute = NULL;
 NodeChar *attribute2 = NULL;
 NodeChar *predicate = NULL;
 
-Node *allocate_node() {
+Node* _allocate_node() {
     return (Node *) malloc(sizeof(Node));
 }
 
@@ -67,59 +67,14 @@ void _add_symbols_attribute(char *symbol, int option) {
 void _add_node_stack(char *s) {
 
     Node *node;
-    node = allocate_node();
+    node = _allocate_node();
 
-    if (!strcmp("SIGMA", s)) {
-        node->type = SELECTION;
-    } else if (!strcmp("PI", s)) {
-        node->type = PROJECTION;
-    } else if (!strcmp("ATRIBUICAO", s)) {
-        node->type = ASSIGNMENT;
-    } else if (!strcmp("RHO", s)) {
-        node->type = ASSIGNMENT2;
-    } else if (!strcmp("JUNCAO", s)) {
-        node->type = JOIN;
-    } else if (!strcmp("UNIAO", s)) {
-        node->type = UNION;
-    } else if (!strcmp("INTERSECCAO", s)) {
-        node->type = INTERSECTION;
-    } else if (!strcmp("SUBTRACAO", s)) {
-        node->type = SUBTRACTION;
-    } else if (!strcmp("PRODUTO_CARTESIANO", s)) {
-        node->type = CARTESIAN_PRODUCT;
-    } else if (!strcmp("JUNCAO_NATURAL", s)) {
-        node->type = NATURAL_JOIN;
-    } else if (!strcmp("DIVISAO", s)) {
-        node->type = DIVISION;
-    } else if (!strcmp("FSCRIPT", s)) {
-        node->type = F_SCRIPT;
-    } else if (!strcmp("JUNCAO_EXTERNA_ESQUERDA", s)) {
-        node->type = LEFT_OUTER_JOIN;
-    } else if (!strcmp("JUNCAO_EXTERNA_DIREITA", s)) {
-        node->type = RIGHT_OUTER_JOIN;
-    } else if (!strcmp("JUNCAO_EXTERNA_COMPLETA", s)) {
-        node->type = COMPLETE_OUTER_JOIN;
-    } else if (!strcmp("(", s)) {
-        node->type = OP_P;
-    } else if (!strcmp(")", s)) {
-        node->type = CL_P;
-    } else {
-        node->type = RELATION;
-        node->name = s;
-    }
-
-    node->attribute = attribute;
-    node->attribute2 = attribute2;
-    node->predicate = predicate;
-    node->right = node->left = NULL;
-
-    //Restaurando variáveis globais para NULL, para usalás posteriormente.
-    attribute = attribute2 = predicate = NULL;
+    _get_node_type(node,s);
+    _build_node(node);
 
 /*Se tipo do no a ser inserido na pilha for um ')'
      * entao deve-ser desempilhar e ajustar árvore no sentido a direita
      * até encontrar '(' e por fim desempilhar '(' */
-
     if (node->type == CL_P) {
 
         Node *temp, *aux;
@@ -128,27 +83,32 @@ void _add_node_stack(char *s) {
         while (top->node->type != OP_P) {
 
             if (temp == NULL) {
-                temp = pop();
+                temp = _pop();
             } else {
 
                 aux = temp;
-                temp = pop();
+                temp = _pop();
                 temp->right = aux;
             }
         }
 
-        pop();
-        push(temp);
+        _pop();
+        _push(temp);
+
+    } else if (node->type == ASSIGNMENT) {
+        Node *temp = _pop();
+        node->left = temp;
+        _push(node);
 
 /*Se tipo do no a ser inserido na pilha for uma operação binária
       * entao deve-ser desempilhar até encontrar '('
          * e ajustar a árvore para que o lado esquerdo
          * da operação binária já fique pronto*/
-
     } else if (node->type == UNION || node->type == JOIN || node->type == CARTESIAN_PRODUCT ||
                node->type == SUBTRACTION || node->type == NATURAL_JOIN || node->type == DIVISION ||
                node->type == LEFT_OUTER_JOIN || node->type == RIGHT_OUTER_JOIN ||
-               node->type == COMPLETE_OUTER_JOIN || node->type == ASSIGNMENT || node->type == INTERSECTION) {
+               node->type == COMPLETE_OUTER_JOIN || node->type == INTERSECTION
+            ) {
 
         Node *temp, *aux;
         temp = aux = NULL;
@@ -156,24 +116,24 @@ void _add_node_stack(char *s) {
         while (top != NULL && top->node->type != OP_P && top->node->type != ASSIGNMENT) {
 
             if (temp == NULL) {
-                temp = pop();
+                temp = _pop();
             } else {
 
                 aux = temp;
-                temp = pop();
+                temp = _pop();
                 temp->right = aux;
             }
         }
 
         node->left = temp;
-        push(node);
+        _push(node);
 
     } else {
-        push(node);
+
+        _push(node);
     }
 
 }
-
 
 void _show_node_list(NodeChar *nodeList) {
 
@@ -290,4 +250,57 @@ void _show_node(Node *node, int b) {
                 return;
         }
     }
+}
+
+void _get_node_type(Node *node, char *s) {
+
+    if (!strcmp("SIGMA", s)) {
+        node->type = SELECTION;
+    } else if (!strcmp("PI", s)) {
+        node->type = PROJECTION;
+    } else if (!strcmp("ATRIBUICAO", s)) {
+        node->type = ASSIGNMENT;
+    } else if (!strcmp("RHO", s)) {
+        node->type = ASSIGNMENT2;
+    } else if (!strcmp("JUNCAO", s)) {
+        node->type = JOIN;
+    } else if (!strcmp("UNIAO", s)) {
+        node->type = UNION;
+    } else if (!strcmp("INTERSECCAO", s)) {
+        node->type = INTERSECTION;
+    } else if (!strcmp("SUBTRACAO", s)) {
+        node->type = SUBTRACTION;
+    } else if (!strcmp("PRODUTO_CARTESIANO", s)) {
+        node->type = CARTESIAN_PRODUCT;
+    } else if (!strcmp("JUNCAO_NATURAL", s)) {
+        node->type = NATURAL_JOIN;
+    } else if (!strcmp("DIVISAO", s)) {
+        node->type = DIVISION;
+    } else if (!strcmp("FSCRIPT", s)) {
+        node->type = F_SCRIPT;
+    } else if (!strcmp("JUNCAO_EXTERNA_ESQUERDA", s)) {
+        node->type = LEFT_OUTER_JOIN;
+    } else if (!strcmp("JUNCAO_EXTERNA_DIREITA", s)) {
+        node->type = RIGHT_OUTER_JOIN;
+    } else if (!strcmp("JUNCAO_EXTERNA_COMPLETA", s)) {
+        node->type = COMPLETE_OUTER_JOIN;
+    } else if (!strcmp("(", s)) {
+        node->type = OP_P;
+    } else if (!strcmp(")", s)) {
+        node->type = CL_P;
+    } else {
+        node->type = RELATION;
+        node->name = s;
+    }
+}
+
+void _build_node(Node *node){
+
+    node->attribute = attribute;
+    node->attribute2 = attribute2;
+    node->predicate = predicate;
+    node->right = node->left = NULL;
+
+    //Restaurando variáveis globais para NULL, para usalás posteriormente.
+    attribute = attribute2 = predicate = NULL;
 }

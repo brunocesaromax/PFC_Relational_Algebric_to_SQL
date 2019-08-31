@@ -6,16 +6,15 @@ struct stack{
 struct stack *top;
 
 /************FUNCTION SIGNATURES***************/
-/*stack no inicio das operações*/
 
-void create_stack();
+void _create_stack();
 
-void push(Node *node);
+void _push(Node *node);
 
-Node *pop();
+Node* _pop();
 
-void display_stack();
+void _display_stack();
 
-Node *top_element();
+Node* _top_element();
 
 void _show_node_stack(Node *node, int b);

@@ -5,13 +5,11 @@
 void _tool_initialize() {
 
     printf("Initializing...\n\n\n");
-    create_stack();
-    create_tree();
-
+    _start_data_structures();
     return;
 }
 
-void create_tree() {
+void _create_tree() {
     root = (Tree*) malloc (sizeof(Tree));
     root->node = NULL;
 }
@@ -24,7 +22,7 @@ void _build_tree() {
     /*Enquanto houver elementos na pilha, desempilhar e empilhar a direita*/
     while (top != NULL) {
 
-        actual = pop();
+        actual = _pop();
 
         if (actual != NULL) {
 
@@ -38,7 +36,10 @@ void _build_tree() {
     }
 
     _show_tree(root->node, 0);
+    printf("\n*******************************************************************");
+    printf("*********************************************************************\n");
 
+    _start_data_structures();
 }
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
@@ -52,4 +53,14 @@ void _show_tree(Node *root, int b) {
         _show_node(root, b);
         _show_tree(root->left, b + 1);
     }
+}
+
+void _start_data_structures(){
+
+    free(root);
+    free(top);
+    root = top = NULL;
+    _create_tree();
+    _create_stack();
+    printf("\n\n\n");
 }

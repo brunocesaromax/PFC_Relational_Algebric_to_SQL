@@ -72,7 +72,7 @@ RESULTADO ATRIBUICAO PI Projnumero, Dnum, Unome, Endereco, Datanasc (GER_DEP_PRO
 PROJ_DEP5 ATRIBUICAO RHO(Pnr) (PI Projnumero (SIGMA Dnum=5 (PROJETO)))
 FUNC_PROJ ATRIBUICAO RHO (Cpf, Pnr) (PI Fcpf, Pnr (TRABALHA_EM))
 RESULTADO_CPF_FUNC ATRIBUICAO FUNC_PROJ DIVISAO PROJ_DEP5 /* Atributos foram renomeados para serem utilizados na operação de divisão*/
-RESULTADO ATRIBUICAO PI Unome, Pnome (RESULTADO_CPF_FUNC JUNCAO_NATURAL FUNCIONARIO) 
+RESULTADO ATRIBUICAO PI Unome, Pnome (RESULTADO_CPF_FUNC JUNCAO_NATURAL FUNCIONARIO)
 
 /*Consulta 4: Fazer uma lista dos números de projeto para aqueles que envolvem um funcionário cujo último nome é 'Silva', seja como um trabalhador ou como um gerente do departamento que controla o projeto.*/
 SILVA(Fcpf) ATRIBUICAO PI Cpf ( SIGMA Unome='Silva' (FUNCIONARIO))

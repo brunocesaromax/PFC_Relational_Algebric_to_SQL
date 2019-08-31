@@ -1,10 +1,10 @@
 #include "Stack.h"
 
-void create_stack() {
+void _create_stack() {
     top = NULL;
 }
 
-void push(Node *node) {
+void _push(Node *node) {
 
     if (top == NULL) {
 
@@ -21,7 +21,7 @@ void push(Node *node) {
     }
 }
 
-Node *pop() {
+Node* _pop() {
 
     struct stack *temp = top;
 
@@ -35,7 +35,7 @@ Node *pop() {
     }
 }
 
-void display_stack() {
+void _display_stack() {
     struct stack *temp = top;
 
     if (temp == NULL) {
@@ -50,7 +50,7 @@ void display_stack() {
     }
 }
 
-Node *top_element() {
+Node* _top_element() {
     return (top->node);
 }
 

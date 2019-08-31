@@ -6,8 +6,14 @@
 }
 %token NUMERO, NOME, SIGMA, PI, ATRIBUICAO, RHO, AND, OR, NOT, UNIAO, INTERSECCAO, SUBTRACAO, PRODUTO_CARTESIANO, JUNCAO, JUNCAO_NATURAL, DIVISAO, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, JUNCAO_EXTERNA_ESQUERDA, JUNCAO_EXTERNA_DIREITA, JUNCAO_EXTERNA_COMPLETA, COMENTARIO;
 
+init:
+    {_tool_initialize();} consulta
+;
+
 consulta:
-    {_tool_initialize();} ( operacao_consulta | COMENTARIO)* {_build_tree();}
+        ( operacao_consulta {_build_tree();} | COMENTARIO) consulta
+    |
+        ( operacao_consulta {_build_tree();} | COMENTARIO)
 ;
 
 operacao_consulta:
@@ -121,8 +127,13 @@ projecao:
 ;
 
 renomeacao1:
+        NOME<y> {_add_node_stack(y.stringval);}
+        ATRIBUICAO            {_add_node_stack("ATRIBUICAO");}
+        operacao_consulta
+
+    |
         NOME<y>
-        ( '(' lista_atributos {_add_node_stack(y.stringval);} ')' )?
+        '(' lista_atributos   {_add_node_stack(y.stringval);} ')'
         ATRIBUICAO            {_add_node_stack("ATRIBUICAO");}
         operacao_consulta
 ;
