@@ -84,50 +84,50 @@ void _show_node_stack(Node *node, int b) {
                 break;
 
             case ASSIGNMENT:
-                printf("ATRIBUICAO ");
+                printf("ASSIGNMENT ");
                 _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
-            case ASSIGNMENT2:
+            case ASSIGNMENT_RHO:
                 printf("RHO ");
                 _show_node_list(node->attribute);
                 printf("\n");
                 break;
 
             case UNION:
-                printf("UNIAO ");
+                printf("UNION ");
                 printf("\n");
                 break;
 
             case INTERSECTION:
-                printf("INTERSECCAO ");
+                printf("INTERSECTION ");
                 printf("\n");
                 break;
 
             case SUBTRACTION:
-                printf("SUBTRACAO ");
+                printf("SUBTRACTION ");
                 printf("\n");
                 break;
 
             case CARTESIAN_PRODUCT:
-                printf("PRODUTO_CARTESIANO ");
+                printf("PRODUCT_CARTESIAN ");
                 printf("\n");
                 break;
 
             case NATURAL_JOIN:
-                printf("JUNCAO_NATURAL ");
+                printf("NATURAL_JOIN ");
                 printf("\n");
                 break;
 
             case JOIN:
-                printf("JUNCAO ");
+                printf("JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case DIVISION:
-                printf("DIVISAO ");
+                printf("DIVISION ");
                 printf("\n");
                 break;
 
@@ -139,24 +139,24 @@ void _show_node_stack(Node *node, int b) {
                 break;
 
             case LEFT_OUTER_JOIN:
-                printf("JUNCAO_EXTERNA_ESQUERDA ");
+                printf("LEFT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case RIGHT_OUTER_JOIN:
-                printf("JUNCAO_EXTERNA_DIREITA ");
+                printf("RIGHT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
             case COMPLETE_OUTER_JOIN:
-                printf("JUNCAO_EXTERNA_COMPLETA ");
+                printf("COMPLETE_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
                 break;
 
-            case OP_P:
+            case OPEN_PARENTHESES:
                 printf("( ");
                 printf("\n");
                 break;

@@ -4,7 +4,7 @@
 #include "Tree.c"
 
 }
-%token NUMERO, NOME, SIGMA, PI, ATRIBUICAO, RHO, AND, OR, NOT, UNIAO, INTERSECCAO, SUBTRACAO, PRODUTO_CARTESIANO, JUNCAO, JUNCAO_NATURAL, DIVISAO, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, JUNCAO_EXTERNA_ESQUERDA, JUNCAO_EXTERNA_DIREITA, JUNCAO_EXTERNA_COMPLETA, COMENTARIO;
+%token NUMERO, NOME, SIGMA, PI, ASSIGNMENT, RHO, AND, OR, NOT, UNION, INTERSECTION, SUBTRACTION, PRODUCT_CARTESIAN, JOIN, NATURAL_JOIN, DIVISION, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, LEFT_OUTER_JOIN, RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, COMENTARIO;
 
 init:
     {_tool_initialize();} consulta
@@ -71,35 +71,35 @@ operacao_binaria:
                 NOME<y>     {_add_node_stack(y.stringval);}
                 ')'         {_add_node_stack(")");}
         )
-        JUNCAO_NATURAL      {_add_node_stack("JUNCAO_NATURAL");}
+        NATURAL_JOIN      {_add_node_stack("NATURAL_JOIN");}
         renomeacao2
 ;
 
 
 tipo_operacao_binaria:
-        UNIAO               {_add_node_stack("UNIAO");}
+        UNION               {_add_node_stack("UNION");}
     |
-        INTERSECCAO         {_add_node_stack("INTERSECCAO");}
+        INTERSECTION         {_add_node_stack("INTERSECTION");}
     |
-        SUBTRACAO           {_add_node_stack("SUBTRACAO");}
+        SUBTRACTION           {_add_node_stack("SUBTRACTION");}
     |
-        PRODUTO_CARTESIANO  {_add_node_stack("PRODUTO_CARTESIANO");}
+        PRODUCT_CARTESIAN  {_add_node_stack("PRODUCT_CARTESIAN");}
     |
-        JUNCAO
-        predicado           {_add_node_stack("JUNCAO");}
+        JOIN
+        predicado           {_add_node_stack("JOIN");}
     |
-        JUNCAO_NATURAL      {_add_node_stack("JUNCAO_NATURAL");}
+        NATURAL_JOIN      {_add_node_stack("NATURAL_JOIN");}
     |
-        JUNCAO_EXTERNA_ESQUERDA
-        predicado           {_add_node_stack("JUNCAO_EXTERNA_ESQUERDA");}
+        LEFT_OUTER_JOIN
+        predicado           {_add_node_stack("LEFT_OUTER_JOIN");}
     |
-        JUNCAO_EXTERNA_DIREITA
-        predicado           {_add_node_stack("JUNCAO_EXTERNA_DIREITA");}
+        RIGHT_OUTER_JOIN
+        predicado           {_add_node_stack("RIGHT_OUTER_JOIN");}
     |
-        JUNCAO_EXTERNA_COMPLETA
-        predicado           {_add_node_stack("JUNCAO_EXTERNA_COMPLETA");}
+        COMPLETE_OUTER_JOIN
+        predicado           {_add_node_stack("COMPLETE_OUTER_JOIN");}
     |
-        DIVISAO             {_add_node_stack("DIVISAO");}
+        DIVISION             {_add_node_stack("DIVISION");}
 ;
 
 selecao:
@@ -128,13 +128,13 @@ projecao:
 
 renomeacao1:
         NOME<y> {_add_node_stack(y.stringval);}
-        ATRIBUICAO            {_add_node_stack("ATRIBUICAO");}
+        ASSIGNMENT            {_add_node_stack("ASSIGNMENT");}
         operacao_consulta
 
     |
         NOME<y>
         '(' lista_atributos   {_add_node_stack(y.stringval);} ')'
-        ATRIBUICAO            {_add_node_stack("ATRIBUICAO");}
+        ASSIGNMENT            {_add_node_stack("ASSIGNMENT");}
         operacao_consulta
 ;
 

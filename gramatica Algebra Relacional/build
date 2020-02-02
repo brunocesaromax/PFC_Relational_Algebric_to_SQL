@@ -9,6 +9,6 @@ $ACCENT spec.acc
 
 $LEX spec.lex
 
-$CC -o algebra lex.yy.c auxil.c yygrammar.c $ENTIRE -w
+$CC -o relational-algebra lex.yy.c auxil.c yygrammar.c $ENTIRE -w
 
-algebra < input
+relational-algebra < input

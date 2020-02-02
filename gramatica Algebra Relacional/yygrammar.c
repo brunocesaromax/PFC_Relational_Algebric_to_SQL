@@ -208,7 +208,7 @@ _add_node_stack(")");
       }
       get_lexval();
 #line 74 "spec.acc"
-_add_node_stack("JUNCAO_NATURAL");
+_add_node_stack("NATURAL_JOIN");
 # line 213 "yygrammar.c"
       renomeacao2();
       } break;
@@ -221,65 +221,65 @@ tipo_operacao_binaria ()
    case 13: {
       get_lexval();
 #line 80 "spec.acc"
-_add_node_stack("UNIAO");
+_add_node_stack("UNION");
 # line 226 "yygrammar.c"
       } break;
    case 14: {
       get_lexval();
 #line 82 "spec.acc"
-_add_node_stack("INTERSECCAO");
+_add_node_stack("INTERSECTION");
 # line 232 "yygrammar.c"
       } break;
    case 15: {
       get_lexval();
 #line 84 "spec.acc"
-_add_node_stack("SUBTRACAO");
+_add_node_stack("SUBTRACTION");
 # line 238 "yygrammar.c"
       } break;
    case 16: {
       get_lexval();
 #line 86 "spec.acc"
-_add_node_stack("PRODUTO_CARTESIANO");
+_add_node_stack("PRODUCT_CARTESIAN");
 # line 244 "yygrammar.c"
       } break;
    case 17: {
       get_lexval();
       predicado();
 #line 89 "spec.acc"
-_add_node_stack("JUNCAO");
+_add_node_stack("JOIN");
 # line 251 "yygrammar.c"
       } break;
    case 18: {
       get_lexval();
 #line 91 "spec.acc"
-_add_node_stack("JUNCAO_NATURAL");
+_add_node_stack("NATURAL_JOIN");
 # line 257 "yygrammar.c"
       } break;
    case 19: {
       get_lexval();
       predicado();
 #line 94 "spec.acc"
-_add_node_stack("JUNCAO_EXTERNA_ESQUERDA");
+_add_node_stack("LEFT_OUTER_JOIN");
 # line 264 "yygrammar.c"
       } break;
    case 20: {
       get_lexval();
       predicado();
 #line 97 "spec.acc"
-_add_node_stack("JUNCAO_EXTERNA_DIREITA");
+_add_node_stack("RIGHT_OUTER_JOIN");
 # line 271 "yygrammar.c"
       } break;
    case 21: {
       get_lexval();
       predicado();
 #line 100 "spec.acc"
-_add_node_stack("JUNCAO_EXTERNA_COMPLETA");
+_add_node_stack("COMPLETE_OUTER_JOIN");
 # line 278 "yygrammar.c"
       } break;
    case 22: {
       get_lexval();
 #line 102 "spec.acc"
-_add_node_stack("DIVISAO");
+_add_node_stack("DIVISION");
 # line 284 "yygrammar.c"
       } break;
    }
@@ -367,7 +367,7 @@ _add_node_stack(y.stringval);
 # line 368 "yygrammar.c"
       get_lexval();
 #line 131 "spec.acc"
-_add_node_stack("ATRIBUICAO");
+_add_node_stack("ASSIGNMENT");
 # line 372 "yygrammar.c"
       operacao_consulta();
       } break;
@@ -382,7 +382,7 @@ _add_node_stack(y.stringval);
       get_lexval();
       get_lexval();
 #line 137 "spec.acc"
-_add_node_stack("ATRIBUICAO");
+_add_node_stack("ASSIGNMENT");
 # line 387 "yygrammar.c"
       operacao_consulta();
       } break;
@@ -1982,43 +1982,43 @@ int yycoordinate[] = {
 /* 131 */ 9999,
 /* 132 */ 9999,
 /* 133 */ 9999,
-/* 134 */ 82019,
+/* 134 */ 82020,
 /* 135 */ 9999,
 /* 136 */ 9999,
 /* 137 */ 9999,
-/* 138 */ 84017,
+/* 138 */ 84019,
 /* 139 */ 9999,
 /* 140 */ 9999,
 /* 141 */ 9999,
-/* 142 */ 86026,
+/* 142 */ 86025,
 /* 143 */ 9999,
 /* 144 */ 9999,
 /* 145 */ 89009,
 /* 146 */ 9999,
-/* 147 */ 88014,
+/* 147 */ 88012,
 /* 148 */ 9999,
 /* 149 */ 9999,
 /* 150 */ 9999,
-/* 151 */ 91022,
+/* 151 */ 91020,
 /* 152 */ 9999,
 /* 153 */ 9999,
 /* 154 */ 94009,
 /* 155 */ 9999,
-/* 156 */ 93031,
+/* 156 */ 93023,
 /* 157 */ 9999,
 /* 158 */ 9999,
 /* 159 */ 97009,
 /* 160 */ 9999,
-/* 161 */ 96030,
+/* 161 */ 96024,
 /* 162 */ 9999,
 /* 163 */ 9999,
 /* 164 */ 100009,
 /* 165 */ 9999,
-/* 166 */ 99031,
+/* 166 */ 99027,
 /* 167 */ 9999,
 /* 168 */ 9999,
 /* 169 */ 9999,
-/* 170 */ 102015,
+/* 170 */ 102016,
 /* 171 */ 9999,
 /* 172 */ 9999,
 /* 173 */ 107005,
@@ -2942,27 +2942,27 @@ char * yyprintname(n)
    else 
       switch(n-50000) {
          case 281: return "COMENTARIO"; break;
-         case 280: return "JUNCAO_EXTERNA_COMPLETA"; break;
-         case 279: return "JUNCAO_EXTERNA_DIREITA"; break;
-         case 278: return "JUNCAO_EXTERNA_ESQUERDA"; break;
+         case 280: return "COMPLETE_OUTER_JOIN"; break;
+         case 279: return "RIGHT_OUTER_JOIN"; break;
+         case 278: return "LEFT_OUTER_JOIN"; break;
          case 277: return "FSCRIPT"; break;
          case 276: return "SUM"; break;
          case 275: return "MIN"; break;
          case 274: return "MAX"; break;
          case 273: return "AVERAGE"; break;
          case 272: return "COUNT"; break;
-         case 271: return "DIVISAO"; break;
-         case 270: return "JUNCAO_NATURAL"; break;
-         case 269: return "JUNCAO"; break;
-         case 268: return "PRODUTO_CARTESIANO"; break;
-         case 267: return "SUBTRACAO"; break;
-         case 266: return "INTERSECCAO"; break;
-         case 265: return "UNIAO"; break;
+         case 271: return "DIVISION"; break;
+         case 270: return "NATURAL_JOIN"; break;
+         case 269: return "JOIN"; break;
+         case 268: return "PRODUCT_CARTESIAN"; break;
+         case 267: return "SUBTRACTION"; break;
+         case 266: return "INTERSECTION"; break;
+         case 265: return "UNION"; break;
          case 264: return "NOT"; break;
          case 263: return "OR"; break;
          case 262: return "AND"; break;
          case 261: return "RHO"; break;
-         case 260: return "ATRIBUICAO"; break;
+         case 260: return "ASSIGNMENT"; break;
          case 259: return "PI"; break;
          case 258: return "SIGMA"; break;
          case 257: return "NOME"; break;
