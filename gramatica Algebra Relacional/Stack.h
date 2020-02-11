@@ -18,3 +18,5 @@ void _display_stack();
 Node* _top_element();
 
 void _show_node_stack(Node *node, int b);
+
+int _stack_is_empty();

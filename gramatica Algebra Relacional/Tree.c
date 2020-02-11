@@ -3,7 +3,6 @@
 
 /*Inicializando a ferramenta*/
 void _tool_initialize() {
-
     printf("Initializing...\n\n\n");
     _start_data_structures();
     return;
@@ -16,16 +15,13 @@ void _create_tree() {
 
 /*Função de construção da árvore logo após regras de parênteses tiverem sido executadas*/
 void _build_tree() {
-
     Node *actual = NULL;
 
     /*Enquanto houver elementos na pilha, desempilhar e empilhar a direita*/
     while (top != NULL) {
-
         actual = _pop();
 
         if (actual != NULL) {
-
             if (!root->node) {
                 root->node = actual;
             } else {
@@ -56,11 +52,12 @@ void _show_tree(Node *root, int b) {
 }
 
 void _start_data_structures(){
-
     free(root);
     free(top);
     root = top = NULL;
+
     _create_tree();
     _create_stack();
+
     printf("\n\n\n");
 }

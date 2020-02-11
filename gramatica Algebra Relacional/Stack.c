@@ -22,14 +22,10 @@ void _push(Node *node) {
 }
 
 Node* _pop() {
-
     struct stack *temp = top;
-
     if (temp == NULL) {
         return NULL;
-
     } else {
-
         top = top->next;
         return temp->node;
     }
@@ -44,7 +40,6 @@ void _display_stack() {
     }
 
     while (temp != NULL) {
-
         _show_node_stack(temp->node, 0);
         temp = temp->next;
     }
@@ -59,12 +54,10 @@ void _show_node_stack(Node *node, int b) {
     if (!node) {
         printf("*");
     } else {
-
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
         switch (node->type) {
-
             case SELECTION:
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
@@ -165,4 +158,11 @@ void _show_node_stack(Node *node, int b) {
                 return;
         }
     }
+}
+
+int _stack_is_empty(){
+    if (top == NULL)
+        return 1;
+    else
+        return 0;
 }

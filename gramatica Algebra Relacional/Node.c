@@ -6,20 +6,18 @@ NodeChar *attribute = NULL;
 NodeChar *attribute2 = NULL;
 NodeChar *predicate = NULL;
 
-Node* _allocate_node() {
+Node *_allocate_node() {
     return (Node *) malloc(sizeof(Node));
 }
 
 /*Adicionando novos símbolos a lista de predicado*/
 void _add_symbols_predicate(char *symbol) {
-
     NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
 
     if (!predicate) {
         predicate = node;
     } else {
-
         NodeChar *aux = predicate;
         while (aux->next != NULL) {
             aux = aux->next;
@@ -27,12 +25,10 @@ void _add_symbols_predicate(char *symbol) {
 
         aux->next = node;
     }
-
 }
 
 /*Adicionando novos símbolos a lista de atributos*/
 void _add_symbols_attribute(char *symbol, int option) {
-
     NodeChar *aux;
 
     if (option == 1) {
@@ -47,7 +43,6 @@ void _add_symbols_attribute(char *symbol, int option) {
     if (!aux) {
         aux = node;
     } else {
-
         NodeChar *temp = aux;
         while (temp->next != NULL) {
             temp = temp->next;
@@ -69,23 +64,20 @@ void _add_node_stack(char *s) {
     Node *node;
     node = _allocate_node();
 
-    _get_node_type(node,s);
+    _get_node_type(node, s);
     _build_node(node);
 
 /*Se tipo do no a ser inserido na pilha for um ')'
      * entao deve-ser desempilhar e ajustar árvore no sentido a direita
      * até encontrar '(' e por fim desempilhar '(' */
     if (node->type == CLOSE_PARENTHESES) {
-
         Node *temp, *aux;
         temp = aux = NULL;
 
         while (top->node->type != OPEN_PARENTHESES) {
-
             if (temp == NULL) {
                 temp = _pop();
             } else {
-
                 aux = temp;
                 temp = _pop();
                 temp->right = aux;
@@ -100,25 +92,33 @@ void _add_node_stack(char *s) {
         node->left = temp;
         _push(node);
 
+    } else if (node->type == RELATION) {
+        if (_stack_is_empty()) {
+            _push(node);
+        } else {
+            Node *temp = _pop();
+
+            if (temp->type == ASSIGNMENT_RHO) {
+                temp->left = node;
+                _push(temp);
+            } else {
+                _push(temp);
+                _push(node);
+            }
+        }
+
 /*Se tipo do no a ser inserido na pilha for uma operação binária
       * entao deve-ser desempilhar até encontrar '('
          * e ajustar a árvore para que o lado esquerdo
          * da operação binária já fique pronto*/
-    } else if (node->type == UNION || node->type == JOIN || node->type == CARTESIAN_PRODUCT ||
-               node->type == SUBTRACTION || node->type == NATURAL_JOIN || node->type == DIVISION ||
-               node->type == LEFT_OUTER_JOIN || node->type == RIGHT_OUTER_JOIN ||
-               node->type == COMPLETE_OUTER_JOIN || node->type == INTERSECTION
-            ) {
-
+    } else if (_node_type_is_operation_binary(node->type)) {
         Node *temp, *aux;
         temp = aux = NULL;
 
         while (top != NULL && top->node->type != OPEN_PARENTHESES && top->node->type != ASSIGNMENT) {
-
             if (temp == NULL) {
                 temp = _pop();
             } else {
-
                 aux = temp;
                 temp = _pop();
                 temp->right = aux;
@@ -129,14 +129,11 @@ void _add_node_stack(char *s) {
         _push(node);
 
     } else {
-
         _push(node);
     }
-
 }
 
 void _show_node_list(NodeChar *nodeList) {
-
     NodeChar *aux = nodeList;
     while (aux != NULL) {
         printf("%s", aux->name);
@@ -145,16 +142,13 @@ void _show_node_list(NodeChar *nodeList) {
 }
 
 void _show_node(Node *node, int b) {
-
     if (!node) {
         printf("*");
     } else {
-
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
         switch (node->type) {
-
             case SELECTION:
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
@@ -253,7 +247,6 @@ void _show_node(Node *node, int b) {
 }
 
 void _get_node_type(Node *node, char *s) {
-
     if (!strcmp("SIGMA", s)) {
         node->type = SELECTION;
     } else if (!strcmp("PI", s)) {
@@ -294,8 +287,7 @@ void _get_node_type(Node *node, char *s) {
     }
 }
 
-void _build_node(Node *node){
-
+void _build_node(Node *node) {
     node->attribute = attribute;
     node->attribute2 = attribute2;
     node->predicate = predicate;
@@ -303,4 +295,15 @@ void _build_node(Node *node){
 
     //Restaurando variáveis globais para NULL, para usalás posteriormente.
     attribute = attribute2 = predicate = NULL;
+}
+
+int _node_type_is_operation_binary(NodeType type) {
+    if (type == UNION || type == JOIN || type == CARTESIAN_PRODUCT ||
+        type == SUBTRACTION || type == NATURAL_JOIN || type == DIVISION ||
+        type == LEFT_OUTER_JOIN || type == RIGHT_OUTER_JOIN ||
+        type == COMPLETE_OUTER_JOIN || type == INTERSECTION) {
+        return 1;
+    } else {
+        return 0;
+    }
 }

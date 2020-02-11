@@ -139,9 +139,21 @@ renomeacao1:
 ;
 
 renomeacao2:
-        RHO
-        NOME<y>          {_add_symbols_attribute(y.stringval,1);}
-                         { _add_node_stack("RHO");}
+        RHO              { _add_node_stack("RHO");}
+        NOME<y>          { _add_node_stack(y.stringval);}
+        '('              { _add_node_stack("(");}
+        (
+                     NOME<y>  {_add_node_stack(y.stringval);}
+                |
+                     operacao_consulta
+        )
+        ')'              {_add_node_stack(")");}
+    |
+        RHO              { _add_node_stack("RHO");}
+        NOME<y>          {_add_node_stack(y.stringval);}
+        '('              {_add_symbols_attribute("(",1);}
+        lista_atributos
+        ')'              {_add_symbols_attribute(")",1);}
         '('              {_add_node_stack("(");}
         (
                      NOME<y>  {_add_node_stack(y.stringval);}
@@ -150,25 +162,10 @@ renomeacao2:
         )
         ')'              {_add_node_stack(")");}
     |
-        RHO
-        NOME<y>          {_add_symbols_attribute(y.stringval,1);}
+        RHO              { _add_node_stack("RHO");}
         '('              {_add_symbols_attribute("(",1);}
         lista_atributos
         ')'              {_add_symbols_attribute(")",1);}
-                         {_add_node_stack("RHO");}
-        '('              {_add_node_stack("(");}
-        (
-                     NOME<y>  {_add_node_stack(y.stringval);}
-                |
-                     operacao_consulta
-        )
-        ')'              {_add_node_stack(")");}
-    |
-        RHO
-        '('              {_add_symbols_attribute("(",1);}
-        lista_atributos
-        ')'              {_add_symbols_attribute(")",1);}
-                         {_add_node_stack("RHO");}
         '('              {_add_node_stack("(");}
         (
                      NOME<y>  {_add_node_stack(y.stringval);}
