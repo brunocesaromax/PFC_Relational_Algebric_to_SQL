@@ -5,15 +5,11 @@ void _create_stack() {
 }
 
 void _push(Node *node) {
-
     if (top == NULL) {
-
         top = (struct stack *) malloc(1 * sizeof(struct stack));
         top->node = node;
         top->next = NULL;
-
     } else {
-
         struct stack *temp = (struct stack *) malloc(1 * sizeof(struct stack));
         temp->next = top;
         temp->node = node;

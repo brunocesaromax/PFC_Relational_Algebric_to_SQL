@@ -31,7 +31,8 @@ void _build_tree() {
         }
     }
 
-    _show_tree(root->node, 0);
+//    root = subTreeList->node;
+    _show_tree(root, 0);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
 
@@ -40,7 +41,6 @@ void _build_tree() {
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
 void _show_tree(Node *root, int b) {
-
     if (root == NULL) {
         _show_node(root, b);
         return;
@@ -54,10 +54,12 @@ void _show_tree(Node *root, int b) {
 void _start_data_structures(){
     free(root);
     free(top);
-    root = top = NULL;
+    free(subTreeList);
+    root = top = subTreeList = NULL;
 
     _create_tree();
     _create_stack();
+    _create_sub_tree_list();
 
     printf("\n\n\n");
 }
