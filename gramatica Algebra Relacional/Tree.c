@@ -4,12 +4,13 @@
 /*Inicializando a ferramenta*/
 void _tool_initialize() {
     printf("Initializing...\n\n\n");
+    _create_sub_tree_list();
     _start_data_structures();
     return;
 }
 
 void _create_tree() {
-    root = (Tree*) malloc (sizeof(Tree));
+    root = (Tree *) malloc(sizeof(Tree));
     root->node = NULL;
 }
 
@@ -40,7 +41,6 @@ void _build_tree() {
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
 void _show_tree(Node *root, int b) {
-
     if (root == NULL) {
         _show_node(root, b);
         return;
@@ -51,7 +51,7 @@ void _show_tree(Node *root, int b) {
     }
 }
 
-void _start_data_structures(){
+void _start_data_structures() {
     free(root);
     free(top);
     root = top = NULL;
