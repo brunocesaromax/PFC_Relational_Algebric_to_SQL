@@ -1,7 +1,9 @@
+#ifndef  FUNCTIONS_H_INCLUDED
+#define  FUNCTIONS_H_INCLUDED
+
 typedef enum nodeType NodeType;
 typedef struct nodeChar NodeChar;
 typedef struct node Node;
-typedef struct subTreesList SubTreeList;
 
 enum nodeType {
     RELATION, SELECTION, PROJECTION, ASSIGNMENT, ASSIGNMENT_RHO,
@@ -25,14 +27,6 @@ struct node {
     Node *right;
 };
 
-struct subTreesList{
-    char *name;
-    Node *node;
-    SubTreeList *next;
-};
-
-SubTreeList *subTreeList;
-
 /************FUNCTION SIGNATURES***************/
 
 Node *allocate_node();
@@ -53,8 +47,4 @@ void _build_node(Node *node);
 
 Node* _allocate_node();
 
-const char *get_node_type_name(NodeType type);
-
-void _create_sub_tree_list();
-
-void _add_sub_tree(Node *node);
+#endif

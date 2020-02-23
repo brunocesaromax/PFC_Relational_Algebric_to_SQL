@@ -60,6 +60,7 @@ void _add_symbols_attribute(char *symbol, int option) {
 
 /*Adicionando nós na pilha para ao fim apenas reajustar a árvore através da pilha*/
 void _add_node_stack(char *s) {
+
     Node *node;
     node = _allocate_node();
 
@@ -90,7 +91,6 @@ void _add_node_stack(char *s) {
         Node *temp = _pop();
         node->left = temp;
         _push(node);
-        _add_sub_tree(node);
 
     } else if (node->type == RELATION) {
         if (_stack_is_empty()) {
@@ -293,11 +293,6 @@ void _build_node(Node *node) {
     node->predicate = predicate;
     node->right = node->left = NULL;
 
-    //TODO: Ver depois como irá ficar o caso do RHO
-    /*if (node->type == OPEN_PARENTHESES) {
-        _show_node_list(attribute);
-        _show_node_list(attribute2);
-    }*/
     //Restaurando variáveis globais para NULL, para usalás posteriormente.
     attribute = attribute2 = predicate = NULL;
 }
@@ -311,71 +306,4 @@ int _node_type_is_operation_binary(NodeType type) {
     } else {
         return 0;
     }
-}
-
-const char *get_node_type_name(NodeType type) {
-    switch (type) {
-        case RELATION:
-            return "RELATION";
-        case SELECTION:
-            return "SELECTION";
-        case PROJECTION:
-            return "PROJECTION";
-        case ASSIGNMENT:
-            return "ASSIGNMENT";
-        case ASSIGNMENT_RHO:
-            return "ASSIGNMENT_RHO";
-        case JOIN:
-            return "JOIN";
-        case NATURAL_JOIN:
-            return "NATURAL_JOIN";
-        case UNION:
-            return "UNION";
-        case INTERSECTION:
-            return "INTERSECTION";
-        case SUBTRACTION:
-            return "SUBTRACTION";
-        case CARTESIAN_PRODUCT:
-            return "CARTESIAN_PRODUCT";
-        case DIVISION:
-            return "DIVISION";
-        case F_SCRIPT:
-            return "F_SCRIPT";
-        case LEFT_OUTER_JOIN:
-            return "LEFT_OUTER_JOIN";
-        case RIGHT_OUTER_JOIN:
-            return "RIGHT_OUTER_JOIN";
-        case COMPLETE_OUTER_JOIN:
-            return "COMPLETE_OUTER_JOIN";
-        case OPEN_PARENTHESES:
-            return "OPEN_PARENTHESES";
-        case CLOSE_PARENTHESES:
-            return "CLOSE_PARENTHESES";
-    }
-}
-
-void _add_sub_tree(Node *node) {
-    if (subTreeList == NULL) {
-        subTreeList = (SubTreeList *) malloc(sizeof(SubTreeList));
-        subTreeList->name = node->left->name;
-        subTreeList->node = node;
-        subTreeList->next = NULL;
-    } else {
-        SubTreeList *new = (SubTreeList *) malloc(sizeof(SubTreeList));
-        new->name = node->left->name;
-        new->node = node;
-        new->next = NULL;
-
-        SubTreeList *aux = subTreeList;
-
-        while (aux->next != NULL) {
-            aux = aux->next;
-        }
-
-        aux->next = new;
-    }
-}
-
-void _create_sub_tree_list() {
-    subTreeList = NULL;
 }
