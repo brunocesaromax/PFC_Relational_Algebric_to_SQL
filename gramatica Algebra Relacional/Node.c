@@ -102,6 +102,7 @@ void _add_node_stack(char *s) {
             if (temp->type == ASSIGNMENT_RHO) {
                 temp->left = _get_sub_tree_or_node(node);
                 _push(temp);
+                _add_sub_tree(temp);
             } else {
                 _push(temp);
                 _push(_get_sub_tree_or_node(node));
@@ -126,16 +127,14 @@ void _add_node_stack(char *s) {
             }
         }
 
-//        printf("%s\n",get_node_type_name(top->node->type));
-//        printf("%s\n",top->node->left != NULL ? "TRUE" : "FALSE");
-//        printf("%d\n",_exists_sub_tree_same_name(top->node->left->name));
-        //TODO: Corrigir erro do ASSIGNMENT
-        if (top->node->type == ASSIGNMENT && top->node->left != NULL &&
-            _exists_sub_tree_same_name(top->node->left->name)) {
+        /*Adicionar subárvore existente a esquerda de um nó de operação binária
+         * somente se as condições a seguir forem satisfeitas*/
+        if ((top->node->type == ASSIGNMENT || top->node->type == ASSIGNMENT_RHO)
+            && top->node->left != NULL && _exists_sub_tree_same_name(top->node->left->name) && temp == NULL) {
             temp = _pop();
         }
 
-        node->left = _get_sub_tree_or_node(temp);
+        node->left = temp;
         _push(node);
 
     } else {
@@ -390,7 +389,6 @@ void _create_sub_tree_list() {
 Node *_get_sub_tree_or_node(Node *node) {
     SubTreeList *aux = subTreeList;
     while (aux != NULL) {
-        printf("%s = %s \n", aux->name, node->name);
         if (strcmp(aux->name, node->name) == 0) {
             return aux->node;
         }

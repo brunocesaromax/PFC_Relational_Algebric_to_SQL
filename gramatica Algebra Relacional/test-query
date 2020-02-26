@@ -1,2 +1,6 @@
-FUNCS_DEPT5 ASSIGNMENT SIGMA Dnr=5(FUNCIONARIO)
-RESULTADO1 ASSIGNMENT FUNCS_DEPT5 UNION DEPENDENET
+RHO DEP_GER (DEPARTAMENTO JOIN Cpf_gerente=Cpf FUNCIONARIO)
+RESULTADO ASSIGNMENT PI Dnome, Unome, Pnome (DEP_GER)
+
+/* Testar consultas a partir das consultas acima
+    Observar comportamento do RHO com atributos
+*/
