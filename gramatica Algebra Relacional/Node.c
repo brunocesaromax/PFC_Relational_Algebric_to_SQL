@@ -103,6 +103,18 @@ void _add_node_stack(char *s) {
                 temp->left = _get_sub_tree_or_node(node);
                 _push(temp);
                 _add_sub_tree(temp);
+
+            } else if (temp->type == OPEN_PARENTHESES) {
+                Node *temp2 = _pop();
+
+                if (temp2->type == ASSIGNMENT_RHO){
+                    temp2->left->name = node->name;
+                }
+
+                _push(temp2);
+                _push(temp);
+                _push(_get_sub_tree_or_node(node));
+
             } else {
                 _push(temp);
                 _push(_get_sub_tree_or_node(node));
@@ -297,10 +309,24 @@ void _get_node_type(Node *node, char *s) {
 }
 
 void _build_node(Node *node) {
+    if (node->type == OPEN_PARENTHESES) {
+        Node *top = _top_element();
+
+        if (top->type == ASSIGNMENT_RHO) {
+            Node *nodeNew = _allocate_node();
+            nodeNew->attribute = attribute;
+            nodeNew->type = RELATION;
+            nodeNew->left = nodeNew->right = NULL;
+            top->left = nodeNew;
+
+            attribute = NULL;
+        }
+    }
+
     node->attribute = attribute;
     node->attribute2 = attribute2;
     node->predicate = predicate;
-    node->right = node->left = NULL;
+    node->left = node->right = NULL;
 
     //Restaurando variáveis globais para NULL, para usalás posteriormente.
     attribute = attribute2 = predicate = NULL;
