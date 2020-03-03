@@ -105,13 +105,12 @@ void _add_node_stack(char *s) {
                 _add_sub_tree(temp);
 
             } else if (temp->type == OPEN_PARENTHESES) {
-                Node *temp2 = _pop();
+                Node *nodeRHO = _get_first_RHO();
 
-                if (temp2->type == ASSIGNMENT_RHO){
-                    temp2->left->name = node->name;
+                if(nodeRHO != NULL){
+                    nodeRHO->left->name = node->name;
                 }
 
-                _push(temp2);
                 _push(temp);
                 _push(_get_sub_tree_or_node(node));
 
@@ -312,7 +311,7 @@ void _build_node(Node *node) {
     if (node->type == OPEN_PARENTHESES) {
         Node *top = _top_element();
 
-        if (top->type == ASSIGNMENT_RHO) {
+        if (top->type == ASSIGNMENT_RHO && top->left == NULL) {
             Node *nodeNew = _allocate_node();
             nodeNew->attribute = attribute;
             nodeNew->type = RELATION;

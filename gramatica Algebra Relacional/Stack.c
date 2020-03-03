@@ -5,15 +5,12 @@ void _create_stack() {
 }
 
 void _push(Node *node) {
-
     if (top == NULL) {
-
         top = (struct stack *) malloc(1 * sizeof(struct stack));
         top->node = node;
         top->next = NULL;
 
     } else {
-
         struct stack *temp = (struct stack *) malloc(1 * sizeof(struct stack));
         temp->next = top;
         temp->node = node;
@@ -21,7 +18,7 @@ void _push(Node *node) {
     }
 }
 
-Node* _pop() {
+Node *_pop() {
     struct stack *temp = top;
     if (temp == NULL) {
         return NULL;
@@ -45,7 +42,22 @@ void _display_stack() {
     }
 }
 
-Node* _top_element() {
+Node *_get_first_RHO() {
+    struct stack *temp = top;
+    Node *rho = NULL;
+
+    while (temp != NULL) {
+        if (temp->node->type == ASSIGNMENT_RHO) {
+            rho = temp->node;
+        }
+
+        temp = temp->next;
+    }
+
+    return rho;
+}
+
+Node *_top_element() {
     return (top->node);
 }
 
@@ -160,7 +172,7 @@ void _show_node_stack(Node *node, int b) {
     }
 }
 
-int _stack_is_empty(){
+int _stack_is_empty() {
     if (top == NULL)
         return 1;
     else
