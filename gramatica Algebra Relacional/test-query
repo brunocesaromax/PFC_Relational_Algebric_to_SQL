@@ -1,1 +1,1 @@
-((PROJETO JOIN Dnum=Dnumero DEPARTAMENTO) JOIN Cpf_gerente=Cpf FUNCIONARIO)
+RHO R (Dnr, Nr_de_funcionarios, Media_sal) (Dnr FSCRIPT COUNT Cpf, AVERAGE Salario (FUNCIONARIO))

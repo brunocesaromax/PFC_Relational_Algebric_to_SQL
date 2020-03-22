@@ -107,7 +107,7 @@ void _add_node_stack(char *s) {
             } else if (temp->type == OPEN_PARENTHESES) {
                 Node *nodeRHO = _get_first_RHO();
 
-                if(nodeRHO != NULL){
+                if (nodeRHO != NULL) {
                     nodeRHO->left->name = node->name;
                 }
 
@@ -311,12 +311,17 @@ void _build_node(Node *node) {
     if (node->type == OPEN_PARENTHESES && !_stack_is_empty()) {
         Node *top = _top_element();
 
-        if (top->type == ASSIGNMENT_RHO && top->left == NULL) {
-            Node *nodeNew = _allocate_node();
-            nodeNew->attribute = attribute;
-            nodeNew->type = RELATION;
-            nodeNew->left = nodeNew->right = NULL;
-            top->left = nodeNew;
+        if (top->type == ASSIGNMENT_RHO) {
+            if (top->left == NULL) {
+                Node *nodeNew = _allocate_node();
+                nodeNew->attribute = attribute;
+                nodeNew->type = RELATION;
+                nodeNew->left = nodeNew->right = NULL;
+                top->left = nodeNew;
+
+            } else if (top->left->type == RELATION) {
+                top->left->attribute = attribute;
+            }
 
             attribute = NULL;
         }
