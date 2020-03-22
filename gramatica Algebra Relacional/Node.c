@@ -308,7 +308,7 @@ void _get_node_type(Node *node, char *s) {
 }
 
 void _build_node(Node *node) {
-    if (node->type == OPEN_PARENTHESES) {
+    if (node->type == OPEN_PARENTHESES && !_stack_is_empty()) {
         Node *top = _top_element();
 
         if (top->type == ASSIGNMENT_RHO && top->left == NULL) {

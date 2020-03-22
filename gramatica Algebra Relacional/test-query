@@ -1,1 +1,1 @@
-RELATORIO ASSIGNMENT RHO (Cpf, Salario_liquido, Bonus, Imposto) (PI Cpf, Salario - Deducao, 2000 * Anos_em_servico, 0.25 * Salario (FUNCIONARIO))
+((PROJETO JOIN Dnum=Dnumero DEPARTAMENTO) JOIN Cpf_gerente=Cpf FUNCIONARIO)
