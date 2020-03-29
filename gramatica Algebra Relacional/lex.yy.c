@@ -1032,7 +1032,7 @@ YY_RULE_SETUP
                             char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
                             strcpy(res, yytext);
                             yylval.stringval = res;
-                            return NUMERO;
+                            return NUMBER;
 }
 	YY_BREAK
 /*Expressão regular para strings com ou sem acento*/
@@ -1043,7 +1043,7 @@ YY_RULE_SETUP
 		char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
 		strcpy(res, yytext);
 		yylval.stringval = res;		
-		return NOME;
+		return NAME;
 }
 	YY_BREAK
 /*Expressão regular para comentários, semelhante a linguagem C*/
@@ -1051,7 +1051,7 @@ case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
 #line 64 "spec.lex"
-{return COMENTARIO;}
+{return COMMENT;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP

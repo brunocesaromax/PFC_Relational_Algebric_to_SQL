@@ -50,17 +50,17 @@
                             char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
                             strcpy(res, yytext);
                             yylval.stringval = res;
-                            return NUMERO;
+                            return NUMBER;
 }
 	/*Expressão regular para strings com ou sem acento*/
 ['a-zà-úA-ZÀ-Ú0-9_\.']+ {
 		char *res = (char *) malloc((strlen(yytext) + 1) * sizeof(char));
 		strcpy(res, yytext);
 		yylval.stringval = res;		
-		return NOME;
+		return NAME;
 }
 	/*Expressão regular para comentários, semelhante a linguagem C*/
-"/*"([^*]|\*+[^*/])*\*+"/" {return COMENTARIO;}
+"/*"([^*]|\*+[^*/])*\*+"/" {return COMMENT;}
 " "    { /* skip blank*/ }
 \n     { yypos++; /* adjust linenumber and skip newline */ }
 

@@ -1,82 +1,81 @@
 %prelude{
-#include "yystype.h"
-#include "Node.c"
-#include "Tree.c"
-
+    #include "yystype.h"
+    #include "Node.c"
+    #include "Tree.c"
 }
-%token NUMERO, NOME, SIGMA, PI, ASSIGNMENT, RHO, AND, OR, NOT, UNION, INTERSECTION, SUBTRACTION, PRODUCT_CARTESIAN, JOIN, NATURAL_JOIN, DIVISION, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, LEFT_OUTER_JOIN, RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, COMENTARIO;
+%token NUMBER, NAME, SIGMA, PI, ASSIGNMENT, RHO, AND, OR, NOT, UNION, INTERSECTION, SUBTRACTION, PRODUCT_CARTESIAN, JOIN, NATURAL_JOIN, DIVISION, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, LEFT_OUTER_JOIN, RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, COMMENT;
 
 init:
-    {_tool_initialize();} consulta
+    {_tool_initialize();} query
 ;
 
-consulta:
-        ( operacao_consulta {_build_tree();} | COMENTARIO) consulta
+query:
+        ( query_operation {_build_tree();} | COMMENT) query
     |
-        ( operacao_consulta {_build_tree();} | COMENTARIO)
+        ( query_operation {_build_tree();} | COMMENT)
 ;
 
-operacao_consulta:
+query_operation:
         '(' {_add_node_stack("(");}
-        operacao_consulta
+        query_operation
         ')' {_add_node_stack(")");}
    |
         (
-            operacao_unaria
+            unary_operation
           |
-            operacao_binaria
+            binary_operation
         )
 
 ;
 
-operacao_unaria:
-        selecao
+unary_operation:
+        selection
     |
-        projecao
+        projection
     |
-        renomeacao1
+        renaming1
     |
-        renomeacao2
+        renaming2
     |
-        agrupamento
+        grouping
 ;
 
-operacao_binaria:
+binary_operation:
         (
-                 NOME<y>    {_add_node_stack(y.stringval);}
+                 NAME<y>    {_add_node_stack(y.stringval);}
             |
-                 operacao_consulta
+                 query_operation
             |
                 '('         {_add_node_stack("(");}
-                NOME<y>     {_add_node_stack(y.stringval);}
+                NAME<y>     {_add_node_stack(y.stringval);}
                 ')'         {_add_node_stack(")");}
         )
-        tipo_operacao_binaria
+        binary_type_operation
         (
-                 NOME<y>    {_add_node_stack(y.stringval);}
+                 NAME<y>    {_add_node_stack(y.stringval);}
             |
-                 operacao_consulta
+                 query_operation
             |
                  '('        {_add_node_stack("(");}
-                 NOME<y>    {_add_node_stack(y.stringval);}
+                 NAME<y>    {_add_node_stack(y.stringval);}
                  ')'        {_add_node_stack(")");}
         )
     |
         (
-                NOME<y>     {_add_node_stack(y.stringval);}
+                NAME<y>     {_add_node_stack(y.stringval);}
             |
-                operacao_consulta
+                query_operation
             |
                 '('         {_add_node_stack("(");}
-                NOME<y>     {_add_node_stack(y.stringval);}
+                NAME<y>     {_add_node_stack(y.stringval);}
                 ')'         {_add_node_stack(")");}
         )
         NATURAL_JOIN      {_add_node_stack("NATURAL_JOIN");}
-        renomeacao2
+        renaming2
 ;
 
 
-tipo_operacao_binaria:
+binary_type_operation:
         UNION               {_add_node_stack("UNION");}
     |
         INTERSECTION         {_add_node_stack("INTERSECTION");}
@@ -86,140 +85,140 @@ tipo_operacao_binaria:
         PRODUCT_CARTESIAN  {_add_node_stack("PRODUCT_CARTESIAN");}
     |
         JOIN
-        predicado           {_add_node_stack("JOIN");}
+        predicate_rule           {_add_node_stack("JOIN");}
     |
         NATURAL_JOIN      {_add_node_stack("NATURAL_JOIN");}
     |
         LEFT_OUTER_JOIN
-        predicado           {_add_node_stack("LEFT_OUTER_JOIN");}
+        predicate_rule           {_add_node_stack("LEFT_OUTER_JOIN");}
     |
         RIGHT_OUTER_JOIN
-        predicado           {_add_node_stack("RIGHT_OUTER_JOIN");}
+        predicate_rule           {_add_node_stack("RIGHT_OUTER_JOIN");}
     |
         COMPLETE_OUTER_JOIN
-        predicado           {_add_node_stack("COMPLETE_OUTER_JOIN");}
+        predicate_rule           {_add_node_stack("COMPLETE_OUTER_JOIN");}
     |
         DIVISION             {_add_node_stack("DIVISION");}
 ;
 
-selecao:
+selection:
     SIGMA
-    predicado   {_add_node_stack("SIGMA");}
+    predicate_rule   {_add_node_stack("SIGMA");}
     '('         {_add_node_stack("(");}
     (
-                NOME<y>   {_add_node_stack(y.stringval);}
+                NAME<y>   {_add_node_stack(y.stringval);}
             |
-                operacao_consulta
+                query_operation
     )
     ')'         {_add_node_stack(")");}
 ;
 
-projecao:
+projection:
     PI
-    lista_atributos {_add_node_stack("PI");}
+    attribute_list  {_add_node_stack("PI");}
     '('             {_add_node_stack("(");}
     (
-                NOME<y> {_add_node_stack(y.stringval);}
+                NAME<y> {_add_node_stack(y.stringval);}
             |
-                operacao_consulta
+                query_operation
     )
     ')'             {_add_node_stack(")");}
 ;
 
-renomeacao1:
-        NOME<y> {_add_node_stack(y.stringval);}
-        ASSIGNMENT            {_add_node_stack("ASSIGNMENT");}
-        operacao_consulta
+renaming1:
+        NAME<y>          {_add_node_stack(y.stringval);}
+        ASSIGNMENT       {_add_node_stack("ASSIGNMENT");}
+        query_operation
 
     |
-        NOME<y>
-        '(' lista_atributos   {_add_node_stack(y.stringval);} ')'
+        NAME<y>
+        '(' attribute_list    {_add_node_stack(y.stringval);} ')'
         ASSIGNMENT            {_add_node_stack("ASSIGNMENT");}
-        operacao_consulta
+        query_operation
 ;
 
-renomeacao2:
+renaming2:
         RHO              { _add_node_stack("RHO");}
-        NOME<y>          { _add_node_stack(y.stringval);}
+        NAME<y>          { _add_node_stack(y.stringval);}
         '('              { _add_node_stack("(");}
         (
-                     NOME<y>  {_add_node_stack(y.stringval);}
+                     NAME<y>  {_add_node_stack(y.stringval);}
                 |
-                     operacao_consulta
+                     query_operation
         )
         ')'              {_add_node_stack(")");}
     |
         RHO              { _add_node_stack("RHO");}
-        NOME<y>          {_add_node_stack(y.stringval);}
+        NAME<y>          {_add_node_stack(y.stringval);}
         '('              {_add_symbols_attribute("(",1);}
-        lista_atributos
+        attribute_list
         ')'              {_add_symbols_attribute(")",1);}
         '('              {_add_node_stack("(");}
         (
-                     NOME<y>  {_add_node_stack(y.stringval);}
+                     NAME<y>  {_add_node_stack(y.stringval);}
                 |
-                     operacao_consulta
+                     query_operation
         )
         ')'              {_add_node_stack(")");}
     |
         RHO              { _add_node_stack("RHO");}
         '('              {_add_symbols_attribute("(",1);}
-        lista_atributos
+        attribute_list
         ')'              {_add_symbols_attribute(")",1);}
         '('              {_add_node_stack("(");}
         (
-                     NOME<y>  {_add_node_stack(y.stringval);}
+                     NAME<y>  {_add_node_stack(y.stringval);}
                 |
-                     operacao_consulta
+                     query_operation
         )
         ')'              {_add_node_stack(")");}
 ;
 
-agrupamento:
-    (lista_atributos)?
+grouping:
+    (attribute_list)?
     FSCRIPT
-    lista_funcoes_agregadas { _add_node_stack("FSCRIPT");}
+    aggregated_functions_list { _add_node_stack("FSCRIPT");}
     '('
     (
-                NOME<y>     {_add_node_stack(y.stringval);}
+                NAME<y>       {_add_node_stack(y.stringval);}
             |
-                operacao_consulta
+                query_operation
     )
     ')'
 ;
 
-predicado:
-        condicao
+predicate_rule:
+        condition
     |
-        condicao
-        operador_booleano
-        predicado
+        condition
+        boolean_operator
+        predicate_rule
     |
         '('         {_add_symbols_predicate("(");}
-        predicado
+        predicate_rule
         ')'         {_add_symbols_predicate(")");}
-        (operador_booleano predicado)?
+        (boolean_operator predicate_rule)?
 ;
 
-condicao:
+condition:
         '('       {_add_symbols_predicate("(");}
-        condicao
+        condition
         ')'       {_add_symbols_predicate(")");}
     |
         (
-                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                    NAME<a>   {_add_symbols_predicate(a.stringval);}
                 |
-                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+                    NUMBER<a> {_add_symbols_predicate(a.stringval);}
         )
-        operador_comparacao
+        comparison_operator
         (
-                    NOME<a>   {_add_symbols_predicate(a.stringval);}
+                    NAME<a>   {_add_symbols_predicate(a.stringval);}
                 |
-                    NUMERO<a> {_add_symbols_predicate(a.stringval);}
+                    NUMBER<a> {_add_symbols_predicate(a.stringval);}
         )
 ;
 
-operador_comparacao:
+comparison_operator:
         '='     {_add_symbols_predicate("=");}
     |
         '<'     {_add_symbols_predicate("<");}
@@ -233,7 +232,7 @@ operador_comparacao:
         '!' '=' {_add_symbols_predicate("!=");}
 ;
 
-operador_aritmetico:
+arithmetic_operator:
         '+' {_add_symbols_attribute("+",1);}
     |
         '-' {_add_symbols_attribute("-",1);}
@@ -243,30 +242,30 @@ operador_aritmetico:
         '/' {_add_symbols_attribute("/",1);}
 ;
 
-operador_booleano:
+boolean_operator:
         AND {_add_symbols_predicate(" AND ");}
     |
         OR  {_add_symbols_predicate(" OR ");}
 ;
 
-lista_atributos:
+attribute_list:
     (
-                NOME<a>   {_add_symbols_attribute(a.stringval,1);}
+                NAME<a>   {_add_symbols_attribute(a.stringval,1);}
             |
-                NUMERO<a> {_add_symbols_attribute(a.stringval,1);}
+                NUMBER<a> {_add_symbols_attribute(a.stringval,1);}
     )
     (
-            operador_aritmetico
+            arithmetic_operator
             (
-                        NOME<a>   {_add_symbols_attribute(a.stringval,1);}
+                        NAME<a>   {_add_symbols_attribute(a.stringval,1);}
                     |
-                        NUMERO<a> {_add_symbols_attribute(a.stringval,1);}
+                        NUMBER<a> {_add_symbols_attribute(a.stringval,1);}
             )
     )*
-    ( ','     {_add_symbols_attribute(",",1);} lista_atributos )?
+    ( ','     {_add_symbols_attribute(",",1);} attribute_list )?
 ;
 
-lista_funcoes_agregadas:
+aggregated_functions_list:
     (
                 COUNT   {_add_symbols_attribute("COUNT ",2);}
             |
@@ -278,6 +277,6 @@ lista_funcoes_agregadas:
             |
                 SUM     {_add_symbols_attribute("SUM ",2);}
     )
-    NOME<y> {_add_symbols_attribute(y.stringval,2);}
-    ( ','   {_add_symbols_attribute(",",2);} lista_funcoes_agregadas )?
+    NAME<y> {_add_symbols_attribute(y.stringval,2);}
+    ( ','   {_add_symbols_attribute(",",2);} aggregated_functions_list )?
 ;

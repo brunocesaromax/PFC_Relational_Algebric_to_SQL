@@ -4,7 +4,7 @@
 extern YYSTYPE yylval;
 extern long yypos;
 
-#define COMENTARIO 281
+#define COMMENT 281
 #define COMPLETE_OUTER_JOIN 280
 #define RIGHT_OUTER_JOIN 279
 #define LEFT_OUTER_JOIN 278
@@ -28,5 +28,5 @@ extern long yypos;
 #define ASSIGNMENT 260
 #define PI 259
 #define SIGMA 258
-#define NOME 257
-#define NUMERO 256
+#define NAME 257
+#define NUMBER 256
