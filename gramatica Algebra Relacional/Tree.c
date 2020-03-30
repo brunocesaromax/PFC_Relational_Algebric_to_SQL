@@ -1,5 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "Tree.h"
+
+char *json = "{\n\"glossary\": {\n"
+             "        \"title\": \"example glossary\",\n"
+             "\t\t\"GlossDiv\": {\n"
+             "            \"title\": \"S\",\n"
+             "\t\t\t\"GlossList\": {\n"
+             "                \"GlossEntry\": {\n"
+             "                    \"ID\": \"SGML\",\n"
+             "\t\t\t\t\t\"SortAs\": \"SGML\",\n"
+             "\t\t\t\t\t\"GlossTerm\": \"Standard Generalized Markup Language\",\n"
+             "\t\t\t\t\t\"Acronym\": \"SGML\",\n"
+             "\t\t\t\t\t\"Abbrev\": \"ISO 8879:1986\",\n"
+             "\t\t\t\t\t\"GlossDef\": {\n"
+             "                        \"para\": \"A meta-markup language, used to create markup languages such as DocBook.\",\n"
+             "\t\t\t\t\t\t\"GlossSeeAlso\": [\"GML\", \"XML\"]\n"
+             "                    },\n"
+             "\t\t\t\t\t\"GlossSee\": \"markup\"\n"
+             "                }\n"
+             "            }\n"
+             "        }\n"
+             "    }\n"
+             "}";
 
 /*Inicializando a ferramenta*/
 void _tool_initialize() {
@@ -54,10 +77,12 @@ void _show_tree(Node *root, int b) {
 void _start_data_structures() {
     free(root);
     free(top);
-    root = top = NULL;
+    free(tree_json);
+    root = top = tree_json = NULL;
 
     _create_tree();
     _create_stack();
+    tree_json = (char *) malloc(1000 * sizeof(char));
 
     printf("\n\n\n");
 }
