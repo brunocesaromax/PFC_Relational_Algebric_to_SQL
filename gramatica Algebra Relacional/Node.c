@@ -2,6 +2,7 @@
 #include <string.h>
 #include "Node.h"
 #include "Stack.c"
+#include <cjson/cJSON.h>
 
 NodeChar *attribute = NULL;
 NodeChar *attribute2 = NULL;
@@ -161,15 +162,25 @@ void _show_node_list(NodeChar *nodeList) {
     }
 }
 
-void _show_node(Node *node, int b) {
+void _show_node(Node *node, int b, cJSON *rootJson) {
     if (!node) {
         printf("*");
     } else {
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
+        cJSON *nodeJson, *predicateJson, *typeJson;
         switch (node->type) {
             case SELECTION:
+                //todo: fazer extração do trecho de código a seguir em metódo externo
+                nodeJson = cJSON_CreateObject();
+                predicateJson = cJSON_CreateArray();
+                typeJson = cJSON_CreateString("SIGMA");
+                _add_items_array(node->predicate, predicateJson);
+                cJSON_AddItemToObject(nodeJson, "type", typeJson);
+                cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
                 printf("\n");
@@ -441,4 +452,12 @@ int _exists_sub_tree_same_name(char *name) {
     }
 
     return 0;
+}
+
+void _add_items_array(NodeChar *items, cJSON *array) {
+    NodeChar *aux = items;
+    while (aux != NULL) {
+        cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
+        aux = aux->next;
+    }
 }

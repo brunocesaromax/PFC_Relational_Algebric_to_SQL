@@ -1,3 +1,5 @@
+#include <cjson/cJSON.h>
+
 typedef struct tree Tree;
 
 struct tree{
@@ -5,6 +7,7 @@ struct tree{
 };
 
 Tree *root;
+cJSON *rootJson;
 
 /************FUNCTION SIGNATURES***************/
 
@@ -14,6 +17,6 @@ void _create_tree();
 
 void _build_tree();
 
-void _show_tree(Node *root, int b);
+void _show_tree(Node *root, int b, cJSON *rootJson);
 
 void _start_data_structures();

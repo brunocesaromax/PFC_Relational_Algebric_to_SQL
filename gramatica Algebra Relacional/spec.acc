@@ -2,12 +2,11 @@
     #include "yystype.h"
     #include "Node.c"
     #include "Tree.c"
-    #include "FileJson.c"
 }
 %token NUMBER, NAME, SIGMA, PI, ASSIGNMENT, RHO, AND, OR, NOT, UNION, INTERSECTION, SUBTRACTION, PRODUCT_CARTESIAN, JOIN, NATURAL_JOIN, DIVISION, COUNT, AVERAGE, MAX, MIN, SUM, FSCRIPT, LEFT_OUTER_JOIN, RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, COMMENT;
 
 init:
-    {_tool_initialize();} query {_write_in_json_file();}
+    {_tool_initialize();} query
 ;
 
 query:

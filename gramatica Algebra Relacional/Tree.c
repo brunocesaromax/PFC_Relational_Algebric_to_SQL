@@ -2,33 +2,25 @@
 #include <stdlib.h>
 #include "Tree.h"
 
-char *json = "{\n\"glossary\": {\n"
-             "        \"title\": \"example glossary\",\n"
-             "\t\t\"GlossDiv\": {\n"
-             "            \"title\": \"S\",\n"
-             "\t\t\t\"GlossList\": {\n"
-             "                \"GlossEntry\": {\n"
-             "                    \"ID\": \"SGML\",\n"
-             "\t\t\t\t\t\"SortAs\": \"SGML\",\n"
-             "\t\t\t\t\t\"GlossTerm\": \"Standard Generalized Markup Language\",\n"
-             "\t\t\t\t\t\"Acronym\": \"SGML\",\n"
-             "\t\t\t\t\t\"Abbrev\": \"ISO 8879:1986\",\n"
-             "\t\t\t\t\t\"GlossDef\": {\n"
-             "                        \"para\": \"A meta-markup language, used to create markup languages such as DocBook.\",\n"
-             "\t\t\t\t\t\t\"GlossSeeAlso\": [\"GML\", \"XML\"]\n"
-             "                    },\n"
-             "\t\t\t\t\t\"GlossSee\": \"markup\"\n"
-             "                }\n"
-             "            }\n"
-             "        }\n"
-             "    }\n"
-             "}";
-
 /*Inicializando a ferramenta*/
 void _tool_initialize() {
     printf("Initializing...\n\n\n");
     _create_sub_tree_list();
     _start_data_structures();
+
+
+//    cJSON *root, *names, *ages;
+//    root  = cJSON_CreateObject();
+//    names = cJSON_CreateArray();
+//    ages  = cJSON_CreateArray();
+//    cJSON_AddItemToArray(names, cJSON_CreateString("Arroz"));
+//    cJSON_AddItemToArray(names, cJSON_CreateString("feijao"));
+//
+//    cJSON_AddItemToObject(root, "name", names);
+//    cJSON_AddItemToObject(root, "age", ages);
+//    char *out = cJSON_Print(root);
+//    printf("%s\n",out);
+
     return;
 }
 
@@ -55,7 +47,7 @@ void _build_tree() {
         }
     }
 
-    _show_tree(root->node, 0);
+    _show_tree(root->node, 0, rootJson);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
 
@@ -63,26 +55,27 @@ void _build_tree() {
 }
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
-void _show_tree(Node *root, int b) {
+void _show_tree(Node *root, int b, cJSON *rootJson) {
     if (root == NULL) {
-        _show_node(root, b);
+        _show_node(root, b, rootJson);
         return;
     } else {
-        _show_tree(root->right, b + 1);
-        _show_node(root, b);
-        _show_tree(root->left, b + 1);
+        _show_tree(root->right, b + 1, cJSON_CreateObject());
+        _show_node(root, b, rootJson);
+        _show_tree(root->left, b + 1, cJSON_CreateObject());
     }
 }
 
 void _start_data_structures() {
     free(root);
     free(top);
-    free(tree_json);
-    root = top = tree_json = NULL;
+    cJSON_Delete(rootJson);
+
+    root = top = rootJson = NULL;
 
     _create_tree();
     _create_stack();
-    tree_json = (char *) malloc(1000 * sizeof(char));
+    rootJson = cJSON_CreateObject();
 
     printf("\n\n\n");
 }

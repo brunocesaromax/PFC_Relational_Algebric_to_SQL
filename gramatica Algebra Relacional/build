@@ -9,6 +9,6 @@ $ACCENT spec.acc
 
 $LEX spec.lex
 
-$CC -o relational-algebra lex.yy.c auxil.c yygrammar.c $ENTIRE -w
+$CC -o relational-algebra lex.yy.c auxil.c yygrammar.c $ENTIRE -w -lcjson \
 
-relational-algebra < input
+relational-algebra < test-query
