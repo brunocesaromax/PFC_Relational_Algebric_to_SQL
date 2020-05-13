@@ -50,7 +50,8 @@ void _build_tree() {
     _show_tree(root->node, 0, rootJson);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
-
+    char *out = cJSON_Print(rootJson);
+    printf("%s\n", out);
     _start_data_structures();
 }
 
@@ -60,9 +61,9 @@ void _show_tree(Node *root, int b, cJSON *rootJson) {
         _show_node(root, b, rootJson);
         return;
     } else {
-        _show_tree(root->right, b + 1, cJSON_CreateObject());
+        _show_tree(root->right, b + 1, rootJson);
         _show_node(root, b, rootJson);
-        _show_tree(root->left, b + 1, cJSON_CreateObject());
+        _show_tree(root->left, b + 1, rootJson);
     }
 }
 

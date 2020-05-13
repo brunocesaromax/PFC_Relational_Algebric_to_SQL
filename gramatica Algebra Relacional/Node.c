@@ -169,13 +169,13 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
-        cJSON *nodeJson, *predicateJson, *typeJson;
+        cJSON *nodeJson, *predicateJson, *attributeJson, *typeJson, *name;
         switch (node->type) {
             case SELECTION:
                 //todo: fazer extração do trecho de código a seguir em metódo externo
                 nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString("SIGMA");
+                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
@@ -187,6 +187,16 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case RELATION:
+                nodeJson = cJSON_CreateObject();
+                attributeJson = cJSON_CreateArray();
+                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
+                _add_items_array(node->attribute, attributeJson);
+                name = cJSON_CreateString(node->name);
+                cJSON_AddItemToObject(nodeJson, "name", name);
+                cJSON_AddItemToObject(nodeJson, "type", typeJson);
+                cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+
                 printf("%s ", node->name);
                 _show_node_list(node->attribute);
                 printf("\n");
@@ -358,7 +368,7 @@ int _node_type_is_operation_binary(NodeType type) {
     }
 }
 
-const char *get_node_type_name(NodeType type) {
+char *_get_node_type_name(enum nodeType type) {
     switch (type) {
         case RELATION:
             return "RELATION";

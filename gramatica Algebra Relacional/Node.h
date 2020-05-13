@@ -12,6 +12,11 @@ enum nodeType {
     RIGHT_OUTER_JOIN, COMPLETE_OUTER_JOIN, OPEN_PARENTHESES, CLOSE_PARENTHESES
 };
 
+static inline char *_string_from_node_type(enum nodeType type){
+    static const char *strings[] = { "RELATION", "SELECTION" /* continue for rest of values */ };
+    return strings[type];
+}
+
 struct nodeChar {
     char *name;
     NodeChar *next;
