@@ -47,23 +47,24 @@ void _build_tree() {
         }
     }
 
-    _show_tree(root->node, 0, rootJson);
+    _show_tree(root->node, 0, rootJson, 0);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
+//    cJSON_DeleteItemFromObjectCaseSensitive(rootJson, "right");
     char *out = cJSON_Print(rootJson);
     printf("%s\n", out);
     _start_data_structures();
 }
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
-void _show_tree(Node *root, int b, cJSON *rootJson) {
+void _show_tree(Node *root, int b, cJSON *rootJson, int direction) {
     if (root == NULL) {
-        _show_node(root, b, rootJson);
+        _show_node(root, b, rootJson, direction);
         return;
     } else {
-        _show_tree(root->right, b + 1, rootJson);
-        _show_node(root, b, rootJson);
-        _show_tree(root->left, b + 1, rootJson);
+        _show_tree(root->left, b + 1, rootJson, 1);
+        _show_node(root, b, rootJson, direction);
+        _show_tree(root->right, b + 1, rootJson, 2);
     }
 }
 
@@ -77,6 +78,10 @@ void _start_data_structures() {
     _create_tree();
     _create_stack();
     rootJson = cJSON_CreateObject();
+    cJSON_SetNumberValue(rootJson, 0);
+//    cJSON_SetNumberValue(rootJson, 2);
+//    printf("TIPO: %d\n", rootJson->valueint);
+
 
     printf("\n\n\n");
 }

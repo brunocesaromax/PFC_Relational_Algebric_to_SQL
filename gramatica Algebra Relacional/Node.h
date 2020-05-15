@@ -55,7 +55,7 @@ void _add_node_stack(char *s);
 
 void _show_node_list(NodeChar *nodeChar);
 
-void _show_node(Node *node, int b, cJSON *rootJson);
+void _show_node(Node *node, int b, cJSON *rootJson, int direction);
 
 void _get_node_type(Node *node, char *s);
 

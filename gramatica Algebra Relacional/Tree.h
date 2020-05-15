@@ -17,6 +17,6 @@ void _create_tree();
 
 void _build_tree();
 
-void _show_tree(Node *root, int b, cJSON *rootJson);
+void _show_tree(Node *root, int b, cJSON *rootJson, int direction);
 
 void _start_data_structures();

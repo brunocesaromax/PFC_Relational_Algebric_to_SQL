@@ -163,7 +163,17 @@ void _show_node_list(NodeChar *nodeList) {
     }
 }
 
-void _show_node(Node *node, int b, cJSON *rootJson) {
+char* _get_node_name_by_direction(int direction){
+    if (direction == 0){
+        return NULL;
+    }else if (direction == 1){
+        return "left";
+    }else{
+        return "right";
+    }
+}
+
+void _show_node(Node *node, int b, cJSON *rootJson, int direction) {
     if (!node) {
         printf("*");
     } else {
@@ -171,16 +181,25 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
         for (i = 0; i < b; i++) printf("          ");
 
         cJSON *nodeJson, *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
+
+        if (direction == 0) {
+            nodeJson = rootJson;
+        } else {
+            nodeJson = cJSON_CreateObject();
+        }
+
+//        printf("TIPO: %d\n", rootJson->valueint);
+
+        typeJson = cJSON_CreateString(_string_from_node_type(node->type));
+        cJSON_AddItemToObject(nodeJson, "type", typeJson);
+
         switch (node->type) {
             case SELECTION:
                 //todo: fazer extração do trecho de código a seguir em metódo externo
-                nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction) , nodeJson);
 
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
@@ -188,15 +207,12 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case RELATION:
-                nodeJson = cJSON_CreateObject();
                 attributeJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->attribute, attributeJson);
                 name = cJSON_CreateString(node->name);
                 cJSON_AddItemToObject(nodeJson, "name", name);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("%s ", node->name);
                 _show_node_list(node->attribute);
@@ -204,14 +220,11 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case PROJECTION:
-                nodeJson = cJSON_CreateObject();
                 attributeJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->attribute, attributeJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("PI ");
                 _show_node_list(node->attribute);
@@ -219,25 +232,19 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case ASSIGNMENT:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("ASSIGNMENT ");
                 printf("\n");
                 break;
 
             case ASSIGNMENT_RHO:
-                nodeJson = cJSON_CreateObject();
                 attributeJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->attribute, attributeJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("RHO ");
                 _show_node_list(node->attribute);
@@ -245,68 +252,50 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case UNION:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("UNION ");
                 printf("\n");
                 break;
 
             case INTERSECTION:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("INTERSECTION ");
                 printf("\n");
                 break;
 
             case SUBTRACTION:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("SUBTRACTION ");
                 printf("\n");
                 break;
 
             case CARTESIAN_PRODUCT:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("PRODUCT_CARTESIAN ");
                 printf("\n");
                 break;
 
             case NATURAL_JOIN:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("NATURAL_JOIN ");
                 printf("\n");
                 break;
 
             case JOIN:
-                nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("JOIN ");
                 _show_node_list(node->predicate);
@@ -314,29 +303,23 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case DIVISION:
-                nodeJson = cJSON_CreateObject();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("DIVISION ");
                 printf("\n");
                 break;
 
             case F_SCRIPT:
-                nodeJson = cJSON_CreateObject();
                 attributeJson = cJSON_CreateArray();
                 attribute2Json = cJSON_CreateArray();
 
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->attribute, attributeJson);
                 _add_items_array(node->attribute2, attribute2Json);
 
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute2", attribute2Json);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 _show_node_list(node->attribute);
                 printf(" FSCRIPT ");
@@ -345,13 +328,10 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case LEFT_OUTER_JOIN:
-                nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("LEFT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
@@ -359,13 +339,10 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case RIGHT_OUTER_JOIN:
-                nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("RIGHT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
@@ -373,13 +350,10 @@ void _show_node(Node *node, int b, cJSON *rootJson) {
                 break;
 
             case COMPLETE_OUTER_JOIN:
-                nodeJson = cJSON_CreateObject();
                 predicateJson = cJSON_CreateArray();
-                typeJson = cJSON_CreateString(_string_from_node_type(node->type));
                 _add_items_array(node->predicate, predicateJson);
-                cJSON_AddItemToObject(nodeJson, "type", typeJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, "node", nodeJson);
+                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
 
                 printf("COMPLETE_OUTER_JOIN ");
                 _show_node_list(node->predicate);
