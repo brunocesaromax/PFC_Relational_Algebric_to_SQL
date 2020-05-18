@@ -155,6 +155,20 @@ void _add_node_stack(char *s) {
     }
 }
 
+cJSON *_get_root_json(cJSON *nodeJson) {
+    if (nodeJson->prev == NULL) {
+        return nodeJson;
+    } else {
+        cJSON *temp = nodeJson;
+
+        while (temp->prev != NULL) {
+            temp = temp->prev;
+        }
+
+        return temp;
+    }
+}
+
 void _show_node_list(NodeChar *nodeList) {
     NodeChar *aux = nodeList;
     while (aux != NULL) {
@@ -163,15 +177,38 @@ void _show_node_list(NodeChar *nodeList) {
     }
 }
 
-char* _get_node_name_by_direction(int direction){
-    if (direction == 0){
+char *_get_node_name_by_direction(int direction) {
+    if (direction == 0) {
         return NULL;
-    }else if (direction == 1){
+    } else if (direction == 1) {
         return "left";
-    }else{
+    } else {
         return "right";
     }
 }
+
+//Como vai fazer com os nomes repetidos??
+//cJSON *_refactor_tree_json(cJSON *rootJson, int direction, cJSON *new) {
+//    cJSON *temp = cJSON_GetObjectItem(rootJson, _get_node_name_by_direction(direction));
+//    cJSON *aux, *stackAux = temp;
+//
+//    while (cJSON_HasObjectItem(temp, _get_node_name_by_direction(direction))) {
+//        temp = cJSON_GetObjectItem(temp, _get_node_name_by_direction(direction));
+//
+//        aux = stackAux;
+//        while(aux->next != NULL){
+//            aux = aux->next;
+//        }
+//
+//        aux->next = temp;
+//    }
+//
+//    printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
+//    char *out = cJSON_Print(temp);
+//    printf("%s\n", out);
+//    printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
+//    return temp;
+//}
 
 void _show_node(Node *node, int b, cJSON *rootJson, int direction) {
     if (!node) {
@@ -180,15 +217,13 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction) {
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
-        cJSON *nodeJson, *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
+        cJSON *parentRoot, *nodeJson, *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
 
         if (direction == 0) {
             nodeJson = rootJson;
         } else {
             nodeJson = cJSON_CreateObject();
         }
-
-//        printf("TIPO: %d\n", rootJson->valueint);
 
         typeJson = cJSON_CreateString(_string_from_node_type(node->type));
         cJSON_AddItemToObject(nodeJson, "type", typeJson);
@@ -199,7 +234,27 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction) {
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction) , nodeJson);
+
+//                mudar posteriormente
+                nodeJson->prev = rootJson->prev;
+                rootJson = nodeJson;
+
+//              Necessário pegar o root pois nele que é inserido as mudanças
+                parentRoot = _get_root_json(rootJson);
+                if (cJSON_HasObjectItem(parentRoot, "right")) {
+                    cJSON *temp = cJSON_GetObjectItem(parentRoot, "right");
+                    cJSON_AddItemToObject(temp, _get_node_name_by_direction(direction), rootJson);
+                    cJSON_ReplaceItemInObject(parentRoot, "right", temp);
+//                    char *out = cJSON_Print(aux);
+//                    printf("%s\n", out);
+                } else {
+                    cJSON_AddItemToObject(parentRoot, _get_node_name_by_direction(direction), rootJson);
+                }
+
+//                printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
+//                char *out = cJSON_Print(rootJson);
+//                printf("%s\n", out);
+//                printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
 
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
@@ -212,7 +267,30 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction) {
                 name = cJSON_CreateString(node->name);
                 cJSON_AddItemToObject(nodeJson, "name", name);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
-                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
+//                cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
+
+//                mudar posteriormente
+                nodeJson->prev = rootJson->prev;
+                rootJson = nodeJson;
+
+//              Necessário pegar o root pois nele que é inserido as mudanças
+                parentRoot = _get_root_json(rootJson);
+//                if(rootJson->prev != NULL) {
+//                    printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
+//                    char *out = cJSON_Print(rootJson->prev);
+//                    printf("%s\n", out);
+//                    printf("\n\nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
+//                }
+                if (cJSON_HasObjectItem(parentRoot, "right")) {
+//                    _cJSON_GetObjectItem(parentRoot, "right")
+                    cJSON *temp = cJSON_GetObjectItem(parentRoot, "right");
+                    cJSON_AddItemToObject(temp, _get_node_name_by_direction(direction), rootJson);
+                    cJSON_ReplaceItemInObject(parentRoot, "right", temp);
+//                    char *out = cJSON_Print(aux);
+//                    printf("%s\n", out);
+                } else {
+                    cJSON_AddItemToObject(parentRoot, _get_node_name_by_direction(direction), rootJson);
+                }
 
                 printf("%s ", node->name);
                 _show_node_list(node->attribute);

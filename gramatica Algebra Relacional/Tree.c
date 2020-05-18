@@ -53,18 +53,44 @@ void _build_tree() {
 //    cJSON_DeleteItemFromObjectCaseSensitive(rootJson, "right");
     char *out = cJSON_Print(rootJson);
     printf("%s\n", out);
+
     _start_data_structures();
 }
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
 void _show_tree(Node *root, int b, cJSON *rootJson, int direction) {
     if (root == NULL) {
-        _show_node(root, b, rootJson, direction);
+        _show_node(root, b, rootJson->next, direction);
         return;
     } else {
-        _show_tree(root->left, b + 1, rootJson, 1);
+        if(root->left != NULL){
+            rootJson->next = cJSON_CreateObject();
+            rootJson->next->prev = rootJson;
+            _show_tree(root->left, b + 1, rootJson->next, 1);
+        }else{
+            _show_tree(root->left, b + 1, rootJson, 1);
+        }
+
         _show_node(root, b, rootJson, direction);
-        _show_tree(root->right, b + 1, rootJson, 2);
+
+        if(root->right != NULL){
+            rootJson->next = cJSON_CreateObject();
+            rootJson->next->prev = rootJson;
+            _show_tree(root->right, b + 1, rootJson->next, 2);
+        }else{
+            _show_tree(root->right, b + 1, rootJson, 2);
+        }
+    }
+}
+
+void testJSON(Node *root, cJSON *rootJson) {
+    if (root != NULL) {
+        Node *aux = root;
+        while (aux->left != NULL) {
+            aux = aux->left;
+        }
+
+
     }
 }
 
