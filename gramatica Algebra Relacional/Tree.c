@@ -47,10 +47,9 @@ void _build_tree() {
         }
     }
 
-    _show_tree(root->node, 0, rootJson, 0);
+    _show_tree(root->node, 0, rootJson, 0, 0, 0);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
-//    cJSON_DeleteItemFromObjectCaseSensitive(rootJson, "right");
     char *out = cJSON_Print(rootJson);
     printf("%s\n", out);
 
@@ -58,39 +57,15 @@ void _build_tree() {
 }
 
 /*root nessa caso é o primeiro nó da árvore "raíz"*/
-void _show_tree(Node *root, int b, cJSON *rootJson, int direction) {
+void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLeft, int currentRight) {
     if (root == NULL) {
-        _show_node(root, b, rootJson->next, direction);
+        _show_node(root, b, rootJson->next, direction, currentLeft, currentRight);
         return;
     } else {
-        if(root->left != NULL){
-            rootJson->next = cJSON_CreateObject();
-            rootJson->next->prev = rootJson;
-            _show_tree(root->left, b + 1, rootJson->next, 1);
-        }else{
-            _show_tree(root->left, b + 1, rootJson, 1);
-        }
-
-        _show_node(root, b, rootJson, direction);
-
-        if(root->right != NULL){
-            rootJson->next = cJSON_CreateObject();
-            rootJson->next->prev = rootJson;
-            _show_tree(root->right, b + 1, rootJson->next, 2);
-        }else{
-            _show_tree(root->right, b + 1, rootJson, 2);
-        }
-    }
-}
-
-void testJSON(Node *root, cJSON *rootJson) {
-    if (root != NULL) {
-        Node *aux = root;
-        while (aux->left != NULL) {
-            aux = aux->left;
-        }
-
-
+        //todo: Pensar no caso de nó binário
+        _show_tree(root->left, b + 1, rootJson, 1, currentLeft + 1, currentRight);
+        _show_node(root, b, rootJson, direction, currentLeft, currentRight);
+        _show_tree(root->right, b + 1, rootJson, 2, currentLeft, currentRight + 1);
     }
 }
 
@@ -104,10 +79,6 @@ void _start_data_structures() {
     _create_tree();
     _create_stack();
     rootJson = cJSON_CreateObject();
-    cJSON_SetNumberValue(rootJson, 0);
-//    cJSON_SetNumberValue(rootJson, 2);
-//    printf("TIPO: %d\n", rootJson->valueint);
-
 
     printf("\n\n\n");
 }
