@@ -5,22 +5,9 @@
 /*Inicializando a ferramenta*/
 void _tool_initialize() {
     printf("Initializing...\n\n\n");
+
     _create_sub_tree_list();
     _start_data_structures();
-
-
-//    cJSON *root, *names, *ages;
-//    root  = cJSON_CreateObject();
-//    names = cJSON_CreateArray();
-//    ages  = cJSON_CreateArray();
-//    cJSON_AddItemToArray(names, cJSON_CreateString("Arroz"));
-//    cJSON_AddItemToArray(names, cJSON_CreateString("feijao"));
-//
-//    cJSON_AddItemToObject(root, "name", names);
-//    cJSON_AddItemToObject(root, "age", ages);
-//    char *out = cJSON_Print(root);
-//    printf("%s\n",out);
-
     return;
 }
 
@@ -63,7 +50,12 @@ void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLe
         return;
     } else {
         //todo: Pensar no caso de nó binário
-        _show_tree(root->left, b + 1, rootJson, 1, currentLeft + 1, currentRight);
+        if(_node_type_is_operation_binary(root->type)){
+            rootJson->next = _build_node_json(root->left);
+            cJSON_SetNumberValue(rootJson->next,1);//1 == left
+        }else{
+            _show_tree(root->left, b + 1, rootJson, 1, currentLeft + 1, currentRight);
+        }
         _show_node(root, b, rootJson, direction, currentLeft, currentRight);
         _show_tree(root->right, b + 1, rootJson, 2, currentLeft, currentRight + 1);
     }

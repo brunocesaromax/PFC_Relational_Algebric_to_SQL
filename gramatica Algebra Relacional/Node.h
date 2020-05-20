@@ -70,3 +70,5 @@ void _create_sub_tree_list();
 void _add_sub_tree(Node *node);
 
 Node *_get_sub_tree_or_node(Node *node);
+
+int _node_type_is_operation_binary(NodeType type);

@@ -204,12 +204,17 @@ cJSON *_get_node_json(cJSON *rootJson, int current, char *direction) {
     return temp;
 }
 
-void _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentNumberDirection) {
+void _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentNumberDirection, int isBinary) {
     if (direction == 0) {
         cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
     } else {
         cJSON *node = _get_node_json(rootJson, currentNumberDirection,
                                            _get_node_name_by_direction(direction));
+
+        if(isBinary && !cJSON_IsNull(rootJson->next)){
+            cJSON_AddItemToObject(nodeJson, _get_node_name_by_direction(rootJson->next->valueint), rootJson->next);
+            rootJson->next = NULL;
+        }
 
         if (node == NULL) {
             cJSON_AddItemToObject(rootJson, _get_node_name_by_direction(direction), nodeJson);
@@ -220,6 +225,81 @@ void _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int curr
     }
 }
 
+cJSON* _build_node_json(Node *node){
+    cJSON *nodeJson = cJSON_CreateObject(), *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
+
+    typeJson = cJSON_CreateString(_string_from_node_type(node->type));
+    cJSON_AddItemToObject(nodeJson, "type", typeJson);
+
+    switch (node->type) {
+        case SELECTION:
+            predicateJson = cJSON_CreateArray();
+            _add_items_array(node->predicate, predicateJson);
+            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            break;
+
+        case RELATION:
+            attributeJson = cJSON_CreateArray();
+            _add_items_array(node->attribute, attributeJson);
+            name = cJSON_CreateString(node->name);
+            cJSON_AddItemToObject(nodeJson, "name", name);
+            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            break;
+
+        case PROJECTION:
+            attributeJson = cJSON_CreateArray();
+            _add_items_array(node->attribute, attributeJson);
+            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            break;
+
+        case ASSIGNMENT_RHO:
+            attributeJson = cJSON_CreateArray();
+            _add_items_array(node->attribute, attributeJson);
+            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            break;
+
+        case JOIN:
+            predicateJson = cJSON_CreateArray();
+            _add_items_array(node->predicate, predicateJson);
+            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            break;
+
+        case F_SCRIPT:
+            attributeJson = cJSON_CreateArray();
+            attribute2Json = cJSON_CreateArray();
+
+            _add_items_array(node->attribute, attributeJson);
+            _add_items_array(node->attribute2, attribute2Json);
+
+            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            cJSON_AddItemToObject(nodeJson, "attribute2", attribute2Json);
+            break;
+
+        case LEFT_OUTER_JOIN:
+            predicateJson = cJSON_CreateArray();
+            _add_items_array(node->predicate, predicateJson);
+            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            break;
+
+        case RIGHT_OUTER_JOIN:
+            predicateJson = cJSON_CreateArray();
+            _add_items_array(node->predicate, predicateJson);
+            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            break;
+
+        case COMPLETE_OUTER_JOIN:
+            predicateJson = cJSON_CreateArray();
+            _add_items_array(node->predicate, predicateJson);
+            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            break;
+
+        default:
+            return NULL;
+    }
+
+    return nodeJson;
+}
+
 void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLeft, int currentRight) {
     if (!node) {
         printf("*");
@@ -227,7 +307,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
         int i;
         for (i = 0; i < b; i++) printf("          ");
 
-        cJSON *parentRoot, *nodeJson, *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
+        cJSON *nodeJson, *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
 
         if (direction == 0) {
             nodeJson = rootJson;
@@ -235,8 +315,8 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
             nodeJson = cJSON_CreateObject();
         }
 
-//        printf("\n\nLeft: %d\n\n", currentLeft);
-//        printf("\n\nRight: %d\n\n", currentRight);
+        printf("\n\nLeft: %d\n\n", currentLeft);
+        printf("\n\nRight: %d\n\n", currentRight);
 
         typeJson = cJSON_CreateString(_string_from_node_type(node->type));
         cJSON_AddItemToObject(nodeJson, "type", typeJson);
@@ -247,7 +327,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
 
                 printf("SIGMA ");
                 _show_node_list(node->predicate);
@@ -260,8 +340,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 name = cJSON_CreateString(node->name);
                 cJSON_AddItemToObject(nodeJson, "name", name);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("%s ", node->name);
                 _show_node_list(node->attribute);
                 printf("\n");
@@ -271,8 +350,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 attributeJson = cJSON_CreateArray();
                 _add_items_array(node->attribute, attributeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("PI ");
                 _show_node_list(node->attribute);
                 printf("\n");
@@ -280,8 +358,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
 
             case ASSIGNMENT:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("ASSIGNMENT ");
                 printf("\n");
                 break;
@@ -291,8 +368,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 _add_items_array(node->attribute, attributeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("RHO ");
                 _show_node_list(node->attribute);
                 printf("\n");
@@ -300,40 +376,35 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
 
             case UNION:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("UNION ");
                 printf("\n");
                 break;
 
             case INTERSECTION:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("INTERSECTION ");
                 printf("\n");
                 break;
 
             case SUBTRACTION:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("SUBTRACTION ");
                 printf("\n");
                 break;
 
             case CARTESIAN_PRODUCT:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("PRODUCT_CARTESIAN ");
                 printf("\n");
                 break;
 
             case NATURAL_JOIN:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("NATURAL_JOIN ");
                 printf("\n");
                 break;
@@ -342,8 +413,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
@@ -351,8 +421,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
 
             case DIVISION:
                 //todo: nós não podem ter o mesmo nome, pensar em solução
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("DIVISION ");
                 printf("\n");
                 break;
@@ -366,8 +435,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
 
                 cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
                 cJSON_AddItemToObject(nodeJson, "attribute2", attribute2Json);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 _show_node_list(node->attribute);
                 printf(" FSCRIPT ");
                 _show_node_list(node->attribute2);
@@ -378,8 +446,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("LEFT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
@@ -389,8 +456,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("RIGHT_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
@@ -400,8 +466,7 @@ void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLe
                 predicateJson = cJSON_CreateArray();
                 _add_items_array(node->predicate, predicateJson);
                 cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
-                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight);
-
+                _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight, _node_type_is_operation_binary(node->type));
                 printf("COMPLETE_OUTER_JOIN ");
                 _show_node_list(node->predicate);
                 printf("\n");
