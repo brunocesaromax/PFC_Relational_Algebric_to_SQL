@@ -48,7 +48,6 @@ NodeChar *attribute = NULL;
 NodeChar *attribute2 = NULL;
 NodeChar *predicate = NULL;
 SubTreeList *headList;
-cJSON *rootJson;
 
 /************FUNCTION SIGNATURES***************/
 
@@ -79,18 +78,6 @@ void _build_node(Node *node);
 int _node_type_is_operation_binary(NodeType type);
 
 int _node_type_is_operation_binary_or_assignment(NodeType type);
-
-cJSON *_get_root_json(cJSON *nodeJson);
-
-char *_get_node_name_by_direction(int direction);
-
-cJSON *_get_node_json(cJSON *rootJson, int current, char *direction);
-
-void _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentNumberDirection, int isBinary);
-
-void _add_items_array(NodeChar *items, cJSON *array);
-
-cJSON *_build_node_json(Node *node);
 
 void _add_sub_tree(Node *node);
 
