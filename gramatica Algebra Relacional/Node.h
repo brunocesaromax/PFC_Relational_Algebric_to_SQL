@@ -80,8 +80,6 @@ int _node_type_is_operation_binary(NodeType type);
 
 int _node_type_is_operation_binary_or_assignment(NodeType type);
 
-void _add_node_stack(char *s);
-
 cJSON *_get_root_json(cJSON *nodeJson);
 
 char *_get_node_name_by_direction(int direction);

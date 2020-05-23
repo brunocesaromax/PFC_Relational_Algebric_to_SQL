@@ -1,5 +1,4 @@
 #include "Node.h"
-//todo: utilizar Stack.h
 #include "Stack.c"
 
 /*Inicializando a ferramenta*/
@@ -418,101 +417,6 @@ int _node_type_is_operation_binary_or_assignment(NodeType type) {
         return 1;
     } else {
         return 0;
-    }
-}
-
-/*Adicionando nós na pilha para ao fim apenas reajustar a árvore através da pilha*/
-void _add_node_stack(char *s) {
-    Node *node;
-    node = _allocate_node();
-
-    _get_node_type(node, s);
-    _build_node(node);
-
-/*Se tipo do no a ser inserido na pilha for um ')'
-     * entao deve-ser desempilhar e ajustar árvore no sentido a direita
-     * até encontrar '(' e por fim desempilhar '(' */
-    if (node->type == CLOSE_PARENTHESES) {
-        Node *temp, *aux;
-        temp = aux = NULL;
-
-        while (top->node->type != OPEN_PARENTHESES) {
-            if (temp == NULL) {
-                temp = _pop();
-            } else {
-                aux = temp;
-                temp = _pop();
-                temp->right = aux;
-            }
-        }
-
-        _pop();
-        _push(temp);
-
-    } else if (node->type == ASSIGNMENT) {
-        Node *temp = _pop();
-        node->left = temp;
-        _push(node);
-        _add_sub_tree(node);
-
-    } else if (node->type == RELATION) {
-        if (_stack_is_empty()) {
-            _push(node);
-        } else {
-            Node *temp = _pop();
-
-            if (temp->type == ASSIGNMENT_RHO) {
-                temp->left = _get_sub_tree_or_node(node);
-                _push(temp);
-                _add_sub_tree(temp);
-
-            } else if (temp->type == OPEN_PARENTHESES) {
-                Node *nodeRHO = _get_first_RHO();
-
-                //Ex: PROJETO_DEP ASSIGNMENT PROJETO NATURAL_JOIN RHO (Dnome, Dnum, Cpf_gerente, Data_inicio_gerente)(DEPARTAMENTO)
-                if (nodeRHO != NULL && nodeRHO->left->name == NULL) {
-                    nodeRHO->left->name = node->name;
-                }
-
-                _push(temp);
-                _push(_get_sub_tree_or_node(node));
-
-            } else {
-                _push(temp);
-                _push(_get_sub_tree_or_node(node));
-            }
-        }
-
-/*Se tipo do no a ser inserido na pilha for uma operação binária
-      * entao deve-ser desempilhar até encontrar '('
-         * e ajustar a árvore para que o lado esquerdo
-         * da operação binária já fique pronto*/
-    } else if (_node_type_is_operation_binary(node->type)) {
-        Node *temp, *aux;
-        temp = aux = NULL;
-
-        while (top != NULL && top->node->type != OPEN_PARENTHESES && top->node->type != ASSIGNMENT) {
-            if (temp == NULL) {
-                temp = _pop();
-            } else {
-                aux = temp;
-                temp = _pop();
-                temp->right = aux;
-            }
-        }
-
-        /*Adicionar subárvore existente a esquerda de um nó de operação binária
-         * somente se as condições a seguir forem satisfeitas*/
-        if ((top->node->type == ASSIGNMENT || top->node->type == ASSIGNMENT_RHO)
-            && top->node->left != NULL && _exists_sub_tree_same_name(top->node->left->name) && temp == NULL) {
-            temp = _pop();
-        }
-
-        node->left = temp;
-        _push(node);
-
-    } else {
-        _push(node);
     }
 }
 
