@@ -2,12 +2,11 @@
 
 typedef struct tree Tree;
 
-struct tree{
+struct tree {
     Node *node;
 };
 
 Tree *root;
-cJSON *rootJson;
 
 /************FUNCTION SIGNATURES***************/
 

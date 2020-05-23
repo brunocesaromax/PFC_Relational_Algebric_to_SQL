@@ -34,6 +34,7 @@ void _build_tree() {
         }
     }
 
+    root->node->isRoot = 1; //definindo nó raíz
     _show_tree(root->node, 0, rootJson, 0, 0, 0);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
@@ -49,11 +50,11 @@ void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLe
         _show_node(root, b, rootJson->next, direction, currentLeft, currentRight);
         return;
     } else {
-        //todo: Pensar no caso de nó binário
-        if(_node_type_is_operation_binary(root->type)){
+        if((_node_type_is_operation_binary(root->type) || root->type == ASSIGNMENT)
+           && !(root->isRoot)) {
             rootJson->next = _build_node_json(root->left);
-            cJSON_SetNumberValue(rootJson->next,1);//1 == left
-        }else{
+            cJSON_SetNumberValue(rootJson->next, 1);
+        } else {
             _show_tree(root->left, b + 1, rootJson, 1, currentLeft + 1, currentRight);
         }
         _show_node(root, b, rootJson, direction, currentLeft, currentRight);

@@ -33,7 +33,8 @@ struct node {
     NodeChar *predicate;
     Node *left;
     Node *right;
-};
+    int isRoot;// Remover
+};//todo: alterar nome
 
 struct subTreesList {
     char *name;
@@ -41,17 +42,21 @@ struct subTreesList {
     SubTreeList *next;
 };
 
-SubTreeList *subTreeList;
+/************GLOBAL VARIABLES***************/
+Node *rootTree;
+NodeChar *attribute = NULL;
+NodeChar *attribute2 = NULL;
+NodeChar *predicate = NULL;
+SubTreeList *headList;
+cJSON *rootJson;
 
 /************FUNCTION SIGNATURES***************/
 
-Node *allocate_node();
+Node *_allocate_node();
 
 void _add_symbols_predicate(char *symbol);
 
 void _add_symbols_attribute(char *symbol, int option);
-
-void _add_node_stack(char *s);
 
 void _show_node_list(NodeChar *nodeChar);
 
@@ -61,14 +66,28 @@ void _get_node_type(Node *node, char *s);
 
 void _build_node(Node *node);
 
-Node *_allocate_node();
+int _node_type_is_operation_binary(NodeType type);
 
-const char *get_node_type_name(NodeType type);
+int _node_type_is_operation_binary_or_assignment(NodeType type);
 
-void _create_sub_tree_list();
+void _add_node_stack(char *s);
+
+cJSON *_get_root_json(cJSON *nodeJson);
+
+char *_get_node_name_by_direction(int direction);
+
+cJSON *_get_node_json(cJSON *rootJson, int current, char *direction);
+
+void _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentNumberDirection, int isBinary);
+
+void _add_items_array(NodeChar *items, cJSON *array);
+
+cJSON *_build_node_json(Node *node);
 
 void _add_sub_tree(Node *node);
 
+void _create_sub_tree_list();
+
 Node *_get_sub_tree_or_node(Node *node);
 
-int _node_type_is_operation_binary(NodeType type);
+int _exists_sub_tree_same_name(char *name);
