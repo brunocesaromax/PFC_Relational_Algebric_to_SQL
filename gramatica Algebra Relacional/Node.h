@@ -52,6 +52,16 @@ cJSON *rootJson;
 
 /************FUNCTION SIGNATURES***************/
 
+void _tool_initialize();
+
+void _create_tree();
+
+void _build_tree();
+
+void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLeft, int currentRight);
+
+void _start_data_structures();
+
 Node *_allocate_node();
 
 void _add_symbols_predicate(char *symbol);
