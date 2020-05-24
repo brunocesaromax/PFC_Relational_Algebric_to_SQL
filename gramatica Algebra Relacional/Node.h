@@ -33,8 +33,7 @@ struct node {
     NodeChar *predicate;
     Node *left;
     Node *right;
-    int isRoot;// Remover
-};//todo: alterar nome
+};
 
 struct subTreeList {
     char *name;

@@ -30,7 +30,6 @@ void _build_tree() {
         }
     }
 
-    rootTree->isRoot = 1; //definindo nó raíz
     _show_tree(rootTree, 0, rootJson, 0, 0, 0);
     printf("\n*******************************************************************");
     printf("*********************************************************************\n");
@@ -46,8 +45,9 @@ void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLe
         _show_node(root, b, rootJson->next, direction, currentLeft, currentRight);
         return;
     } else {
+        //todo: separar o add node in json em outra função e nao dentro do show_node
         if ((_node_type_is_operation_binary(root->type) || root->type == ASSIGNMENT)
-            && !(root->isRoot)) {
+            && (root != rootTree)) {
             rootJson->next = _build_node_json(root->left);
             cJSON_SetNumberValue(rootJson->next, 1);
         } else {
@@ -391,7 +391,6 @@ void _build_node(Node *node) {
     node->attribute = attribute;
     node->attribute2 = attribute2;
     node->predicate = predicate;
-    node->isRoot = 0; //false
     node->left = node->right = NULL;
 
     //Restaurando variáveis globais para NULL, para usalás posteriormente.
