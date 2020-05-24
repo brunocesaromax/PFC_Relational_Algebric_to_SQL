@@ -3,7 +3,7 @@
 typedef enum nodeType NodeType;
 typedef struct nodeChar NodeChar;
 typedef struct node Node;
-typedef struct subTreesList SubTreeList;
+typedef struct subTreeList SubTreeList;
 
 enum nodeType {
     RELATION, SELECTION, PROJECTION, ASSIGNMENT, ASSIGNMENT_RHO,
@@ -36,7 +36,7 @@ struct node {
     int isRoot;// Remover
 };//todo: alterar nome
 
-struct subTreesList {
+struct subTreeList {
     char *name;
     Node *node;
     SubTreeList *next;
