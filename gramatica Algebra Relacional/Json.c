@@ -144,3 +144,31 @@ char *_get_node_name_by_direction(int direction) {
         return "right";
     }
 }
+
+//todo: Corrigir o segmentation fault na função
+void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, int currentRight) {
+//    if (node == NULL) {
+//        _show_node(node, b, rootJson->next, direction, currentLeft, currentRight);
+//        return;
+//    } else {
+    if (_node_type_is_operation_binary_or_assignment(node->type) && (node != rootTree)) {
+        rootJson->next = _build_node_json(node->left);
+        cJSON_SetNumberValue(rootJson->next, 1);
+    } else {
+        _build_json(node->left, rootJson, 1, currentLeft + 1, currentRight);
+    }
+
+    cJSON *nodeJson = _build_node_json(node);
+    _add_node_in_json(rootJson, nodeJson, direction, direction == 1 ? currentLeft : currentRight,
+                      _node_type_is_operation_binary_or_assignment(node->type));
+
+    _build_json(node->right, rootJson, 2, currentLeft, currentRight + 1);
+//    }
+}
+
+void _show_json(cJSON *rootJson){
+    printf("\n****************************JSON********************************\n");
+    char *out = cJSON_Print(rootJson);
+    printf("%s\n", out);
+    printf("\n***************************************************************\n");
+}

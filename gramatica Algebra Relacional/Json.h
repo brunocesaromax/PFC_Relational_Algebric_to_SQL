@@ -14,3 +14,7 @@ void _add_items_array_json(NodeChar *items, cJSON *array);
 cJSON *_build_node_json(Node *node);
 
 char *_get_node_name_by_direction(int direction);
+
+void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, int currentRight);
+
+void _show_json(cJSON *rootJson);

@@ -56,7 +56,7 @@ void _create_tree();
 
 void _build_tree();
 
-void _show_tree(Node *root, int b, cJSON *rootJson, int direction, int currentLeft, int currentRight);
+void _show_tree(Node *root, int b);
 
 void _start_data_structures();
 
@@ -68,7 +68,7 @@ void _add_symbols_attribute(char *symbol, int option);
 
 void _show_node_list(NodeChar *nodeChar);
 
-void _show_node(Node *node, int b, cJSON *rootJson, int direction, int currentLeft, int currentRight);
+void _show_node(Node *node, int b);
 
 void _get_node_type(Node *node, char *s);
 
@@ -80,6 +80,7 @@ int _node_type_is_operation_binary_or_assignment(NodeType type);
 
 void _add_sub_tree(Node *node);
 
+///*Iniciado somente uma vez difenrente das outras estruturas de dados do projeto*///
 void _create_sub_tree_list();
 
 Node *_get_sub_tree_or_node(Node *node);
