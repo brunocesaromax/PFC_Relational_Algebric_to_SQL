@@ -33,8 +33,11 @@ void _build_tree() {
     }
 
     _show_tree(root->node, 0);
-    printf("\n*******************************************************************");
-    printf("*********************************************************************\n");
+
+    //todo: erro nessa função!
+//    _build_json(root->node, root->node, rootJson, 0, 0, 0);
+
+    _show_json(rootJson);
 
     _start_data_structures();
 }
@@ -54,10 +57,13 @@ void _show_tree(Node *root, int b) {
 void _start_data_structures() {
     free(root);
     free(top);
-    root = top = NULL;
+    cJSON_Delete(rootJson);
+
+    root = top = rootJson = NULL;
 
     _create_tree();
     _create_stack();
+    rootJson = cJSON_CreateObject();
 
     printf("\n\n\n");
 }

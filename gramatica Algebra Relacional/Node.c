@@ -1,11 +1,6 @@
-#include <stdio.h>
-#include <string.h>
 #include "Node.h"
 #include "Stack.c"
-
-NodeChar *attribute = NULL;
-NodeChar *attribute2 = NULL;
-NodeChar *predicate = NULL;
+#include "Json.c"
 
 Node *_allocate_node() {
     return (Node *) malloc(sizeof(Node));
@@ -59,100 +54,6 @@ void _add_symbols_attribute(char *symbol, int option) {
     }
 }
 
-/*Adicionando nós na pilha para ao fim apenas reajustar a árvore através da pilha*/
-void _add_node_stack(char *s) {
-    Node *node;
-    node = _allocate_node();
-
-    _get_node_type(node, s);
-    _build_node(node);
-
-/*Se tipo do no a ser inserido na pilha for um ')'
-     * entao deve-ser desempilhar e ajustar árvore no sentido a direita
-     * até encontrar '(' e por fim desempilhar '(' */
-    if (node->type == CLOSE_PARENTHESES) {
-        Node *temp, *aux;
-        temp = aux = NULL;
-
-        while (top->node->type != OPEN_PARENTHESES) {
-            if (temp == NULL) {
-                temp = _pop();
-            } else {
-                aux = temp;
-                temp = _pop();
-                temp->right = aux;
-            }
-        }
-
-        _pop();
-        _push(temp);
-
-    } else if (node->type == ASSIGNMENT) {
-        Node *temp = _pop();
-        node->left = temp;
-        _push(node);
-        _add_sub_tree(node);
-
-    } else if (node->type == RELATION) {
-        if (_stack_is_empty()) {
-            _push(node);
-        } else {
-            Node *temp = _pop();
-
-            if (temp->type == ASSIGNMENT_RHO) {
-                temp->left = _get_sub_tree_or_node(node);
-                _push(temp);
-                _add_sub_tree(temp);
-
-            } else if (temp->type == OPEN_PARENTHESES) {
-                Node *nodeRHO = _get_first_RHO();
-
-                if (nodeRHO != NULL) {
-                    nodeRHO->left->name = node->name;
-                }
-
-                _push(temp);
-                _push(_get_sub_tree_or_node(node));
-
-            } else {
-                _push(temp);
-                _push(_get_sub_tree_or_node(node));
-            }
-        }
-
-/*Se tipo do no a ser inserido na pilha for uma operação binária
-      * entao deve-ser desempilhar até encontrar '('
-         * e ajustar a árvore para que o lado esquerdo
-         * da operação binária já fique pronto*/
-    } else if (_node_type_is_operation_binary(node->type)) {
-        Node *temp, *aux;
-        temp = aux = NULL;
-
-        while (top != NULL && top->node->type != OPEN_PARENTHESES && top->node->type != ASSIGNMENT) {
-            if (temp == NULL) {
-                temp = _pop();
-            } else {
-                aux = temp;
-                temp = _pop();
-                temp->right = aux;
-            }
-        }
-
-        /*Adicionar subárvore existente a esquerda de um nó de operação binária
-         * somente se as condições a seguir forem satisfeitas*/
-        if ((top->node->type == ASSIGNMENT || top->node->type == ASSIGNMENT_RHO)
-            && top->node->left != NULL && _exists_sub_tree_same_name(top->node->left->name) && temp == NULL) {
-            temp = _pop();
-        }
-
-        node->left = temp;
-        _push(node);
-
-    } else {
-        _push(node);
-    }
-}
-
 void _show_node_list(NodeChar *nodeList) {
     NodeChar *aux = nodeList;
     while (aux != NULL) {
@@ -166,7 +67,9 @@ void _show_node(Node *node, int b) {
         printf("*");
     } else {
         int i;
-        for (i = 0; i < b; i++) printf("          ");
+        for (i = 0; i < b; i++) {
+            printf("          ");
+        }
 
         switch (node->type) {
             case SELECTION:
@@ -347,53 +250,23 @@ int _node_type_is_operation_binary(NodeType type) {
     }
 }
 
-const char *get_node_type_name(NodeType type) {
-    switch (type) {
-        case RELATION:
-            return "RELATION";
-        case SELECTION:
-            return "SELECTION";
-        case PROJECTION:
-            return "PROJECTION";
-        case ASSIGNMENT:
-            return "ASSIGNMENT";
-        case ASSIGNMENT_RHO:
-            return "ASSIGNMENT_RHO";
-        case JOIN:
-            return "JOIN";
-        case NATURAL_JOIN:
-            return "NATURAL_JOIN";
-        case UNION:
-            return "UNION";
-        case INTERSECTION:
-            return "INTERSECTION";
-        case SUBTRACTION:
-            return "SUBTRACTION";
-        case CARTESIAN_PRODUCT:
-            return "CARTESIAN_PRODUCT";
-        case DIVISION:
-            return "DIVISION";
-        case F_SCRIPT:
-            return "F_SCRIPT";
-        case LEFT_OUTER_JOIN:
-            return "LEFT_OUTER_JOIN";
-        case RIGHT_OUTER_JOIN:
-            return "RIGHT_OUTER_JOIN";
-        case COMPLETE_OUTER_JOIN:
-            return "COMPLETE_OUTER_JOIN";
-        case OPEN_PARENTHESES:
-            return "OPEN_PARENTHESES";
-        case CLOSE_PARENTHESES:
-            return "CLOSE_PARENTHESES";
+int _node_type_is_operation_binary_or_assignment(NodeType type) {
+    if (type == UNION || type == JOIN || type == CARTESIAN_PRODUCT ||
+        type == SUBTRACTION || type == NATURAL_JOIN || type == DIVISION ||
+        type == LEFT_OUTER_JOIN || type == RIGHT_OUTER_JOIN ||
+        type == COMPLETE_OUTER_JOIN || type == INTERSECTION || type == ASSIGNMENT) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
 void _add_sub_tree(Node *node) {
-    if (subTreeList == NULL) {
-        subTreeList = (SubTreeList *) malloc(sizeof(SubTreeList));
-        subTreeList->name = node->left->name;
-        subTreeList->node = node;
-        subTreeList->next = NULL;
+    if (headList == NULL) {
+        headList = (SubTreeList *) malloc(sizeof(SubTreeList));
+        headList->name = node->left->name;
+        headList->node = node;
+        headList->next = NULL;
     } else {
         if (_exists_sub_tree_same_name(node->left->name) == 0) {
             SubTreeList *new = (SubTreeList *) malloc(sizeof(SubTreeList));
@@ -401,7 +274,7 @@ void _add_sub_tree(Node *node) {
             new->node = node;
             new->next = NULL;
 
-            SubTreeList *aux = subTreeList;
+            SubTreeList *aux = headList;
 
             while (aux->next != NULL) {
                 aux = aux->next;
@@ -413,11 +286,11 @@ void _add_sub_tree(Node *node) {
 }
 
 void _create_sub_tree_list() {
-    subTreeList = NULL;
+    headList = NULL;
 }
 
 Node *_get_sub_tree_or_node(Node *node) {
-    SubTreeList *aux = subTreeList;
+    SubTreeList *aux = headList;
     while (aux != NULL) {
         if (strcmp(aux->name, node->name) == 0) {
             return aux->node;
@@ -430,7 +303,7 @@ Node *_get_sub_tree_or_node(Node *node) {
 }
 
 int _exists_sub_tree_same_name(char *name) {
-    SubTreeList *aux = subTreeList;
+    SubTreeList *aux = headList;
 
     while (aux != NULL) {
         if (strcmp(aux->name, name) == 0) {
