@@ -12,4 +12,3 @@ $LEX spec.lex
 $CC -o relational-algebra lex.yy.c auxil.c yygrammar.c $ENTIRE -w -lcjson \
 
 relational-algebra < test-query
-
