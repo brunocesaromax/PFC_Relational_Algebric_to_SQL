@@ -42,12 +42,23 @@ struct subTreeList {
 };
 
 ///*GLOBAL VARIABLES *//
+Node *rootTree;
 NodeChar *attribute;
 NodeChar *attribute2;
 NodeChar *predicate;
 SubTreeList *headList;
 
 /************FUNCTION SIGNATURES***************/
+void _tool_initialize();
+
+void _create_tree();
+
+void _build_tree();
+
+void _show_tree(Node *root, int b);
+
+void _start_data_structures();
+
 Node *_allocate_node();
 
 void _add_symbols_predicate(char *symbol);

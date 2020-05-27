@@ -2,6 +2,70 @@
 #include "Stack.c"
 #include "Json.c"
 
+/*Inicializando a ferramenta*/
+void _tool_initialize() {
+    printf("Initializing...\n\n\n");
+    _create_sub_tree_list();
+    _start_data_structures();
+    return;
+}
+
+void _create_tree() {
+    rootTree = NULL;
+}
+
+/*Função de construção da árvore logo após regras de parênteses tiverem sido executadas*/
+void _build_tree() {
+    Node *actual = NULL;
+
+    /*Enquanto houver elementos na pilha, desempilhar e empilhar a direita*/
+    while (top != NULL) {
+        actual = _pop();
+
+        if (actual != NULL) {
+            if (!rootTree) {
+                rootTree = actual;
+            } else {
+                actual->right = rootTree;
+                rootTree = actual;
+            }
+        }
+    }
+
+    _show_tree(rootTree, 0);
+
+    //todo: erro nessa função!
+//    _build_json(root->node, root->node, rootJson, 0, 0, 0);
+
+    _show_json(rootJson);
+    _start_data_structures();
+}
+
+/*root nessa caso é o primeiro nó da árvore "raíz"*/
+void _show_tree(Node *root, int b) {
+    if (root == NULL) {
+        _show_node(root, b);
+        return;
+    } else {
+        _show_tree(root->right, b + 1);
+        _show_node(root, b);
+        _show_tree(root->left, b + 1);
+    }
+}
+
+void _start_data_structures() {
+    //Erro ao liberar memória da árvore
+    //free(rootTree);
+    free(top);
+    cJSON_Delete(rootJson);
+
+    _create_tree();
+    _create_stack();
+    rootJson = cJSON_CreateObject();
+
+    printf("\n\n\n");
+}
+
 Node *_allocate_node() {
     return (Node *) malloc(sizeof(Node));
 }
