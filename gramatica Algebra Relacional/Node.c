@@ -33,10 +33,8 @@ void _build_tree() {
     }
 
     _show_tree(rootTree, 0);
-
     //todo: erro nessa função!
-//    _build_json(root->node, root->node, rootJson, 0, 0, 0);
-
+    _build_json(rootTree, rootJson, 0, 0, 0);
     _show_json(rootJson);
     _start_data_structures();
 }
@@ -314,12 +312,16 @@ int _node_type_is_operation_binary(NodeType type) {
     }
 }
 
-int _node_type_is_operation_binary_or_assignment(NodeType type) {
-    if (type == UNION || type == JOIN || type == CARTESIAN_PRODUCT ||
-        type == SUBTRACTION || type == NATURAL_JOIN || type == DIVISION ||
-        type == LEFT_OUTER_JOIN || type == RIGHT_OUTER_JOIN ||
-        type == COMPLETE_OUTER_JOIN || type == INTERSECTION || type == ASSIGNMENT) {
-        return 1;
+int _node_is_operation_binary_or_assignment(Node *node) {
+    if (node) {
+        NodeType type = node->type;
+
+        if (type == UNION || type == JOIN || type == CARTESIAN_PRODUCT ||
+            type == SUBTRACTION || type == NATURAL_JOIN || type == DIVISION ||
+            type == LEFT_OUTER_JOIN || type == RIGHT_OUTER_JOIN ||
+            type == COMPLETE_OUTER_JOIN || type == INTERSECTION || type == ASSIGNMENT) {
+            return 1;
+        }
     } else {
         return 0;
     }
