@@ -22,12 +22,12 @@ cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int cur
     cJSON *temp = rootJson;
 
     while (auxRight > 0) {
-        temp = cJSON_GetObjectItem(temp, direction);
+        temp = cJSON_GetObjectItem(temp, "right");
         auxRight--;
     }
 
     while (auxLeft > 0) {
-        temp = cJSON_GetObjectItem(temp, direction);
+        temp = cJSON_GetObjectItem(temp, "left");
         auxLeft--;
     }
 
