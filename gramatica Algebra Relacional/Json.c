@@ -41,20 +41,12 @@ _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLe
     } else {
         cJSON *node = _get_node_json(rootJson, _get_node_name_by_direction(direction), currentLeft, currentRight);
 
+
 //        printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
 //        printf("\nDirecao = %d\n", direction);
 //        char *out = cJSON_Print(node);
 //        printf("%s\n", out);
 //        printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
-        //todo: verificar nesse ponto o erro
-//        if (isBinary && !cJSON_IsNull(rootJson->next)) {
-////            cJSON_AddItemToObject(nodeJson, _get_node_name_by_direction(rootJson->next->valueint), rootJson->next);
-//            printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
-//            char *out = cJSON_Print(node);
-//            printf("%s\n", out);
-//            printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
-//            rootJson->next = NULL;
-//        }
 
         _copy_items(node, nodeJson);
         cJSON_ReplaceItemViaPointer(rootJson, node, node);
