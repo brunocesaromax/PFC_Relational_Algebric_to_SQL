@@ -55,10 +55,20 @@ _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLe
 
 void _add_items_array_json(NodeChar *items, cJSON *array) {
     NodeChar *aux = items;
+
     while (aux != NULL) {
-        cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
+        if (strcmp(aux->name, ",")) {
+            cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
+        }
+
         aux = aux->next;
     }
+
+    cJSON *test = cJSON_DetachItemFromArray(array, 1);
+    char *out = cJSON_Print(test);
+
+    printf("\n%s\n", out);
+    cJSON_free(out);
 }
 
 cJSON *_build_node_json(Node *node) {
@@ -172,7 +182,7 @@ void _show_json(cJSON *rootJson) {
     printf("\n****************************JSON********************************\n");
     char *out = cJSON_Print(rootJson);
 
-    if(out){
+    if (out) {
 //        FILE *fptr;
 //        fptr = fopen("json.txt", "w");
 //

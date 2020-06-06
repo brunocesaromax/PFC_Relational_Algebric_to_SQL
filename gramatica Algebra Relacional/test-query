@@ -1,2 +1,1 @@
-DEP_GER ASSIGNMENT DEPARTAMENTO JOIN Cpf_gerente=Cpf FUNCIONARIO
-RESULTADO ASSIGNMENT PI Dnome, Unome, Pnome (DEP_GER)
+RELATORIO ASSIGNMENT RHO (Cpf, Salario_liquido, Bonus, Imposto) (PI Cpf, Salario - Deducao, 2000 * Anos_em_servico, 0.25 * Salario (FUNCIONARIO))
