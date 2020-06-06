@@ -28,9 +28,9 @@ struct nodeChar {
 struct node {
     NodeType type;
     char *name;
-    NodeChar *attribute;
-    NodeChar *attribute2;
-    NodeChar *predicate;
+    NodeChar *attr;
+    NodeChar *comp;
+    NodeChar *pred;
     Node *left;
     Node *right;
 };
@@ -43,9 +43,9 @@ struct subTreeList {
 
 ///*GLOBAL VARIABLES *//
 Node *rootTree;
-NodeChar *attribute;
-NodeChar *attribute2;
-NodeChar *predicate;
+NodeChar *attr;
+NodeChar *comp;
+NodeChar *pred;
 SubTreeList *headList;
 
 /************FUNCTION SIGNATURES***************/

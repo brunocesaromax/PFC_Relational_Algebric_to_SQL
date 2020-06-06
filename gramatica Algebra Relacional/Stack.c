@@ -175,31 +175,31 @@ void _show_node_stack(Node *node, int b) {
         switch (node->type) {
             case SELECTION:
                 printf("SIGMA ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case RELATION:
                 printf("%s ", node->name);
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case PROJECTION:
                 printf("PI ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case ASSIGNMENT:
                 printf("ASSIGNMENT ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case ASSIGNMENT_RHO:
                 printf("RHO ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
@@ -230,7 +230,7 @@ void _show_node_stack(Node *node, int b) {
 
             case JOIN:
                 printf("JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
@@ -240,27 +240,27 @@ void _show_node_stack(Node *node, int b) {
                 break;
 
             case F_SCRIPT:
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf(" FSCRIPT ");
-                _show_node_list(node->attribute2);
+                _show_node_list(node->comp);
                 printf("\n");
                 break;
 
             case LEFT_OUTER_JOIN:
                 printf("LEFT_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case RIGHT_OUTER_JOIN:
                 printf("RIGHT_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case COMPLETE_OUTER_JOIN:
                 printf("COMPLETE_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 

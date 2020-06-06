@@ -63,71 +63,71 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
 
 cJSON *_build_node_json(Node *node) {
     cJSON *nodeJson = cJSON_CreateObject();
-    cJSON *predicateJson, *attributeJson, *attribute2Json, *typeJson, *name;
+    cJSON *predJson, *attrJson, *compJson, *typeJson, *name;
 
     typeJson = cJSON_CreateString(_string_from_node_type(node->type));
     cJSON_AddItemToObject(nodeJson, "type", typeJson);
 
     switch (node->type) {
         case SELECTION:
-            predicateJson = cJSON_CreateArray();
-            _add_items_array_json(node->predicate, predicateJson);
-            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            predJson = cJSON_CreateArray();
+            _add_items_array_json(node->pred, predJson);
+            cJSON_AddItemToObject(nodeJson, "pred", predJson);
             break;
 
         case RELATION:
-            attributeJson = cJSON_CreateArray();
-            _add_items_array_json(node->attribute, attributeJson);
+            attrJson = cJSON_CreateArray();
+            _add_items_array_json(node->attr, attrJson);
             name = cJSON_CreateString(node->name);
             cJSON_AddItemToObject(nodeJson, "name", name);
-            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
             break;
 
         case PROJECTION:
-            attributeJson = cJSON_CreateArray();
-            _add_items_array_json(node->attribute, attributeJson);
-            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            attrJson = cJSON_CreateArray();
+            _add_items_array_json(node->attr, attrJson);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
             break;
 
         case ASSIGNMENT_RHO:
-            attributeJson = cJSON_CreateArray();
-            _add_items_array_json(node->attribute, attributeJson);
-            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
+            attrJson = cJSON_CreateArray();
+            _add_items_array_json(node->attr, attrJson);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
             break;
 
         case JOIN:
-            predicateJson = cJSON_CreateArray();
-            _add_items_array_json(node->predicate, predicateJson);
-            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            predJson = cJSON_CreateArray();
+            _add_items_array_json(node->pred, predJson);
+            cJSON_AddItemToObject(nodeJson, "pred", predJson);
             break;
 
         case F_SCRIPT:
-            attributeJson = cJSON_CreateArray();
-            attribute2Json = cJSON_CreateArray();
+            attrJson = cJSON_CreateArray();
+            compJson = cJSON_CreateArray();
 
-            _add_items_array_json(node->attribute, attributeJson);
-            _add_items_array_json(node->attribute2, attribute2Json);
+            _add_items_array_json(node->attr, attrJson);
+            _add_items_array_json(node->comp, compJson);
 
-            cJSON_AddItemToObject(nodeJson, "attribute", attributeJson);
-            cJSON_AddItemToObject(nodeJson, "attribute2", attribute2Json);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            cJSON_AddItemToObject(nodeJson, "comp", compJson);
             break;
 
         case LEFT_OUTER_JOIN:
-            predicateJson = cJSON_CreateArray();
-            _add_items_array_json(node->predicate, predicateJson);
-            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            predJson = cJSON_CreateArray();
+            _add_items_array_json(node->pred, predJson);
+            cJSON_AddItemToObject(nodeJson, "pred", predJson);
             break;
 
         case RIGHT_OUTER_JOIN:
-            predicateJson = cJSON_CreateArray();
-            _add_items_array_json(node->predicate, predicateJson);
-            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            predJson = cJSON_CreateArray();
+            _add_items_array_json(node->pred, predJson);
+            cJSON_AddItemToObject(nodeJson, "pred", predJson);
             break;
 
         case COMPLETE_OUTER_JOIN:
-            predicateJson = cJSON_CreateArray();
-            _add_items_array_json(node->predicate, predicateJson);
-            cJSON_AddItemToObject(nodeJson, "predicate", predicateJson);
+            predJson = cJSON_CreateArray();
+            _add_items_array_json(node->pred, predJson);
+            cJSON_AddItemToObject(nodeJson, "pred", predJson);
             break;
     }
 
@@ -171,32 +171,48 @@ void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, in
 void _show_json(cJSON *rootJson) {
     printf("\n****************************JSON********************************\n");
     char *out = cJSON_Print(rootJson);
-    printf("%s", out);
+
+    if(out){
+//        FILE *fptr;
+//        fptr = fopen("json.txt", "w");
+//
+//        if (fptr == NULL) {
+//            printf("\nError opening file!\n");
+//            exit(1);
+//        }
+//
+//        fprintf(fptr, "%s", out);
+//        fclose(fptr);
+
+        printf("%s", out);
+        cJSON_free(out);
+    }
+
     printf("\n***************************************************************\n");
 }
 
 void _copy_items(cJSON *target, cJSON *source) {
     char *typeName = "type";
     char *nameName = "name";
-    char *attributeName = "attribute";
-    char *attribute2Name = "attribute2";
-    char *predicateName = "predicate";
+    char *attrName = "attr";
+    char *compName = "comp";
+    char *predName = "pred";
     char *leftName = "left";
     char *rightName = "right";
 
     cJSON *type = cJSON_DetachItemFromObject(source, typeName);
     cJSON *name = cJSON_DetachItemFromObject(source, nameName);
-    cJSON *attribute = cJSON_DetachItemFromObject(source, attributeName);
-    cJSON *attribute2 = cJSON_DetachItemFromObject(source, attribute2Name);
-    cJSON *predicate = cJSON_DetachItemFromObject(source, predicateName);
+    cJSON *attr = cJSON_DetachItemFromObject(source, attrName);
+    cJSON *comp = cJSON_DetachItemFromObject(source, compName);
+    cJSON *pred = cJSON_DetachItemFromObject(source, predName);
     cJSON *left = cJSON_DetachItemFromObject(source, leftName);
     cJSON *right = cJSON_DetachItemFromObject(source, rightName);
 
     cJSON_AddItemToObject(target, typeName, type);
     cJSON_AddItemToObject(target, nameName, name);
-    cJSON_AddItemToObject(target, attributeName, attribute);
-    cJSON_AddItemToObject(target, attribute2Name, attribute2);
-    cJSON_AddItemToObject(target, predicateName, predicate);
+    cJSON_AddItemToObject(target, attrName, attr);
+    cJSON_AddItemToObject(target, compName, comp);
+    cJSON_AddItemToObject(target, predName, pred);
     cJSON_AddItemToObject(target, leftName, left);
     cJSON_AddItemToObject(target, rightName, right);
 }

@@ -53,9 +53,6 @@ void _show_tree(Node *root, int b) {
 void _start_data_structures() {
     free(top);
 
-    //todo: Verificar o
-//    cJSON_Delete(rootJson);
-
     _create_tree();
     _create_stack();
     rootJson = NULL;
@@ -74,10 +71,10 @@ void _add_symbols_predicate(char *symbol) {
     NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
 
-    if (!predicate) {
-        predicate = node;
+    if (!pred) {
+        pred = node;
     } else {
-        NodeChar *aux = predicate;
+        NodeChar *aux = pred;
         while (aux->next != NULL) {
             aux = aux->next;
         }
@@ -91,9 +88,9 @@ void _add_symbols_attribute(char *symbol, int option) {
     NodeChar *aux;
 
     if (option == 1) {
-        aux = attribute;
+        aux = attr;
     } else {
-        aux = attribute2;
+        aux = comp;
     }
 
     NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
@@ -111,9 +108,9 @@ void _add_symbols_attribute(char *symbol, int option) {
     }
 
     if (option == 1) {
-        attribute = aux;
+        attr = aux;
     } else {
-        attribute2 = aux;
+        comp = aux;
     }
 }
 
@@ -137,31 +134,31 @@ void _show_node(Node *node, int b) {
         switch (node->type) {
             case SELECTION:
                 printf("SIGMA ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case RELATION:
                 printf("%s ", node->name);
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case PROJECTION:
                 printf("PI ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case ASSIGNMENT:
                 printf("ASSIGNMENT ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
             case ASSIGNMENT_RHO:
                 printf("RHO ");
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf("\n");
                 break;
 
@@ -192,7 +189,7 @@ void _show_node(Node *node, int b) {
 
             case JOIN:
                 printf("JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
@@ -202,27 +199,27 @@ void _show_node(Node *node, int b) {
                 break;
 
             case F_SCRIPT:
-                _show_node_list(node->attribute);
+                _show_node_list(node->attr);
                 printf(" FSCRIPT ");
-                _show_node_list(node->attribute2);
+                _show_node_list(node->comp);
                 printf("\n");
                 break;
 
             case LEFT_OUTER_JOIN:
                 printf("LEFT_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case RIGHT_OUTER_JOIN:
                 printf("RIGHT_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
             case COMPLETE_OUTER_JOIN:
                 printf("COMPLETE_OUTER_JOIN ");
-                _show_node_list(node->predicate);
+                _show_node_list(node->pred);
                 printf("\n");
                 break;
 
@@ -280,26 +277,26 @@ void _build_node(Node *node) {
         if (top->type == ASSIGNMENT_RHO) {
             if (top->left == NULL) {
                 Node *nodeNew = _allocate_node();
-                nodeNew->attribute = attribute;
+                nodeNew->attr = attr;
                 nodeNew->type = RELATION;
                 nodeNew->left = nodeNew->right = NULL;
                 top->left = nodeNew;
 
             } else if (top->left->type == RELATION) {
-                top->left->attribute = attribute;
+                top->left->attr = attr;
             }
 
-            attribute = NULL;
+            attr = NULL;
         }
     }
 
-    node->attribute = attribute;
-    node->attribute2 = attribute2;
-    node->predicate = predicate;
+    node->attr = attr;
+    node->comp = comp;
+    node->pred = pred;
     node->left = node->right = NULL;
 
     //Restaurando variáveis globais para NULL, para usalás posteriormente.
-    attribute = attribute2 = predicate = NULL;
+    attr = comp = pred = NULL;
 }
 
 int _node_type_is_operation_binary(NodeType type) {
