@@ -54,21 +54,35 @@ _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLe
 }
 
 void _add_items_array_json(NodeChar *items, cJSON *array) {
-    NodeChar *aux = items;
+    NodeChar *aux = items, *lastInserted;
+    int totalElements = 0;
 
     while (aux != NULL) {
         if (strcmp(aux->name, ",")) {
-            cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
+
+            if (totalElements > 0 && _symbol_is_arithmetic_operator(lastInserted->name)) {
+                cJSON *arithmeticOperator = cJSON_DetachItemFromArray(array, --totalElements);
+                cJSON *beforeArithmeticOperator = cJSON_DetachItemFromArray(array, --totalElements);
+
+                char newElement[100];
+                strcpy(newElement, beforeArithmeticOperator->valuestring);
+                strcat(newElement, arithmeticOperator->valuestring);
+                strcat(newElement, aux->name);
+
+                cJSON_AddItemToArray(array, cJSON_CreateString(newElement));
+
+                cJSON_Delete(arithmeticOperator);
+                cJSON_Delete(beforeArithmeticOperator);
+            } else {
+                cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
+            }
+
+            lastInserted = aux;
+            totalElements++;
         }
 
         aux = aux->next;
     }
-
-    cJSON *test = cJSON_DetachItemFromArray(array, 1);
-    char *out = cJSON_Print(test);
-
-    printf("\n%s\n", out);
-    cJSON_free(out);
 }
 
 cJSON *_build_node_json(Node *node) {

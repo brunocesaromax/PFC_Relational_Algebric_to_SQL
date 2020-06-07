@@ -84,3 +84,5 @@ void _create_sub_tree_list();
 Node *_get_sub_tree_or_node(Node *node);
 
 int _exists_sub_tree_same_name(char *name);
+
+int _symbol_is_arithmetic_operator(char *symbol);
