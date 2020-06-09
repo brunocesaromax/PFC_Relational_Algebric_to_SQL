@@ -1,0 +1,3 @@
+RHO R (Dnr, Nr_de_funcionarios, Media_sal) (Dnr FSCRIPT COUNT Cpf, AVERAGE Salario (FUNCIONARIO))
+
+1- Para a consulta acima os parênteses devem aparecer no json??

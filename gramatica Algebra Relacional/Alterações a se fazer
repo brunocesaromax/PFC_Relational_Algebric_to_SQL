@@ -1,0 +1,4 @@
+3- #define ATTRIBUTE_NIL 0
+if (ATTRIBUTE_NIL)
+5- ASSIGNMENT da maneira do professor
+6- #define ELEM_NIL 1

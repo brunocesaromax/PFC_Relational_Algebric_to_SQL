@@ -112,7 +112,6 @@ cJSON *_build_node_json(Node *node) {
                 }
 
             } else {
-
                 _add_items_array_json(node->pred, predJson);
                 cJSON_AddItemToObject(nodeJson, "pred", predJson);
             }
@@ -144,7 +143,6 @@ cJSON *_build_node_json(Node *node) {
                 }
 
             } else {
-
                 attrJson = cJSON_CreateArray();
                 _add_items_array_json(node->attr, attrJson);
                 cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
@@ -178,7 +176,6 @@ cJSON *_build_node_json(Node *node) {
                 }
 
             } else {
-
                 _add_items_array_json(node->attr, attrJson);
                 cJSON_AddItemToObject(nodeJson, "attr", attrJson);
             }
@@ -187,8 +184,33 @@ cJSON *_build_node_json(Node *node) {
 
         case ASSIGNMENT_RHO:
             attrJson = cJSON_CreateArray();
-            _add_items_array_json(node->attr, attrJson);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+
+            if (ELEM_NIL) {
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+
+                if (node->attr) {
+                    _add_items_array_json(node->attr, attrJson);
+                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                } else {
+                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                }
+
+                cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+
+                if (!node->left) {
+                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                }
+
+                if (!node->right) {
+                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                }
+
+            }else{
+                _add_items_array_json(node->attr, attrJson);
+                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            }
+
             break;
 
         case JOIN:
