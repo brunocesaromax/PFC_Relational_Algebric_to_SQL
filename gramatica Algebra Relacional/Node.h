@@ -87,4 +87,6 @@ Node *_get_sub_tree_or_node(Node *node);
 
 int _exists_sub_tree_same_name(char *name);
 
-int _symbol_is_arithmetic_operator(char *symbol);
+int _is_arithmetic_operator(char *name);
+
+int _is_aggregated_function(char *name);

@@ -380,9 +380,18 @@ int _exists_sub_tree_same_name(char *name) {
     return 0;
 }
 
-int _symbol_is_arithmetic_operator(char *symbol) {
-    if (!strcmp(symbol, "+") || !strcmp(symbol, "-")
-        || !strcmp(symbol, "*") || !strcmp(symbol, "/")) {
+int _is_arithmetic_operator(char *name) {
+    if (!strcmp(name, "+") || !strcmp(name, "-")
+        || !strcmp(name, "*") || !strcmp(name, "/")) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int _is_aggregated_function(char *name) {
+    if (!strcmp(name, "COUNT") || !strcmp(name, "AVERAGE")
+        || !strcmp(name, "MAX") || !strcmp(name, "MIN") || !strcmp(name, "SUM")) {
         return 1;
     } else {
         return 0;

@@ -60,7 +60,7 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
     while (aux != NULL) {
         if (strcmp(aux->name, ",")) {
 
-            if (totalElements > 0 && _symbol_is_arithmetic_operator(lastInserted->name)) {
+            if (totalElements > 0 && _is_arithmetic_operator(lastInserted->name)) {
                 cJSON *arithmeticOperator = cJSON_DetachItemFromArray(array, --totalElements);
                 cJSON *beforeArithmeticOperator = cJSON_DetachItemFromArray(array, --totalElements);
 
@@ -73,6 +73,9 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
 
                 cJSON_Delete(arithmeticOperator);
                 cJSON_Delete(beforeArithmeticOperator);
+
+            } else if (totalElements > 0 && _is_aggregated_function(lastInserted->name)) {
+                //todo: Implementar esse fluxo
             } else {
                 cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
             }
@@ -247,11 +250,41 @@ cJSON *_build_node_json(Node *node) {
             attrJson = cJSON_CreateArray();
             compJson = cJSON_CreateArray();
 
-            _add_items_array_json(node->attr, attrJson);
-            _add_items_array_json(node->comp, compJson);
+            if (ELEM_NIL) {
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
 
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
-            cJSON_AddItemToObject(nodeJson, "comp", compJson);
+                if (node->attr) {
+                    _add_items_array_json(node->attr, attrJson);
+                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                } else {
+                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                }
+
+                if (node->comp) {
+                    _add_items_array_json(node->comp, compJson);
+                    cJSON_AddItemToObject(nodeJson, "comp", compJson);
+                } else {
+                    cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                }
+
+                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+
+                if (!node->left) {
+                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                }
+
+                if (!node->right) {
+                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                }
+
+            } else {
+                _add_items_array_json(node->attr, attrJson);
+                _add_items_array_json(node->comp, compJson);
+
+                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                cJSON_AddItemToObject(nodeJson, "comp", compJson);
+            }
+
             break;
 
         case LEFT_OUTER_JOIN:
