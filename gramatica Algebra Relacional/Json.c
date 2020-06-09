@@ -95,8 +95,28 @@ cJSON *_build_node_json(Node *node) {
     switch (node->type) {
         case SELECTION:
             predJson = cJSON_CreateArray();
-            _add_items_array_json(node->pred, predJson);
-            cJSON_AddItemToObject(nodeJson, "pred", predJson);
+
+            if (ELEM_NIL) {
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                _add_items_array_json(node->pred, predJson);
+                cJSON_AddItemToObject(nodeJson, "pred", predJson);
+
+                if (!node->left) {
+                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                }
+
+                if (!node->right) {
+                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                }
+
+            } else {
+
+                _add_items_array_json(node->pred, predJson);
+                cJSON_AddItemToObject(nodeJson, "pred", predJson);
+            }
+
             break;
 
         case RELATION:

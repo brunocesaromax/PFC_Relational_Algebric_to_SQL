@@ -1,5 +1,7 @@
 #include <cjson/cJSON.h>
 
+#define ELEM_NIL 1
+
 typedef enum nodeType NodeType;
 typedef struct nodeChar NodeChar;
 typedef struct node Node;
