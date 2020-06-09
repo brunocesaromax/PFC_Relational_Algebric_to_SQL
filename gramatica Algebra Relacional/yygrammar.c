@@ -445,7 +445,7 @@ _add_symbols_attribute(")",1);
       get_lexval();
 #line 155 "spec.acc"
 _add_node_stack("(");
-# line -,,' "yygrammar.c"
+# line 449 "yygrammar.c"
       switch (yyselect()) {
       case 72: {
          get_lexval();
@@ -677,7 +677,7 @@ arithmetic_operator ()
       get_lexval();
 #line 235 "spec.acc"
 _add_symbols_attribute("+",1);
-# line -*(/ "yygrammar.c"
+# line 681 "yygrammar.c"
       } break;
    case 43: {
       get_lexval();
@@ -796,25 +796,25 @@ _add_symbols_attribute("COUNT ",2);
          get_lexval();
 #line 271 "spec.acc"
 _add_symbols_attribute("AVERAGE ",2);
-# line -(00 "yygrammar.c"
+# line 800 "yygrammar.c"
          } break;
       case 92: {
          get_lexval();
 #line 273 "spec.acc"
 _add_symbols_attribute("MAX ",2);
-# line -(0* "yygrammar.c"
+# line 806 "yygrammar.c"
          } break;
       case 93: {
          get_lexval();
 #line 275 "spec.acc"
 _add_symbols_attribute("MIN ",2);
-# line -(/. "yygrammar.c"
+# line 812 "yygrammar.c"
          } break;
       case 94: {
          get_lexval();
 #line 277 "spec.acc"
 _add_symbols_attribute("SUM ",2);
-# line -(/( "yygrammar.c"
+# line 818 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
