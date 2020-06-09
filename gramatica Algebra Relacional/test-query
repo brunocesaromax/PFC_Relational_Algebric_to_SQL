@@ -1,1 +1,1 @@
-RHO R (Dnr, Nr_de_funcionarios, Media_sal) (Dnr FSCRIPT COUNT Cpf, AVERAGE Salario (FUNCIONARIO))
+PI Pnome, Unome, Salario (SIGMA Dnr=5 (FUNCIONARIO))

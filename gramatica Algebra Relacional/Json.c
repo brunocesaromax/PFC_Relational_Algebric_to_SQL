@@ -155,8 +155,34 @@ cJSON *_build_node_json(Node *node) {
 
         case PROJECTION:
             attrJson = cJSON_CreateArray();
-            _add_items_array_json(node->attr, attrJson);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+
+            if (ELEM_NIL) {
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+
+                if (node->attr) {
+                    _add_items_array_json(node->attr, attrJson);
+                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                } else {
+                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                }
+
+                cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+
+                if (!node->left) {
+                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                }
+
+                if (!node->right) {
+                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                }
+
+            } else {
+
+                _add_items_array_json(node->attr, attrJson);
+                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            }
+
             break;
 
         case ASSIGNMENT_RHO:
