@@ -121,10 +121,36 @@ cJSON *_build_node_json(Node *node) {
 
         case RELATION:
             attrJson = cJSON_CreateArray();
-            _add_items_array_json(node->attr, attrJson);
-            name = cJSON_CreateString(node->name);
-            cJSON_AddItemToObject(nodeJson, "name", name);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+
+            if (ELEM_NIL) {
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+
+                if (node->attr) {
+                    _add_items_array_json(node->attr, attrJson);
+                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                } else {
+                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                }
+
+                cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+
+                if (!node->left) {
+                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                }
+
+                if (!node->right) {
+                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                }
+
+            } else {
+
+                attrJson = cJSON_CreateArray();
+                _add_items_array_json(node->attr, attrJson);
+                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            }
+
             break;
 
         case PROJECTION:
