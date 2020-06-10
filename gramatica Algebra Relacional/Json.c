@@ -75,7 +75,16 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
                 cJSON_Delete(beforeArithmeticOperator);
 
             } else if (totalElements > 0 && _is_aggregated_function(lastInserted->name)) {
-                //todo: Implementar esse fluxo
+                cJSON *aggregatedFunction = cJSON_DetachItemFromArray(array, --totalElements);
+                char newElement[100];
+
+                strcpy(newElement, aggregatedFunction->valuestring);
+                strcat(newElement, aux->name);
+
+                cJSON_AddItemToArray(array, cJSON_CreateString(newElement));
+
+                cJSON_Delete(aggregatedFunction);
+
             } else {
                 cJSON_AddItemToArray(array, cJSON_CreateString(aux->name));
             }

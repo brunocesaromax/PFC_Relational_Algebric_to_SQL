@@ -390,8 +390,8 @@ int _is_arithmetic_operator(char *name) {
 }
 
 int _is_aggregated_function(char *name) {
-    if (!strcmp(name, "COUNT") || !strcmp(name, "AVERAGE")
-        || !strcmp(name, "MAX") || !strcmp(name, "MIN") || !strcmp(name, "SUM")) {
+    if (strstr(name, "COUNT") || strstr(name, "AVERAGE")
+        || strstr(name, "MAX") || strstr(name, "MIN") || strstr(name, "SUM")) {
         return 1;
     } else {
         return 0;
