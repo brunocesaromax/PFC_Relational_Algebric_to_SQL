@@ -122,7 +122,7 @@ cJSON *_build_node_json(Node *node) {
             break;
 
         case ASSIGNMENT_RHO:
-            _build_node_with_only_attr(nodeJson, attrJson, node);
+            _build_node_with_name_and_attr(nodeJson, predJson, node);
             break;
 
         case JOIN:

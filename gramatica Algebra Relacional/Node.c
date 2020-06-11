@@ -157,7 +157,7 @@ void _show_node(Node *node, int b) {
                 break;
 
             case ASSIGNMENT_RHO:
-                printf("RHO ");
+                printf("RHO (%s)", node->name);
                 _show_node_list(node->attr);
                 printf("\n");
                 break;
@@ -275,17 +275,7 @@ void _build_node(Node *node) {
         Node *top = _top_element();
 
         if (top->type == ASSIGNMENT_RHO) {
-            if (top->left == NULL) {
-                Node *nodeNew = _allocate_node();
-                nodeNew->attr = attr;
-                nodeNew->type = RELATION;
-                nodeNew->left = nodeNew->right = NULL;
-                top->left = nodeNew;
-
-            } else if (top->left->type == RELATION) {
-                top->left->attr = attr;
-            }
-
+            top->attr = attr;
             attr = NULL;
         }
     }

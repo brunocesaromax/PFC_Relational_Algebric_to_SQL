@@ -81,7 +81,7 @@ void _add_node_stack(char *s) {
             Node *temp = _pop();
 
             if (temp->type == ASSIGNMENT_RHO) {
-                temp->left = _get_sub_tree_or_node(node);
+                temp->name = node->name;
                 _push(temp);
                 _add_sub_tree(temp);
 
@@ -89,8 +89,8 @@ void _add_node_stack(char *s) {
                 Node *nodeRHO = _get_first_rho_node_in_stack();
 
                 //Ex: PROJETO_DEP ASSIGNMENT PROJETO NATURAL_JOIN RHO (Dnome, Dnum, Cpf_gerente, Data_inicio_gerente)(DEPARTAMENTO)
-                if (nodeRHO != NULL && nodeRHO->left->name == NULL) {
-                    nodeRHO->left->name = node->name;
+                if (nodeRHO != NULL && nodeRHO->name == NULL) {
+                    nodeRHO->name = node->name;
                 }
 
                 _push(temp);
