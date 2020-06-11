@@ -110,40 +110,15 @@ cJSON *_build_node_json(Node *node) {
             break;
 
         case RELATION:
-            attrJson = cJSON_CreateArray();
-
-            if (ELEM_NIL) {
-                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
-
-                if (node->attr) {
-                    _add_items_array_json(node->attr, attrJson);
-                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
-                } else {
-                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
-                }
-
-                cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
-                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
-
-                if (!node->left) {
-                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
-                }
-
-                if (!node->right) {
-                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
-                }
-
-            } else {
-                attrJson = cJSON_CreateArray();
-                _add_items_array_json(node->attr, attrJson);
-                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
-                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
-            }
-
+            _build_node_with_name_and_attr(nodeJson, predJson, node);
             break;
 
         case PROJECTION:
             _build_node_with_only_attr(nodeJson, attrJson, node);
+            break;
+
+        case ASSIGNMENT:
+            _build_node_with_name_and_attr(nodeJson, predJson, node);
             break;
 
         case ASSIGNMENT_RHO:
@@ -347,6 +322,37 @@ void _build_node_with_only_attr(cJSON *nodeJson, cJSON *attrJson, Node *node) {
 
     } else {
         _add_items_array_json(node->attr, attrJson);
+        cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+    }
+}
+
+void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node) {
+    attrJson = cJSON_CreateArray();
+    if (ELEM_NIL) {
+        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+
+        if (node->attr) {
+            _add_items_array_json(node->attr, attrJson);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+        } else {
+            cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+        }
+
+        cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+        cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+
+        if (!node->left) {
+            cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+        }
+
+        if (!node->right) {
+            cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+        }
+
+    } else {
+        attrJson = cJSON_CreateArray();
+        _add_items_array_json(node->attr, attrJson);
+        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
         cJSON_AddItemToObject(nodeJson, "attr", attrJson);
     }
 }

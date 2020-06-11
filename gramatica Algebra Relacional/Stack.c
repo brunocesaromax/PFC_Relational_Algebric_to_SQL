@@ -70,7 +70,7 @@ void _add_node_stack(char *s) {
 
     } else if (node->type == ASSIGNMENT) {
         Node *temp = _pop();
-        node->left = temp;
+        node->name = temp->name;
         _push(node);
         _add_sub_tree(node);
 
@@ -123,7 +123,7 @@ void _add_node_stack(char *s) {
         /*Adicionar subárvore existente a esquerda de um nó de operação binária
          * somente se as condições a seguir forem satisfeitas*/
         if ((top->node->type == ASSIGNMENT || top->node->type == ASSIGNMENT_RHO)
-            && top->node->left != NULL && _exists_sub_tree_same_name(top->node->left->name) && temp == NULL) {
+            && _exists_sub_tree_same_name(top->node->name) && temp == NULL) {
             temp = _pop();
         }
 

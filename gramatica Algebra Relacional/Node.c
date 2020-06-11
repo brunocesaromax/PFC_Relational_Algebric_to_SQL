@@ -151,7 +151,7 @@ void _show_node(Node *node, int b) {
                 break;
 
             case ASSIGNMENT:
-                printf("ASSIGNMENT ");
+                printf("ASSIGNMENT (%s)", node->name);
                 _show_node_list(node->attr);
                 printf("\n");
                 break;
@@ -328,13 +328,13 @@ int _node_is_operation_binary_or_assignment(Node *node) {
 void _add_sub_tree(Node *node) {
     if (headList == NULL) {
         headList = (SubTreeList *) malloc(sizeof(SubTreeList));
-        headList->name = node->left->name;
+        headList->name = node->name;
         headList->node = node;
         headList->next = NULL;
     } else {
-        if (_exists_sub_tree_same_name(node->left->name) == 0) {
+        if (_exists_sub_tree_same_name(node->name) == 0) {
             SubTreeList *new = (SubTreeList *) malloc(sizeof(SubTreeList));
-            new->name = node->left->name;
+            new->name = node->name;
             new->node = node;
             new->next = NULL;
 
