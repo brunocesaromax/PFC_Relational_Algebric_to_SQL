@@ -58,7 +58,7 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
     int totalElements = 0;
 
     while (aux != NULL) {
-        if (strcmp(aux->name, ",")) {
+        if (strcmp(aux->name, ",") && strcmp(aux->name, "(") && strcmp(aux->name, ")")) {
 
             if (totalElements > 0 && _is_arithmetic_operator(lastInserted->name)) {
                 cJSON *arithmeticOperator = cJSON_DetachItemFromArray(array, --totalElements);

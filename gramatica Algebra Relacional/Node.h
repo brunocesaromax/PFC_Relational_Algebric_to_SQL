@@ -15,7 +15,7 @@ enum nodeType {
 };
 
 static inline char *_string_from_node_type(enum nodeType type) {
-    static const char *strings[] = {"RELATION", "SELECTION", "PROJECTION", "ASSIGNMENT", "ASSIGNMENT_RHO",
+    static const char *strings[] = {"RELATION", "SELECTION", "PROJECTION", "ASSIGNMENT", "ASSIGNMENT",
                                     "JOIN", "NATURAL_JOIN", "UNION", "INTERSECTION", "SUBTRACTION",
                                     "CARTESIAN_PRODUCT", "DIVISION", "F_SCRIPT", "LEFT_OUTER_JOIN",
                                     "RIGHT_OUTER_JOIN", "COMPLETE_OUTER_JOIN", "OPEN_PARENTHESES", "CLOSE_PARENTHESES"};
