@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <cjson/cJSON.h>
 
-cJSON *rootJson;
+cJSON *jsonResult;
 
 /************FUNCTION SIGNATURES***************/
+void _create_json();
+
 cJSON *_get_root_json(cJSON *nodeJson);
 
 cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int currentRight);

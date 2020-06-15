@@ -33,8 +33,8 @@ void _build_tree() {
     }
 
     _show_tree(rootTree, 0);
-    _build_json(rootTree, rootJson, 0, 0, 0);
-    _show_json(rootJson);
+    _build_json(rootTree, cJSON_GetObjectItem(jsonResult, "root"), 0, 0, 0);
+    _show_json(jsonResult);
     _start_data_structures();
 }
 
@@ -55,9 +55,7 @@ void _start_data_structures() {
 
     _create_tree();
     _create_stack();
-    rootJson = NULL;
-
-    rootJson = cJSON_CreateObject();
+    _create_json();
 
     printf("\n\n\n");
 }

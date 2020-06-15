@@ -1,5 +1,13 @@
 #include "Json.h"
 
+void _create_json(){
+    jsonResult = NULL;
+
+    jsonResult = cJSON_CreateObject();
+    cJSON* rootJson = cJSON_CreateObject();
+    cJSON_AddItemToObject(jsonResult, "root", rootJson);
+}
+
 cJSON *_get_root_json(cJSON *nodeJson) {
     if (nodeJson->prev == NULL) {
         return nodeJson;
