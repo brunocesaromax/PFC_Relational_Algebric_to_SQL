@@ -191,8 +191,13 @@ cJSON *_build_node_json(Node *node) {
             break;
     }
 
-    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateObject());
-    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateObject());
+    if (node->left) {
+        cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateObject());
+    }
+
+    if (node->right) {
+        cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateObject());
+    }
 
     return nodeJson;
 }
@@ -362,9 +367,12 @@ void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node
         }
 
     } else {
-        attrJson = cJSON_CreateArray();
-        _add_items_array_json(node->attr, attrJson);
         cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
-        cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+        attrJson = cJSON_CreateArray();
+
+        if (node->attr) {
+            _add_items_array_json(node->attr, attrJson);
+            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+        }
     }
 }
