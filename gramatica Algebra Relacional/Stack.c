@@ -85,17 +85,6 @@ void _add_node_stack(char *s) {
                 _push(temp);
                 _add_sub_tree(temp);
 
-            } else if (temp->type == OPEN_PARENTHESES) {
-                Node *nodeRHO = _get_first_rho_node_in_stack();
-
-                //Ex: PROJETO_DEP ASSIGNMENT PROJETO NATURAL_JOIN RHO (Dnome, Dnum, Cpf_gerente, Data_inicio_gerente)(DEPARTAMENTO)
-                if (nodeRHO != NULL && nodeRHO->name == NULL) {
-                    nodeRHO->name = node->name;
-                }
-
-                _push(temp);
-                _push(_get_sub_tree_or_node(node));
-
             } else {
                 _push(temp);
                 _push(_get_sub_tree_or_node(node));
@@ -133,21 +122,6 @@ void _add_node_stack(char *s) {
     } else {
         _push(node);
     }
-}
-
-Node *_get_first_rho_node_in_stack() {
-    Stack *temp = top;
-    Node *rho = NULL;
-
-    while (temp != NULL) {
-        if (temp->node->type == ASSIGNMENT_RHO) {
-            rho = temp->node;
-        }
-
-        temp = temp->next;
-    }
-
-    return rho;
 }
 
 void _display_stack() {

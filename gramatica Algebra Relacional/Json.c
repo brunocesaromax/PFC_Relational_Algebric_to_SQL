@@ -1,10 +1,10 @@
 #include "Json.h"
 
-void _create_json(){
+void _create_json() {
     jsonResult = NULL;
 
     jsonResult = cJSON_CreateObject();
-    cJSON* rootJson = cJSON_CreateObject();
+    cJSON *rootJson = cJSON_CreateObject();
     cJSON_AddItemToObject(jsonResult, "root", rootJson);
 }
 
@@ -337,7 +337,11 @@ void _build_node_with_only_attr(cJSON *nodeJson, cJSON *attrJson, Node *node) {
 void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node) {
     attrJson = cJSON_CreateArray();
     if (ELEM_NIL) {
-        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+        if (node->name) {
+            cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+        } else {
+            cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+        }
 
         if (node->attr) {
             _add_items_array_json(node->attr, attrJson);

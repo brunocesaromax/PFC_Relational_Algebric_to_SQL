@@ -21,8 +21,6 @@ int _stack_is_empty();
 
 void _add_node_stack(char *s);
 
-Node *_get_first_rho_node_in_stack();
-
 void _display_stack();
 
 void _show_node_stack(Node *node, int b);

@@ -155,7 +155,12 @@ void _show_node(Node *node, int b) {
                 break;
 
             case ASSIGNMENT_RHO:
-                printf("RHO (%s)", node->name);
+                if(node->name){
+                    printf("RHO (%s)", node->name);
+                }else{
+                    printf("RHO ");
+                }
+
                 _show_node_list(node->attr);
                 printf("\n");
                 break;
