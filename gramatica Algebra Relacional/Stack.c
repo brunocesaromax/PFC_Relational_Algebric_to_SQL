@@ -71,6 +71,8 @@ void _add_node_stack(char *s) {
     } else if (node->type == ASSIGNMENT) {
         Node *temp = _pop();
         node->name = temp->name;
+        node->attr = temp->attr;
+
         _push(node);
         _add_sub_tree(node);
 
