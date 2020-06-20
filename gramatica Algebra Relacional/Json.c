@@ -23,20 +23,37 @@ cJSON *_get_root_json(cJSON *nodeJson) {
 }
 
 cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int currentRight) {
-    //left = 1, right = 0
-
     int auxRight = currentRight;
     int auxLeft = currentLeft;
     cJSON *temp = rootJson;
 
-    while (auxRight > 0) {
-        temp = cJSON_GetObjectItem(temp, "right");
-        auxRight--;
-    }
+    if (currentLeft > 0 && currentRight > currentLeft) {
+        SeqIns *aux = seqIns;
 
-    while (auxLeft > 0) {
-        temp = cJSON_GetObjectItem(temp, "left");
-        auxLeft--;
+//        printf("\n\nInserções\n\n");
+        while (aux != NULL) {
+            if (aux->direction == 1) {
+                temp = cJSON_GetObjectItem(temp, "left");
+            } else {
+                temp = cJSON_GetObjectItem(temp, "right");
+            }
+
+//            printf("%d -> ", aux->direction);
+
+            aux = aux->next;
+        }
+//        printf("\n\nInserções\n\n");
+
+    } else {
+        while (auxRight > 0) {
+            temp = cJSON_GetObjectItem(temp, "right");
+            auxRight--;
+        }
+
+        while (auxLeft > 0) {
+            temp = cJSON_GetObjectItem(temp, "left");
+            auxLeft--;
+        }
     }
 
     return temp;
@@ -48,13 +65,6 @@ _add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLe
         _copy_items(rootJson, nodeJson);
     } else {
         cJSON *node = _get_node_json(rootJson, _get_node_name_by_direction(direction), currentLeft, currentRight);
-
-
-//        printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
-//        printf("\nDirecao = %d\n", direction);
-//        char *out = cJSON_Print(node);
-//        printf("%s\n", out);
-//        printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n");
 
         _copy_items(node, nodeJson);
         cJSON_ReplaceItemViaPointer(rootJson, node, node);
@@ -216,17 +226,31 @@ void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, in
     if (node == NULL) {
         return;
     } else {
+        if (direction != 0) {
+            if (seqIns == NULL) {
+                seqIns = (SeqIns *) malloc(1 * sizeof(SeqIns));
+                seqIns->direction = direction;
+                seqIns->next = NULL;
+
+            } else {
+                SeqIns *new = (SeqIns *) malloc(1 * sizeof(SeqIns));
+                new->direction = direction;
+                new->next = NULL;
+
+                SeqIns *aux = seqIns;
+
+                while (aux->next != NULL) {
+                    aux = aux->next;
+                }
+
+                aux->next = new;
+            }
+        }
+
         cJSON *nodeJson = _build_node_json(node);
         _add_node_in_json(rootJson, nodeJson, direction, currentLeft, currentRight,
                           _node_is_operation_binary_or_assignment(node));
-
-//        if (_node_is_operation_binary_or_assignment(node) && (node != rootTree)) {
-//            rootJson->next = _build_node_json(node->left);
-//            cJSON_SetNumberValue(rootJson->next, 1);
-//        } else {
-//        printf("\n%d - %d\n", currentLeft + 1, currentRight);
         _build_json(node->left, rootJson, 1, currentLeft + 1, currentRight);
-
         _build_json(node->right, rootJson, 2, currentLeft, currentRight + 1);
     }
 }

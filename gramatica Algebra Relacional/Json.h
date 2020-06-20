@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <cjson/cJSON.h>
 
+typedef struct seqIns SeqIns;
+
+struct seqIns {
+    int direction;
+    SeqIns *next;
+};
+
+
+SeqIns *seqIns;
 cJSON *jsonResult;
 
 /************FUNCTION SIGNATURES***************/

@@ -33,6 +33,7 @@ void _build_tree() {
     }
 
     _show_tree(rootTree, 0);
+    seqIns = NULL;
     _build_json(rootTree, cJSON_GetObjectItem(jsonResult, "root"), 0, 0, 0);
     _show_json(jsonResult);
     _start_data_structures();
@@ -155,9 +156,9 @@ void _show_node(Node *node, int b) {
                 break;
 
             case ASSIGNMENT_RHO:
-                if(node->name){
+                if (node->name) {
                     printf("RHO (%s)", node->name);
-                }else{
+                } else {
                     printf("RHO ");
                 }
 
@@ -297,6 +298,14 @@ int _node_type_is_operation_binary(NodeType type) {
         type == SUBTRACTION || type == NATURAL_JOIN || type == DIVISION ||
         type == LEFT_OUTER_JOIN || type == RIGHT_OUTER_JOIN ||
         type == COMPLETE_OUTER_JOIN || type == INTERSECTION) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int _node_type_is_operation_binary_string(char *type) {
+    if (!strcmp(type, "UNION")) {
         return 1;
     } else {
         return 0;

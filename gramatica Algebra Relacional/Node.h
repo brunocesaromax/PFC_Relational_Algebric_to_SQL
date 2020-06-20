@@ -77,6 +77,8 @@ void _build_node(Node *node);
 
 int _node_type_is_operation_binary(NodeType type);
 
+int _node_type_is_operation_binary_string(char *type);
+
 int _node_is_operation_binary_or_assignment(Node *node);
 
 void _add_sub_tree(Node *node);
