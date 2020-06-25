@@ -9,9 +9,9 @@ struct seqIns {
     SeqIns *next;
 };
 
-
 SeqIns *seqIns;
 cJSON *jsonResult;
+cJSON *jsonResultFile;
 
 /************FUNCTION SIGNATURES***************/
 void _create_json();
@@ -38,3 +38,5 @@ void _copy_items(cJSON *target, cJSON *source);
 void _build_node_with_only_pred(cJSON *nodeJson, cJSON *predJson, Node *node);
 
 void _build_node_with_only_attr(cJSON *nodeJson, cJSON *attrJson, Node *node);
+
+void _generate_file_json();

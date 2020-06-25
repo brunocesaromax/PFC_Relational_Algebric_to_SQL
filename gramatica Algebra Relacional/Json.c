@@ -1,6 +1,7 @@
 #include "Json.h"
 
 void _create_json() {
+    jsonResultFile = jsonResult;
     jsonResult = NULL;
 
     jsonResult = cJSON_CreateObject();
@@ -398,5 +399,22 @@ void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node
             _add_items_array_json(node->attr, attrJson);
             cJSON_AddItemToObject(nodeJson, "attr", attrJson);
         }
+    }
+}
+
+void _generate_file_json(){
+    char *out = cJSON_Print(jsonResultFile);
+
+    if (out) {
+        FILE *fptr;
+        fptr = fopen("json.txt", "w");
+
+        if (fptr == NULL) {
+            printf("\nError opening file!\n");
+            exit(1);
+        }
+
+        fprintf(fptr, "%s", out);
+        fclose(fptr);
     }
 }

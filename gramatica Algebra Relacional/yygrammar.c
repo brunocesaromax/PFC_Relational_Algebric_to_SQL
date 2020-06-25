@@ -24,6 +24,9 @@ init ()
 _tool_initialize();
 # line 26 "yygrammar.c"
       query();
+#line 8 "spec.acc"
+_generate_file_json();
+# line 30 "yygrammar.c"
       } break;
    }
 }
@@ -37,7 +40,7 @@ query ()
          query_operation();
 #line 12 "spec.acc"
 _build_tree();
-# line 41 "yygrammar.c"
+# line 44 "yygrammar.c"
          } break;
       case 52: {
          get_lexval();
@@ -52,7 +55,7 @@ _build_tree();
          query_operation();
 #line 14 "spec.acc"
 _build_tree();
-# line 56 "yygrammar.c"
+# line 59 "yygrammar.c"
          } break;
       case 54: {
          get_lexval();
@@ -70,12 +73,12 @@ query_operation ()
       get_lexval();
 #line 18 "spec.acc"
 _add_node_stack("(");
-# line 74 "yygrammar.c"
+# line 77 "yygrammar.c"
       query_operation();
       get_lexval();
 #line 20 "spec.acc"
 _add_node_stack(")");
-# line 79 "yygrammar.c"
+# line 82 "yygrammar.c"
       } break;
    case 5: {
       switch (yyselect()) {
@@ -123,7 +126,7 @@ binary_operation ()
          y = yylval;
 #line 44 "spec.acc"
 _add_node_stack(y.stringval);
-# line 127 "yygrammar.c"
+# line 130 "yygrammar.c"
          } break;
       case 58: {
          query_operation();
@@ -132,16 +135,16 @@ _add_node_stack(y.stringval);
          get_lexval();
 #line 48 "spec.acc"
 _add_node_stack("(");
-# line 136 "yygrammar.c"
+# line 139 "yygrammar.c"
          get_lexval();
          y = yylval;
 #line 49 "spec.acc"
 _add_node_stack(y.stringval);
-# line 141 "yygrammar.c"
+# line 144 "yygrammar.c"
          get_lexval();
 #line 50 "spec.acc"
 _add_node_stack(")");
-# line 145 "yygrammar.c"
+# line 148 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -152,7 +155,7 @@ _add_node_stack(")");
          y = yylval;
 #line 54 "spec.acc"
 _add_node_stack(y.stringval);
-# line 156 "yygrammar.c"
+# line 159 "yygrammar.c"
          } break;
       case 61: {
          query_operation();
@@ -161,16 +164,16 @@ _add_node_stack(y.stringval);
          get_lexval();
 #line 58 "spec.acc"
 _add_node_stack("(");
-# line 165 "yygrammar.c"
+# line 168 "yygrammar.c"
          get_lexval();
          y = yylval;
 #line 59 "spec.acc"
 _add_node_stack(y.stringval);
-# line 170 "yygrammar.c"
+# line 173 "yygrammar.c"
          get_lexval();
 #line 60 "spec.acc"
 _add_node_stack(")");
-# line 174 "yygrammar.c"
+# line 177 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -182,7 +185,7 @@ _add_node_stack(")");
          y = yylval;
 #line 64 "spec.acc"
 _add_node_stack(y.stringval);
-# line 186 "yygrammar.c"
+# line 189 "yygrammar.c"
          } break;
       case 64: {
          query_operation();
@@ -191,23 +194,23 @@ _add_node_stack(y.stringval);
          get_lexval();
 #line 68 "spec.acc"
 _add_node_stack("(");
-# line 195 "yygrammar.c"
+# line 198 "yygrammar.c"
          get_lexval();
          y = yylval;
 #line 69 "spec.acc"
 _add_node_stack(y.stringval);
-# line 200 "yygrammar.c"
+# line 203 "yygrammar.c"
          get_lexval();
 #line 70 "spec.acc"
 _add_node_stack(")");
-# line 204 "yygrammar.c"
+# line 207 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
       get_lexval();
 #line 72 "spec.acc"
 _add_node_stack("NATURAL_JOIN");
-# line 211 "yygrammar.c"
+# line 214 "yygrammar.c"
       renaming2();
       } break;
    }
@@ -220,65 +223,65 @@ binary_type_operation ()
       get_lexval();
 #line 78 "spec.acc"
 _add_node_stack("UNION");
-# line 224 "yygrammar.c"
+# line 227 "yygrammar.c"
       } break;
    case 14: {
       get_lexval();
 #line 80 "spec.acc"
 _add_node_stack("INTERSECTION");
-# line 230 "yygrammar.c"
+# line 233 "yygrammar.c"
       } break;
    case 15: {
       get_lexval();
 #line 82 "spec.acc"
 _add_node_stack("SUBTRACTION");
-# line 236 "yygrammar.c"
+# line 239 "yygrammar.c"
       } break;
    case 16: {
       get_lexval();
 #line 84 "spec.acc"
 _add_node_stack("PRODUCT_CARTESIAN");
-# line 242 "yygrammar.c"
+# line 245 "yygrammar.c"
       } break;
    case 17: {
       get_lexval();
       predicate_rule();
 #line 87 "spec.acc"
 _add_node_stack("JOIN");
-# line 249 "yygrammar.c"
+# line 252 "yygrammar.c"
       } break;
    case 18: {
       get_lexval();
 #line 89 "spec.acc"
 _add_node_stack("NATURAL_JOIN");
-# line 255 "yygrammar.c"
+# line 258 "yygrammar.c"
       } break;
    case 19: {
       get_lexval();
       predicate_rule();
 #line 92 "spec.acc"
 _add_node_stack("LEFT_OUTER_JOIN");
-# line 262 "yygrammar.c"
+# line 265 "yygrammar.c"
       } break;
    case 20: {
       get_lexval();
       predicate_rule();
 #line 95 "spec.acc"
 _add_node_stack("RIGHT_OUTER_JOIN");
-# line 269 "yygrammar.c"
+# line 272 "yygrammar.c"
       } break;
    case 21: {
       get_lexval();
       predicate_rule();
 #line 98 "spec.acc"
 _add_node_stack("COMPLETE_OUTER_JOIN");
-# line 276 "yygrammar.c"
+# line 279 "yygrammar.c"
       } break;
    case 22: {
       get_lexval();
 #line 100 "spec.acc"
 _add_node_stack("DIVISION");
-# line 282 "yygrammar.c"
+# line 285 "yygrammar.c"
       } break;
    }
 }
@@ -292,18 +295,18 @@ selection ()
       predicate_rule();
 #line 105 "spec.acc"
 _add_node_stack("SIGMA");
-# line 296 "yygrammar.c"
+# line 299 "yygrammar.c"
       get_lexval();
 #line 106 "spec.acc"
 _add_node_stack("(");
-# line 300 "yygrammar.c"
+# line 303 "yygrammar.c"
       switch (yyselect()) {
       case 66: {
          get_lexval();
          y = yylval;
 #line 108 "spec.acc"
 _add_node_stack(y.stringval);
-# line 307 "yygrammar.c"
+# line 310 "yygrammar.c"
          } break;
       case 67: {
          query_operation();
@@ -313,7 +316,7 @@ _add_node_stack(y.stringval);
       get_lexval();
 #line 112 "spec.acc"
 _add_node_stack(")");
-# line 317 "yygrammar.c"
+# line 320 "yygrammar.c"
       } break;
    }
 }
@@ -327,18 +330,18 @@ projection ()
       attribute_list();
 #line 117 "spec.acc"
 _add_node_stack("PI");
-# line 331 "yygrammar.c"
+# line 334 "yygrammar.c"
       get_lexval();
 #line 118 "spec.acc"
 _add_node_stack("(");
-# line 335 "yygrammar.c"
+# line 338 "yygrammar.c"
       switch (yyselect()) {
       case 68: {
          get_lexval();
          y = yylval;
 #line 120 "spec.acc"
 _add_node_stack(y.stringval);
-# line 342 "yygrammar.c"
+# line 345 "yygrammar.c"
          } break;
       case 69: {
          query_operation();
@@ -348,7 +351,7 @@ _add_node_stack(y.stringval);
       get_lexval();
 #line 124 "spec.acc"
 _add_node_stack(")");
-# line 352 "yygrammar.c"
+# line 355 "yygrammar.c"
       } break;
    }
 }
@@ -362,11 +365,11 @@ renaming1 ()
       y = yylval;
 #line 128 "spec.acc"
 _add_node_stack(y.stringval);
-# line 366 "yygrammar.c"
+# line 369 "yygrammar.c"
       get_lexval();
 #line 129 "spec.acc"
 _add_node_stack("ASSIGNMENT");
-# line 370 "yygrammar.c"
+# line 373 "yygrammar.c"
       query_operation();
       } break;
    case 26: {
@@ -376,12 +379,12 @@ _add_node_stack("ASSIGNMENT");
       attribute_list();
 #line 134 "spec.acc"
 _add_node_stack(y.stringval);
-# line 380 "yygrammar.c"
+# line 383 "yygrammar.c"
       get_lexval();
       get_lexval();
 #line 135 "spec.acc"
 _add_node_stack("ASSIGNMENT");
-# line 385 "yygrammar.c"
+# line 388 "yygrammar.c"
       query_operation();
       } break;
    }
@@ -395,23 +398,23 @@ renaming2 ()
       get_lexval();
 #line 140 "spec.acc"
  _add_node_stack("RHO");
-# line 399 "yygrammar.c"
+# line 402 "yygrammar.c"
       get_lexval();
       y = yylval;
 #line 141 "spec.acc"
  _add_node_stack(y.stringval);
-# line 404 "yygrammar.c"
+# line 407 "yygrammar.c"
       get_lexval();
 #line 142 "spec.acc"
  _add_node_stack("(");
-# line 408 "yygrammar.c"
+# line 411 "yygrammar.c"
       switch (yyselect()) {
       case 70: {
          get_lexval();
          y = yylval;
 #line 144 "spec.acc"
 _add_node_stack(y.stringval);
-# line 415 "yygrammar.c"
+# line 418 "yygrammar.c"
          } break;
       case 71: {
          query_operation();
@@ -421,38 +424,38 @@ _add_node_stack(y.stringval);
       get_lexval();
 #line 148 "spec.acc"
 _add_node_stack(")");
-# line 425 "yygrammar.c"
+# line 428 "yygrammar.c"
       } break;
    case 28: {
       get_lexval();
 #line 150 "spec.acc"
  _add_node_stack("RHO");
-# line 431 "yygrammar.c"
+# line 434 "yygrammar.c"
       get_lexval();
       y = yylval;
 #line 151 "spec.acc"
 _add_node_stack(y.stringval);
-# line 436 "yygrammar.c"
+# line 439 "yygrammar.c"
       get_lexval();
 #line 152 "spec.acc"
 _add_symbols_attribute("(",1);
-# line 440 "yygrammar.c"
+# line 443 "yygrammar.c"
       attribute_list();
       get_lexval();
 #line 154 "spec.acc"
 _add_symbols_attribute(")",1);
-# line 445 "yygrammar.c"
+# line 448 "yygrammar.c"
       get_lexval();
 #line 155 "spec.acc"
 _add_node_stack("(");
-# line 449 "yygrammar.c"
+# line 452 "yygrammar.c"
       switch (yyselect()) {
       case 72: {
          get_lexval();
          y = yylval;
 #line 157 "spec.acc"
 _add_node_stack(y.stringval);
-# line 456 "yygrammar.c"
+# line 459 "yygrammar.c"
          } break;
       case 73: {
          query_operation();
@@ -462,33 +465,33 @@ _add_node_stack(y.stringval);
       get_lexval();
 #line 161 "spec.acc"
 _add_node_stack(")");
-# line 466 "yygrammar.c"
+# line 469 "yygrammar.c"
       } break;
    case 29: {
       get_lexval();
 #line 163 "spec.acc"
  _add_node_stack("RHO");
-# line 472 "yygrammar.c"
+# line 475 "yygrammar.c"
       get_lexval();
 #line 164 "spec.acc"
 _add_symbols_attribute("(",1);
-# line 476 "yygrammar.c"
+# line 479 "yygrammar.c"
       attribute_list();
       get_lexval();
 #line 166 "spec.acc"
 _add_symbols_attribute(")",1);
-# line 481 "yygrammar.c"
+# line 484 "yygrammar.c"
       get_lexval();
 #line 167 "spec.acc"
 _add_node_stack("(");
-# line 485 "yygrammar.c"
+# line 488 "yygrammar.c"
       switch (yyselect()) {
       case 74: {
          get_lexval();
          y = yylval;
 #line 169 "spec.acc"
 _add_node_stack(y.stringval);
-# line 492 "yygrammar.c"
+# line 495 "yygrammar.c"
          } break;
       case 75: {
          query_operation();
@@ -498,7 +501,7 @@ _add_node_stack(y.stringval);
       get_lexval();
 #line 173 "spec.acc"
 _add_node_stack(")");
-# line 502 "yygrammar.c"
+# line 505 "yygrammar.c"
       } break;
    }
 }
@@ -518,7 +521,7 @@ grouping ()
       aggregated_functions_list();
 #line 179 "spec.acc"
  _add_node_stack("FSCRIPT");
-# line 522 "yygrammar.c"
+# line 525 "yygrammar.c"
       get_lexval();
       switch (yyselect()) {
       case 77: {
@@ -526,7 +529,7 @@ grouping ()
          y = yylval;
 #line 182 "spec.acc"
 _add_node_stack(y.stringval);
-# line 530 "yygrammar.c"
+# line 533 "yygrammar.c"
          } break;
       case 78: {
          query_operation();
@@ -553,12 +556,12 @@ predicate_rule ()
       get_lexval();
 #line 196 "spec.acc"
 _add_symbols_predicate("(");
-# line 557 "yygrammar.c"
+# line 560 "yygrammar.c"
       predicate_rule();
       get_lexval();
 #line 198 "spec.acc"
 _add_symbols_predicate(")");
-# line 562 "yygrammar.c"
+# line 565 "yygrammar.c"
       switch (yyselect()) {
       case 79: {
          boolean_operator();
@@ -578,12 +581,12 @@ condition ()
       get_lexval();
 #line 203 "spec.acc"
 _add_symbols_predicate("(");
-# line 582 "yygrammar.c"
+# line 585 "yygrammar.c"
       condition();
       get_lexval();
 #line 205 "spec.acc"
 _add_symbols_predicate(")");
-# line 587 "yygrammar.c"
+# line 590 "yygrammar.c"
       } break;
    case 35: {
       switch (yyselect()) {
@@ -592,14 +595,14 @@ _add_symbols_predicate(")");
          a = yylval;
 #line 208 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 596 "yygrammar.c"
+# line 599 "yygrammar.c"
          } break;
       case 81: {
          get_lexval();
          a = yylval;
 #line 210 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 603 "yygrammar.c"
+# line 606 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -610,14 +613,14 @@ _add_symbols_predicate(a.stringval);
          a = yylval;
 #line 214 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 614 "yygrammar.c"
+# line 617 "yygrammar.c"
          } break;
       case 83: {
          get_lexval();
          a = yylval;
 #line 216 "spec.acc"
 _add_symbols_predicate(a.stringval);
-# line 621 "yygrammar.c"
+# line 624 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -632,40 +635,40 @@ comparison_operator ()
       get_lexval();
 #line 221 "spec.acc"
 _add_symbols_predicate("=");
-# line 636 "yygrammar.c"
+# line 639 "yygrammar.c"
       } break;
    case 37: {
       get_lexval();
 #line 223 "spec.acc"
 _add_symbols_predicate("<");
-# line 642 "yygrammar.c"
+# line 645 "yygrammar.c"
       } break;
    case 38: {
       get_lexval();
 #line 225 "spec.acc"
 _add_symbols_predicate(">");
-# line 648 "yygrammar.c"
+# line 651 "yygrammar.c"
       } break;
    case 39: {
       get_lexval();
       get_lexval();
 #line 227 "spec.acc"
 _add_symbols_predicate("<=");
-# line 655 "yygrammar.c"
+# line 658 "yygrammar.c"
       } break;
    case 40: {
       get_lexval();
       get_lexval();
 #line 229 "spec.acc"
 _add_symbols_predicate(">=");
-# line 662 "yygrammar.c"
+# line 665 "yygrammar.c"
       } break;
    case 41: {
       get_lexval();
       get_lexval();
 #line 231 "spec.acc"
 _add_symbols_predicate("!=");
-# line 669 "yygrammar.c"
+# line 672 "yygrammar.c"
       } break;
    }
 }
@@ -677,25 +680,25 @@ arithmetic_operator ()
       get_lexval();
 #line 235 "spec.acc"
 _add_symbols_attribute("+",1);
-# line 681 "yygrammar.c"
+# line 684 "yygrammar.c"
       } break;
    case 43: {
       get_lexval();
 #line 237 "spec.acc"
 _add_symbols_attribute("-",1);
-# line 687 "yygrammar.c"
+# line 690 "yygrammar.c"
       } break;
    case 44: {
       get_lexval();
 #line 239 "spec.acc"
 _add_symbols_attribute("*",1);
-# line 693 "yygrammar.c"
+# line 696 "yygrammar.c"
       } break;
    case 45: {
       get_lexval();
 #line 241 "spec.acc"
 _add_symbols_attribute("/",1);
-# line 699 "yygrammar.c"
+# line 702 "yygrammar.c"
       } break;
    }
 }
@@ -707,13 +710,13 @@ boolean_operator ()
       get_lexval();
 #line 245 "spec.acc"
 _add_symbols_predicate(" AND ");
-# line 711 "yygrammar.c"
+# line 714 "yygrammar.c"
       } break;
    case 47: {
       get_lexval();
 #line 247 "spec.acc"
 _add_symbols_predicate(" OR ");
-# line 717 "yygrammar.c"
+# line 720 "yygrammar.c"
       } break;
    }
 }
@@ -729,14 +732,14 @@ attribute_list ()
          a = yylval;
 #line 252 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 733 "yygrammar.c"
+# line 736 "yygrammar.c"
          } break;
       case 85: {
          get_lexval();
          a = yylval;
 #line 254 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 740 "yygrammar.c"
+# line 743 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -750,14 +753,14 @@ _add_symbols_attribute(a.stringval,1);
                a = yylval;
 #line 259 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 754 "yygrammar.c"
+# line 757 "yygrammar.c"
                } break;
             case 87: {
                get_lexval();
                a = yylval;
 #line 261 "spec.acc"
 _add_symbols_attribute(a.stringval,1);
-# line 761 "yygrammar.c"
+# line 764 "yygrammar.c"
                } break;
             default: printf("???\n"); exit(1);
             }
@@ -771,7 +774,7 @@ _add_symbols_attribute(a.stringval,1);
          get_lexval();
 #line 264 "spec.acc"
 _add_symbols_attribute(",",1);
-# line 775 "yygrammar.c"
+# line 778 "yygrammar.c"
          attribute_list();
          } break;
       default: ;
@@ -790,31 +793,31 @@ aggregated_functions_list ()
          get_lexval();
 #line 269 "spec.acc"
 _add_symbols_attribute("COUNT ",2);
-# line 794 "yygrammar.c"
+# line 797 "yygrammar.c"
          } break;
       case 91: {
          get_lexval();
 #line 271 "spec.acc"
 _add_symbols_attribute("AVERAGE ",2);
-# line 800 "yygrammar.c"
+# line 803 "yygrammar.c"
          } break;
       case 92: {
          get_lexval();
 #line 273 "spec.acc"
 _add_symbols_attribute("MAX ",2);
-# line 806 "yygrammar.c"
+# line 809 "yygrammar.c"
          } break;
       case 93: {
          get_lexval();
 #line 275 "spec.acc"
 _add_symbols_attribute("MIN ",2);
-# line 812 "yygrammar.c"
+# line 815 "yygrammar.c"
          } break;
       case 94: {
          get_lexval();
 #line 277 "spec.acc"
 _add_symbols_attribute("SUM ",2);
-# line 818 "yygrammar.c"
+# line 821 "yygrammar.c"
          } break;
       default: printf("???\n"); exit(1);
       }
@@ -822,13 +825,13 @@ _add_symbols_attribute("SUM ",2);
       y = yylval;
 #line 279 "spec.acc"
 _add_symbols_attribute(y.stringval,2);
-# line 826 "yygrammar.c"
+# line 829 "yygrammar.c"
       switch (yyselect()) {
       case 95: {
          get_lexval();
 #line 280 "spec.acc"
 _add_symbols_attribute(",",2);
-# line 832 "yygrammar.c"
+# line 835 "yygrammar.c"
          aggregated_functions_list();
          } break;
       default: ;
