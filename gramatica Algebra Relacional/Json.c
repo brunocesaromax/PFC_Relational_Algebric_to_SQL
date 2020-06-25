@@ -28,10 +28,11 @@ cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int cur
     int auxLeft = currentLeft;
     cJSON *temp = rootJson;
 
+    _show_ins_list();
+
     if (currentLeft > 0 && currentRight > currentLeft) {
         SeqIns *aux = seqIns;
 
-//        printf("\n\nInserções\n\n");
         while (aux != NULL) {
             if (aux->direction == 1) {
                 temp = cJSON_GetObjectItem(temp, "left");
@@ -39,11 +40,8 @@ cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int cur
                 temp = cJSON_GetObjectItem(temp, "right");
             }
 
-//            printf("%d -> ", aux->direction);
-
             aux = aux->next;
         }
-//        printf("\n\nInserções\n\n");
 
     } else {
         while (auxRight > 0) {
@@ -61,7 +59,7 @@ cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int cur
 }
 
 void
-_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight, int isBinary) {
+_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight) {
     if (direction == 0) {
         _copy_items(rootJson, nodeJson);
     } else {
@@ -249,8 +247,7 @@ void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, in
         }
 
         cJSON *nodeJson = _build_node_json(node);
-        _add_node_in_json(rootJson, nodeJson, direction, currentLeft, currentRight,
-                          _node_is_operation_binary_or_assignment(node));
+        _add_node_in_json(rootJson, nodeJson, direction, currentLeft, currentRight);
         _build_json(node->left, rootJson, 1, currentLeft + 1, currentRight);
         _build_json(node->right, rootJson, 2, currentLeft, currentRight + 1);
     }
@@ -261,17 +258,6 @@ void _show_json(cJSON *rootJson) {
     char *out = cJSON_Print(rootJson);
 
     if (out) {
-//        FILE *fptr;
-//        fptr = fopen("json.txt", "w");
-//
-//        if (fptr == NULL) {
-//            printf("\nError opening file!\n");
-//            exit(1);
-//        }
-//
-//        fprintf(fptr, "%s", out);
-//        fclose(fptr);
-
         printf("%s", out);
         cJSON_free(out);
     }
@@ -402,7 +388,7 @@ void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node
     }
 }
 
-void _generate_file_json(){
+void _generate_file_json() {
     char *out = cJSON_Print(jsonResultFile);
 
     if (out) {
@@ -417,4 +403,15 @@ void _generate_file_json(){
         fprintf(fptr, "%s", out);
         fclose(fptr);
     }
+}
+
+void _show_ins_list() {
+    SeqIns *aux = seqIns;
+
+    printf("\n");
+    while (aux != NULL) {
+        printf("%d ->", aux->direction);
+        aux = aux->next;
+    }
+    printf("\n");
 }

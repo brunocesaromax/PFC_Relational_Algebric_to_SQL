@@ -21,7 +21,7 @@ cJSON *_get_root_json(cJSON *nodeJson);
 cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int currentRight);
 
 void
-_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight, int isBinary);
+_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight);
 
 void _add_items_array_json(NodeChar *items, cJSON *array);
 
