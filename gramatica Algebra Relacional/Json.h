@@ -2,34 +2,31 @@
 #include <stdlib.h>
 #include <cjson/cJSON.h>
 
-typedef struct seqIns SeqIns;
+/********FLAG TO SHOW EMPTY NODES**********/
+#define ELEM_NIL 1
 
-struct seqIns {
-    int direction;
-    SeqIns *next;
-};
+/********STATIC STRINGS TO JSON**********/
+#define ROOT "root"
+#define TYPE "type"
+#define NAME "name"
+#define ATTR "attr"
+#define COMP "comp"
+#define PRED "pred"
+#define LEFT "left"
+#define RIGHT "right"
+#define NIL "nil"
 
-SeqIns *seqIns;
 cJSON *jsonResult;
 cJSON *jsonResultFile;
 
 /************FUNCTION SIGNATURES***************/
 void _create_json();
 
-cJSON *_get_root_json(cJSON *nodeJson);
-
-cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int currentRight);
-
-void
-_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight);
-
 void _add_items_array_json(NodeChar *items, cJSON *array);
 
 cJSON *_build_node_json(Node *node);
 
-char *_get_node_name_by_direction(int direction);
-
-void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, int currentRight);
+void _build_json(Node *node, cJSON *rootJson);
 
 void _show_json(cJSON *rootJson);
 

@@ -33,8 +33,7 @@ void _build_tree() {
     }
 
     _show_tree(rootTree, 0);
-    seqIns = NULL;
-    _build_json(rootTree, cJSON_GetObjectItem(jsonResult, "root"), 0, 0, 0);
+    _build_json(rootTree, cJSON_GetObjectItem(jsonResult, "root"));
     _show_json(jsonResult);
     _start_data_structures();
 }

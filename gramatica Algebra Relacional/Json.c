@@ -6,68 +6,7 @@ void _create_json() {
 
     jsonResult = cJSON_CreateObject();
     cJSON *rootJson = cJSON_CreateObject();
-    cJSON_AddItemToObject(jsonResult, "root", rootJson);
-}
-
-cJSON *_get_root_json(cJSON *nodeJson) {
-    if (nodeJson->prev == NULL) {
-        return nodeJson;
-    } else {
-        cJSON *temp = nodeJson;
-
-        while (temp->prev != NULL) {
-            temp = temp->prev;
-        }
-
-        return temp;
-    }
-}
-
-cJSON *_get_node_json(cJSON *rootJson, char *direction, int currentLeft, int currentRight) {
-    int auxRight = currentRight;
-    int auxLeft = currentLeft;
-    cJSON *temp = rootJson;
-
-    _show_ins_list();
-
-    if (currentLeft > 0 && currentRight > currentLeft) {
-        SeqIns *aux = seqIns;
-
-        while (aux != NULL) {
-            if (aux->direction == 1) {
-                temp = cJSON_GetObjectItem(temp, "left");
-            } else {
-                temp = cJSON_GetObjectItem(temp, "right");
-            }
-
-            aux = aux->next;
-        }
-
-    } else {
-        while (auxRight > 0) {
-            temp = cJSON_GetObjectItem(temp, "right");
-            auxRight--;
-        }
-
-        while (auxLeft > 0) {
-            temp = cJSON_GetObjectItem(temp, "left");
-            auxLeft--;
-        }
-    }
-
-    return temp;
-}
-
-void
-_add_node_in_json(cJSON *rootJson, cJSON *nodeJson, int direction, int currentLeft, int currentRight) {
-    if (direction == 0) {
-        _copy_items(rootJson, nodeJson);
-    } else {
-        cJSON *node = _get_node_json(rootJson, _get_node_name_by_direction(direction), currentLeft, currentRight);
-
-        _copy_items(node, nodeJson);
-        cJSON_ReplaceItemViaPointer(rootJson, node, node);
-    }
+    cJSON_AddItemToObject(jsonResult, ROOT, rootJson);
 }
 
 void _add_items_array_json(NodeChar *items, cJSON *array) {
@@ -119,7 +58,7 @@ cJSON *_build_node_json(Node *node) {
     cJSON *predJson, *attrJson, *compJson, *typeJson, *name;
 
     typeJson = cJSON_CreateString(_string_from_node_type(node->type));
-    cJSON_AddItemToObject(nodeJson, "type", typeJson);
+    cJSON_AddItemToObject(nodeJson, TYPE, typeJson);
 
     switch (node->type) {
         case SELECTION:
@@ -151,38 +90,38 @@ cJSON *_build_node_json(Node *node) {
             compJson = cJSON_CreateArray();
 
             if (ELEM_NIL) {
-                cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(NIL));
 
                 if (node->attr) {
                     _add_items_array_json(node->attr, attrJson);
-                    cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+                    cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
                 } else {
-                    cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+                    cJSON_AddItemToObject(nodeJson, ATTR, cJSON_CreateString(NIL));
                 }
 
                 if (node->comp) {
                     _add_items_array_json(node->comp, compJson);
-                    cJSON_AddItemToObject(nodeJson, "comp", compJson);
+                    cJSON_AddItemToObject(nodeJson, COMP, compJson);
                 } else {
-                    cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+                    cJSON_AddItemToObject(nodeJson, COMP, cJSON_CreateString(NIL));
                 }
 
-                cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+                cJSON_AddItemToObject(nodeJson, PRED, cJSON_CreateString(NIL));
 
                 if (!node->left) {
-                    cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+                    cJSON_AddItemToObject(nodeJson, LEFT, cJSON_CreateString(NIL));
                 }
 
                 if (!node->right) {
-                    cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+                    cJSON_AddItemToObject(nodeJson, RIGHT, cJSON_CreateString(NIL));
                 }
 
             } else {
                 _add_items_array_json(node->attr, attrJson);
                 _add_items_array_json(node->comp, compJson);
 
-                cJSON_AddItemToObject(nodeJson, "attr", attrJson);
-                cJSON_AddItemToObject(nodeJson, "comp", compJson);
+                cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
+                cJSON_AddItemToObject(nodeJson, COMP, compJson);
             }
 
             break;
@@ -201,55 +140,24 @@ cJSON *_build_node_json(Node *node) {
     }
 
     if (node->left) {
-        cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateObject());
+        cJSON_AddItemToObject(nodeJson, LEFT, cJSON_CreateObject());
     }
 
     if (node->right) {
-        cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateObject());
+        cJSON_AddItemToObject(nodeJson, RIGHT, cJSON_CreateObject());
     }
 
     return nodeJson;
 }
 
-char *_get_node_name_by_direction(int direction) {
-    if (direction == 0) {
-        return NULL;
-    } else if (direction == 1) {
-        return "left";
-    } else {
-        return "right";
-    }
-}
-
-void _build_json(Node *node, cJSON *rootJson, int direction, int currentLeft, int currentRight) {
+void _build_json(Node *node, cJSON *nodeJson) {
     if (node == NULL) {
         return;
     } else {
-        if (direction != 0) {
-            if (seqIns == NULL) {
-                seqIns = (SeqIns *) malloc(1 * sizeof(SeqIns));
-                seqIns->direction = direction;
-                seqIns->next = NULL;
-
-            } else {
-                SeqIns *new = (SeqIns *) malloc(1 * sizeof(SeqIns));
-                new->direction = direction;
-                new->next = NULL;
-
-                SeqIns *aux = seqIns;
-
-                while (aux->next != NULL) {
-                    aux = aux->next;
-                }
-
-                aux->next = new;
-            }
-        }
-
-        cJSON *nodeJson = _build_node_json(node);
-        _add_node_in_json(rootJson, nodeJson, direction, currentLeft, currentRight);
-        _build_json(node->left, rootJson, 1, currentLeft + 1, currentRight);
-        _build_json(node->right, rootJson, 2, currentLeft, currentRight + 1);
+        cJSON *new = _build_node_json(node);
+        _copy_items(nodeJson, new);
+        _build_json(node->left, cJSON_GetObjectItem(nodeJson, LEFT));
+        _build_json(node->right, cJSON_GetObjectItem(nodeJson, RIGHT));
     }
 }
 
@@ -266,13 +174,13 @@ void _show_json(cJSON *rootJson) {
 }
 
 void _copy_items(cJSON *target, cJSON *source) {
-    char *typeName = "type";
-    char *nameName = "name";
-    char *attrName = "attr";
-    char *compName = "comp";
-    char *predName = "pred";
-    char *leftName = "left";
-    char *rightName = "right";
+    char *typeName = TYPE;
+    char *nameName = NAME;
+    char *attrName = ATTR;
+    char *compName = COMP;
+    char *predName = PRED;
+    char *leftName = LEFT;
+    char *rightName = RIGHT;
 
     cJSON *type = cJSON_DetachItemFromObject(source, typeName);
     cJSON *name = cJSON_DetachItemFromObject(source, nameName);
@@ -295,28 +203,28 @@ void _build_node_with_only_pred(cJSON *nodeJson, cJSON *predJson, Node *node) {
     predJson = cJSON_CreateArray();
 
     if (ELEM_NIL) {
-        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
-        cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
-        cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
+        cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(NIL));
+        cJSON_AddItemToObject(nodeJson, ATTR, cJSON_CreateString(NIL));
+        cJSON_AddItemToObject(nodeJson, COMP, cJSON_CreateString(NIL));
 
         if (node->pred) {
             _add_items_array_json(node->pred, predJson);
-            cJSON_AddItemToObject(nodeJson, "pred", predJson);
+            cJSON_AddItemToObject(nodeJson, PRED, predJson);
         } else {
-            cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, PRED, cJSON_CreateString(NIL));
         }
 
         if (!node->left) {
-            cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, LEFT, cJSON_CreateString(NIL));
         }
 
         if (!node->right) {
-            cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, RIGHT, cJSON_CreateString(NIL));
         }
 
     } else {
         _add_items_array_json(node->pred, predJson);
-        cJSON_AddItemToObject(nodeJson, "pred", predJson);
+        cJSON_AddItemToObject(nodeJson, PRED, predJson);
     }
 }
 
@@ -324,29 +232,29 @@ void _build_node_with_only_attr(cJSON *nodeJson, cJSON *attrJson, Node *node) {
     attrJson = cJSON_CreateArray();
 
     if (ELEM_NIL) {
-        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+        cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(NIL));
 
         if (node->attr) {
             _add_items_array_json(node->attr, attrJson);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
         } else {
-            cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, ATTR, cJSON_CreateString(NIL));
         }
 
-        cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
-        cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+        cJSON_AddItemToObject(nodeJson, COMP, cJSON_CreateString(NIL));
+        cJSON_AddItemToObject(nodeJson, PRED, cJSON_CreateString(NIL));
 
         if (!node->left) {
-            cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, LEFT, cJSON_CreateString(NIL));
         }
 
         if (!node->right) {
-            cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, RIGHT, cJSON_CreateString(NIL));
         }
 
     } else {
         _add_items_array_json(node->attr, attrJson);
-        cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+        cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
     }
 }
 
@@ -354,36 +262,36 @@ void _build_node_with_name_and_attr(cJSON *nodeJson, cJSON *attrJson, Node *node
     attrJson = cJSON_CreateArray();
     if (ELEM_NIL) {
         if (node->name) {
-            cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+            cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(node->name));
         } else {
-            cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(NIL));
         }
 
         if (node->attr) {
             _add_items_array_json(node->attr, attrJson);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
         } else {
-            cJSON_AddItemToObject(nodeJson, "attr", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, ATTR, cJSON_CreateString(NIL));
         }
 
-        cJSON_AddItemToObject(nodeJson, "comp", cJSON_CreateString("nil"));
-        cJSON_AddItemToObject(nodeJson, "pred", cJSON_CreateString("nil"));
+        cJSON_AddItemToObject(nodeJson, COMP, cJSON_CreateString(NIL));
+        cJSON_AddItemToObject(nodeJson, PRED, cJSON_CreateString(NIL));
 
         if (!node->left) {
-            cJSON_AddItemToObject(nodeJson, "left", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, LEFT, cJSON_CreateString(NIL));
         }
 
         if (!node->right) {
-            cJSON_AddItemToObject(nodeJson, "right", cJSON_CreateString("nil"));
+            cJSON_AddItemToObject(nodeJson, RIGHT, cJSON_CreateString(NIL));
         }
 
     } else {
-        cJSON_AddItemToObject(nodeJson, "name", cJSON_CreateString(node->name));
+        cJSON_AddItemToObject(nodeJson, NAME, cJSON_CreateString(node->name));
         attrJson = cJSON_CreateArray();
 
         if (node->attr) {
             _add_items_array_json(node->attr, attrJson);
-            cJSON_AddItemToObject(nodeJson, "attr", attrJson);
+            cJSON_AddItemToObject(nodeJson, ATTR, attrJson);
         }
     }
 }
@@ -403,15 +311,4 @@ void _generate_file_json() {
         fprintf(fptr, "%s", out);
         fclose(fptr);
     }
-}
-
-void _show_ins_list() {
-    SeqIns *aux = seqIns;
-
-    printf("\n");
-    while (aux != NULL) {
-        printf("%d ->", aux->direction);
-        aux = aux->next;
-    }
-    printf("\n");
 }
