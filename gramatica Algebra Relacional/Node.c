@@ -33,7 +33,7 @@ void _build_tree() {
     }
 
     _show_tree(rootTree, 0);
-    _build_json(rootTree, cJSON_GetObjectItem(jsonResult, "root"));
+    _build_json(rootTree, cJSON_GetObjectItem(jsonResult, ROOT));
     _show_json(jsonResult);
     _start_data_structures();
 }
@@ -68,6 +68,7 @@ Node *_allocate_node() {
 void _add_symbols_predicate(char *symbol) {
     NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
+    node->next = NULL;
 
     if (!pred) {
         pred = node;
@@ -93,6 +94,7 @@ void _add_symbols_attribute(char *symbol, int option) {
 
     NodeChar *node = (NodeChar *) malloc(sizeof(NodeChar));
     node->name = symbol;
+    node->next = NULL;
 
     if (!aux) {
         aux = node;

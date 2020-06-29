@@ -53,6 +53,8 @@ void _add_items_array_json(NodeChar *items, cJSON *array) {
     }
 }
 
+//todo: Fazer de forma mais simples a construção do nó json
+//todo: Fazer casos que o nó só tem o type
 cJSON *_build_node_json(Node *node) {
     cJSON *nodeJson = cJSON_CreateObject();
     cJSON *predJson, *attrJson, *compJson, *typeJson, *name;
@@ -154,6 +156,7 @@ void _build_json(Node *node, cJSON *nodeJson) {
     if (node == NULL) {
         return;
     } else {
+//        CPF_PNRS ASSIGNMENT PI Fcpf,Pnr (TRABALHA_EM)
         cJSON *new = _build_node_json(node);
         _copy_items(nodeJson, new);
         _build_json(node->left, cJSON_GetObjectItem(nodeJson, LEFT));
