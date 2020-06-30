@@ -235,6 +235,8 @@ void _show_node(Node *node, int b) {
 }
 
 void _get_node_type(Node *node, char *s) {
+    node->name = NULL;
+
     if (!strcmp("SIGMA", s)) {
         node->type = SELECTION;
     } else if (!strcmp("PI", s)) {

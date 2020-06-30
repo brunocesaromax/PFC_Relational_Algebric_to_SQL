@@ -24,16 +24,12 @@ void _create_json();
 
 void _add_items_array_json(NodeChar *items, cJSON *array);
 
-cJSON *_build_node_json(Node *node);
+cJSON *_get_node_json(Node *node);
 
 void _build_json(Node *node, cJSON *rootJson);
 
 void _show_json(cJSON *rootJson);
 
 void _copy_items(cJSON *target, cJSON *source);
-
-void _build_node_with_only_pred(cJSON *nodeJson, cJSON *predJson, Node *node);
-
-void _build_node_with_only_attr(cJSON *nodeJson, cJSON *attrJson, Node *node);
 
 void _generate_file_json();
